@@ -1,0 +1,39 @@
+// Fonts
+@import 'fonts.scss';
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
+// Font-awesome css
+@import '~font-awesome/scss/font-awesome.scss';
+
+// Loader
+@import 'loader.scss';
+
+// Toastr
+@import '~toastr/build/toastr.min.css';
+
+// checkbox
+@import 'checkbox.scss';
+
+// select2
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
+
+label.remenber {
+	position: absolute;
+	top: -1px;
+	left: 30px;
+}
+
+.navbar-laravel {
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+nav.navbar.navbar-static-top,
+nav.navbar.navbar-static-top a.sidebar-toggle {
+	max-height: 50px !important;
+}

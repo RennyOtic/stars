@@ -26,8 +26,7 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::dataForPaginate();
-        $roles->each(function ($r) {
+        $roles = Role::dataForPaginate(['name', 'from_at', 'description', 'special', 'to_at'], function ($r) {
             $r->hours = $r->from_at . ' - ' . $r->to_at;
             if (!$r->from_at && !$r->to_at) $r->hours = 'Todo el tiempo';
         });

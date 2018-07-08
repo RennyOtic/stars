@@ -12,6 +12,9 @@
 </template>
 
 <style>
+input[type="text"] {
+    min-width: 100%;
+}
 select {
     min-width: 70px !important;
 }

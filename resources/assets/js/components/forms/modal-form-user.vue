@@ -87,7 +87,7 @@ div.multiselect__tags {
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
           {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
-          {label: 'Cédula', id: 'num_id', icon: 'fa fa-id-card-o'},
+          {label: 'Run', id: 'num_id', icon: 'fa fa-id-card-o'},
           {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
           ],
           der: [

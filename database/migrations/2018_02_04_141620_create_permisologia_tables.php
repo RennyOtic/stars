@@ -38,8 +38,8 @@ class CreatePermisologiaTables extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 25)->unique();
-            $table->string('module', 15); // users | roles ..
-            $table->string('action', 15); // index | show | store | update | destroy
+            $table->string('module', 20); // users | roles ..
+            $table->string('action', 20); // index | show | store | update | destroy
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

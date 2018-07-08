@@ -5,7 +5,7 @@ import Profile from './components/views/profileComponent.vue';
 import Users from './components/views/UsersComponent.vue';
 import Roles from './components/views/RolesComponent.vue';
 import Permission from './components/views/PermissionsComponent.vue';
-import courseManagement from './components/views/courseManagementsComponent.vue';
+import courseManagement from './components/views/CourseManagementsComponent.vue';
 import NotFound from './components/views/NotFoundComponent.vue';
 
 const router = new VueRouter({

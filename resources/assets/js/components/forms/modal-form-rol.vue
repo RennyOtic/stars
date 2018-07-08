@@ -26,7 +26,7 @@
             <div class="col-md-6">
               <div class="form-group" v-for="input in entries.der">
                 <label for="special" class="control-label">
-                  <span :class="'fa fa-'+input.icon"></span> {{ input.label }}
+                  <span :class="'fa fa-'+input.icon"></span> {{ input.label }}:
                 </label>
                 <date-picker id="" v-model="formData.rol[input.id]" :config="{format: 'HH:mm:ss', useCurrent: false} " required="required"></date-picker>
                 <small :id="input.id+'Help'" class="form-text text-muted">

@@ -26,7 +26,6 @@ class UserUpdateRequest extends FormRequest
         return [
             'email'     => 'required|email|min:8|max:35|unique1:users|DomainValid',
             'last_name' => 'required|alpha_space|min:3|max:15',
-            'position' => 'nullable|alpha_space|min:3|max:30',
             'name'      => 'required|alpha_space|min:3|max:15',
             'num_id'    => 'required|numeric|digits_between:6,8|exr_ced|unique1:users',
             'password'  => 'nullable|string|min:6|max:20|confirmed',
@@ -44,7 +43,6 @@ class UserUpdateRequest extends FormRequest
         return [
             'email'     => 'correo',
             'last_name' => 'apellido',
-            'position'  => 'cargo',
             'name'      => 'nombre',
             'num_id'    => 'cedula',
             'password'  => 'contraseña'

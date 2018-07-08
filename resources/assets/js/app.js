@@ -13,11 +13,6 @@ import App from './components/App.vue';
 
 Vue.use(VueRouter);
 
-// window.addEventListener('load', () => {
-// 	let loader = document.getElementById('loader');
-// 	loader.classList.add('fadeOut');
-// });
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -43,7 +38,7 @@ Vue.mixin({
 				$('.modal small#'+i+'Help').text(msg[i]);
 			}
 		},
-		deleted: function (url, updateTable, name) {
+		deleted: function (url, updateTable, name = 'name') {
 			let msg = toastr;
 			msg.options.tapToDismiss = false;
 			axios.get(url)
@@ -52,7 +47,6 @@ Vue.mixin({
 			})
 			.then(() => {
 				$('button#btn-delete').click(function () {
-					// $(this).parent().parent().parent().fadeOut();
 					toastr.remove();
 					toastr.clear();
 					axios.delete(url)
@@ -70,25 +64,19 @@ Vue.mixin({
 	}
 });
 
-// Vue.filter('capitalize', function (value) {
-// 	if (!value) return '';
-// 	value = value.toString();
-// 	return value.charAt(0).toUpperCase() + value.slice(1);
-// });
-
 Vue.component('spinner', require('./components/partials/spinner.vue'));
 
 const app = new Vue({
-    router,
-    data: {
-    	permissions: [],
-    },
-    components: { App },
-    mounted: function () {
-    	if (location.href.indexOf('/login') > 0) return;
-    	if (location.href.indexOf('/registro') > 0) return;
+	router,
+	data: {
+		permissions: [],
+	},
+	components: { App },
+	mounted: function () {
+		if (location.href.indexOf('/login') > 0) return;
+		if (location.href.indexOf('/registro') > 0) return;
 
-    	axios.post('/app', {rs: 'p'})
+		axios.post('/app', {rs: 'p'})
 		.then(response => {
 			this.permissions = response.data;
 		});

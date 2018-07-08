@@ -61,6 +61,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-user', 'ProfileController@editUser');
     });
 
+    Route::group(['namespace' => 'Course', 'as' => 'Course::'], function () {
+
+        // Courses Routes...
+        Route::resource('courses', 'CourseController')->except(['create', 'edit']);
+        Route::post('get-data-course/{id}', 'CourseController@dataForRegister');
+
+    });
+
     Route::post('admin/app', 'RouteController@canPermission');
 
 });

@@ -26,7 +26,6 @@ class UserStoreRequest extends FormRequest
         return [
             'email'     => 'required|email|min:8|max:35|unique:users|DomainValid',
             'last_name' => 'required|alpha_space|min:3|max:15',
-            'position'  => 'nullable|alpha_space|min:3|max:30',
             'name'      => 'required|alpha_space|min:3|max:15',
             'num_id'    => 'required|numeric|digits_between:6,8|exr_ced|unique:users',
             'password'  => 'required|string|min:6|max:20|confirmed',
@@ -57,7 +56,6 @@ class UserStoreRequest extends FormRequest
             'name'      => 'nombre',
             'num_id'    => 'cédula',
             'password'  => 'contraseña',
-            'position'  => 'cargo',
             'roles'     => 'roles'
         ];
     }

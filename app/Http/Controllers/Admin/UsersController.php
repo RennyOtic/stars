@@ -28,10 +28,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-
-        $users = User::dataForPaginate(['email','id','last_name','name','num_id','position']);
-
-        $users->each(function ($u) {
+        $users = User::dataForPaginate(['email','id','last_name','name','num_id','position'], function ($u) {
             $rol = '';
             foreach ($u->roles as $r) {
                 $rol .= '<span class="badge">' . $r->name . '</span>';
@@ -40,7 +37,6 @@ class UsersController extends Controller
             unset($u->roles);
             $u->fullName = $u->fullName();
         });
-
         return $this->dataWithPagination($users);
     }
 

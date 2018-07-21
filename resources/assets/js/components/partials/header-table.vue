@@ -1,21 +1,26 @@
 <template>
     <div class="row">
         <div class="col-sm-1 pull-left">
-            <select class="form-control" v-model="num">
-                <option v-for="i in n" :value="i" v-text="i"></option>
-            </select>
+            <div class="form-group label-floating">
+                <select class="form-control" v-model="num">
+                    <option v-for="i in n" :value="i" v-text="i"></option>
+                </select>
+            </div>
         </div>
         <div class="col-xs-4 col-sm-2 pull-right">
-            <input type="text" class="form-control" placeholder="Busqueda" v-model="search">
+            <div class="form-group label-floating">
+                <input type="text" class="form-control" placeholder="Busqueda" v-model="search">
+            </div>
         </div>
     </div>
 </template>
 
 <style>
 input[type="text"] {
-    min-width: 100%;
+    min-width: 100% !important;
 }
 select {
+    padding: 10px !important;
     min-width: 70px !important;
 }
 </style>

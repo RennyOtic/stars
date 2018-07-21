@@ -13,9 +13,9 @@ moment.locale('es');
  */
 
 try {
-    window.$ = window.jQuery = require('jquery');
+    // window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap-sass/assets/javascripts/bootstrap.js');
+    // require('bootstrap-sass/assets/javascripts/bootstrap.js');
 } catch (e) {}
 
 /**

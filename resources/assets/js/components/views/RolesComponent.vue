@@ -1,51 +1,62 @@
 <template>
 	<div class="box">
-		<div class="box-header">
-			<h3 class="box-title"><i class="glyphicon glyphicon-compressed"></i> Tabla de Roles: </h3>
+		<div class="box-header text-center">
 			<button type="button"
-			class="btn btn-default btn-xs"
-			data-tool="tooltip"
+			class="btn btn-info btn-raised btn-xs"
+			data-tooltip="tooltip"
+			title="Lista de Usuarios"
+			@click="show = 1"
+			v-if="can('user.index')"
+			v-show="show == 2"><span class="glyphicon glyphicon-list"></span></button>
+			<button type="button"
+			class="btn btn-success btn-raised btn-xs"
+			data-tooltip="tooltip"
 			title="Registrar Rol"
 			@click="openform('create')"
-			v-if="can('rol.store')"><span class="glyphicon glyphicon-plus"></span></button>
+			v-if="can('rol.store')"
+			v-show="show == 1"><span class="glyphicon glyphicon-plus"></span></button>
 			<button type="button"
-			class="btn btn-default btn-xs"
-			data-tool="tooltip"
+			class="btn btn-info btn-raised btn-xs"
+			data-tooltip="tooltip"
 			title="Editar Rol"
 			@click="openform('edit')"
-			v-show="rol"
+			v-show="id && show == 1"
 			v-if="can('rol.update')"><span class="glyphicon glyphicon-edit"></span></button>
 			<button type="button"
-			class="btn btn-default btn-xs"
-			data-tool="tooltip"
+			class="btn btn-danger btn-raised btn-xs"
+			data-tooltip="tooltip"
 			title="Borrar Rol"
-			@click="deleted('/admin/roles/'+rol, $children[1].get, 'name')"
-			v-show="rol"><span class="glyphicon glyphicon-trash"></span></button>
-			<v-modal-form :formData="formData" @input="$children[1].get()"></v-modal-form>
+			@click="deleted('/admin/roles/'+id, $children[1].get, 'name')"
+			v-show="id && show == 1"
+			v-if="can('rol.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
 		</div>
 		<div class="box-body">
-			<div class="row">
-				<div class="col-md-12">
-					<v-table id="rol" :columns="tabla.columns" uri="/admin/roles" @output="rol = arguments[0]"></v-table>
-				</div>
-			</div>
+			<rs-form :formData="formData"
+			@input="$children[1].get()"
+			v-if="can(['rol.store','rol.update'])"
+			v-show="show == 2"></rs-form>
+			<rs-table :columns="tabla.columns"
+			uri="/admin/roles"
+			@output="id = arguments[0]"
+			v-show="show == 1"></rs-table>
 		</div>
 	</div>
 </template>
 
 <script>
 	import Tabla from './../partials/table.vue';
-	import Modal from './../forms/modal-form-rol.vue';
+	import Modal from './../forms/Form-rol.vue';
 
 	export default {
 		name: 'Roles',
 		components: {
-			'v-table': Tabla,
-			'v-modal-form': Modal,
+			'rs-table': Tabla,
+			'rs-form': Modal,
 		},
 		data() {
 			return {
-				rol: null,
+				show: 1,
+				id: 0,
 				formData: {
 					ready: true,
 					title: '',
@@ -76,7 +87,7 @@
 			openform: function (cond, user = null) {
 				this.formData.ready = false;
 				if (cond == 'create') {
-					this.formData.title = ' Registrar Rol.';
+					this.formData.title = 'Registrar Rol.';
 					this.formData.url = '/admin/roles';
 					this.formData.ico = 'plus';
 					this.formData.rol = {
@@ -90,7 +101,7 @@
 					};
 					this.formData.ready = true;
 				} else if (cond == 'edit') {
-					this.formData.url = '/admin/roles/' + this.rol;
+					this.formData.url = '/admin/roles/' + this.id;
 					axios.get(this.formData.url)
 					.then(response => {
 						this.formData.ico = 'edit';
@@ -107,7 +118,7 @@
 						this.formData.ready = true;
 					});
 				}
-				$('#rol-form').modal('toggle');
+                this.show = 2;
 				this.formData.cond = cond;
 			}
 		}

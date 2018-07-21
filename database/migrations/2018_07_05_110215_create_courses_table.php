@@ -13,6 +13,15 @@ class CreateCoursesTable extends Migration
      */
     public function up()
     {
+        // tabla para los dias
+
+        Schema::create('days_week', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
@@ -34,8 +43,7 @@ class CreateCoursesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        Schema::create('courses_users', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('course_user', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('course_id');
 
@@ -51,7 +59,7 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses_users');
+        Schema::dropIfExists('course_user');
         Schema::dropIfExists('courses');
     }
 }

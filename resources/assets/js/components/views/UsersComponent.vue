@@ -1,52 +1,62 @@
 <template>
     <div class="box">
-        <div class="box-header">
-            <h3 class="box-title"><i class="fa fa-users"></i> Tabla de Usuarios:</h3>
+        <div class="box-header text-center">
             <button type="button"
-            class="btn btn-default btn-xs"
-            data-tool="tooltip"
+            class="btn btn-info btn-raised btn-xs"
+            data-tooltip="tooltip"
+            title="Lista de Usuarios"
+            @click="show = 1"
+            v-if="can('user.index')"
+            v-show="show == 2"><span class="glyphicon glyphicon-list"></span></button>
+            <button type="button"
+            class="btn btn-success btn-raised btn-xs"
+            data-tooltip="tooltip"
             title="Registrar Usuario"
             @click="openform('create')"
-            v-if="can('user.store')"><span class="glyphicon glyphicon-plus"></span></button>
+            v-if="can('user.store')"
+            v-show="show == 1"><span class="glyphicon glyphicon-plus"></span></button>
             <button type="button"
-            class="btn btn-default btn-xs"
-            data-tool="tooltip"
+            class="btn btn-info btn-raised btn-xs" 
+            data-tooltip="tooltip"
             title="Editar Usuario"
             @click="openform('edit')"
-            v-show="user"
+            v-show="id && show == 1"
             v-if="can('user.update')"><span class="glyphicon glyphicon-edit"></span></button>
             <button type="button"
-            class="btn btn-default btn-xs"
-            data-tool="tooltip"
+            class="btn btn-danger btn-raised btn-xs"
+            data-tooltip="tooltip"
             title="Borrar Usuario"
-            @click="deleted('/admin/users/'+user, $children[0].get, 'fullName')"
-            v-show="user"
+            @click="deleted('/admin/users/'+id, $children[1].get, 'fullName')"
+            v-show="id && show == 1"
             v-if="can('user.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
-            <v-modal-form :formData="formData" @input="$children[0].get()" v-if="can(['user.store','user.update'])"></v-modal-form>
         </div>
         <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <v-table id="users" :columns="tabla.columns" uri="/admin/users" @output="user = arguments[0]"></v-table>
-                </div>
-            </div>
+            <rs-form :formData="formData"
+            @input="$children[1].get()"
+            v-if="can(['user.store','user.update'])"
+            v-show="show == 2"></rs-form>
+            <rs-table :columns="tabla.columns"
+            uri="/admin/users"
+            @output="id = arguments[0]"
+            v-show="show == 1"></rs-table>
         </div>
     </div>
 </template>
 
 <script>
-    import Modal from './../forms/modal-form-user.vue';
+    import Modal from './../forms/Form-user.vue';
     import Tabla from './../partials/table.vue';
 
     export default {
         name: 'Users',
         components: {
-            'v-modal-form': Modal,
-            'v-table': Tabla,
+            'rs-form': Modal,
+            'rs-table': Tabla,
         },
         data() {
             return {
-                user: null,
+                show: 1,
+                id: null,
                 formData: {
                     ready: true,
                     title: '',
@@ -58,8 +68,7 @@
                 tabla: {
                     columns: [
                     { title: 'Nombre y Apellido', field: 'fullName', sort: 'name', sortable: true },
-                    { title: 'Cargo', field: 'position', sortable: true },
-                    { title: 'Cédula', field: 'num_id', sortable: true },
+                    { title: 'RUT', field: 'num_id', sortable: true },
                     { title: 'Correo', field: 'email', sortable: true },
                     { title: 'Rol', field: 'rol' },
                     ]
@@ -67,7 +76,7 @@
             };
         },
         methods: {
-            openform: function (cond, user = null) {
+            openform: function (cond) {
                 this.formData.ready = false;
                 if (cond == 'create') {
                     this.formData.title = ' Registrar Usuario.';
@@ -85,24 +94,17 @@
                     };
                     this.formData.ready = true;
                 } else if (cond == 'edit') {
-                    this.formData.url = '/admin/users/' + this.user;
+                    this.formData.url = '/admin/users/' + this.id;
                     axios.get(this.formData.url)
                     .then(response => {
                         this.formData.ico = 'edit';
                         this.formData.title = 'Editar Usuario: ' + response.data.fullName + '.';
                         this.formData.user = response.data;
-
-                        let roles = response.data.roles;
-                        let options = [];
-                        for (let rol in roles){
-                            options.push(roles[rol].name);
-                        }
-                        this.formData.user.roles = options;
-
+                        this.formData.user.roles = response.data.roles[0].id;
                         this.formData.ready = true;
                     });
                 }
-                $('#user-form').modal('show');
+                this.show = 2;
                 this.formData.cond = cond;
             }
         }

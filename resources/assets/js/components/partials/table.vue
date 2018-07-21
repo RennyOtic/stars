@@ -6,7 +6,12 @@
 				<table :id="id" class="table table-bordered table-hover table-condensed">
 					<thead>
 						<tr>
-							<th v-for="column in columns">{{ column.title }} <span class="fa fa-angle-left pull-right btn" v-if="column.sortable" @click="sort(column,$event)"></span></th>
+							<th v-for="column in columns">
+								{{ column.title }} 
+								<span class="fa fa-angle-left pull-right btn-raised btn-sm"
+								v-if="column.sortable"
+								@click="sort(column, $event)"></span>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -86,7 +91,7 @@ th span, tbody tr {
 				return data[column.field];
 			},
 			sort: function (colum, e) {
-				$('.fa.fa-angle-left.pull-right').css('transform', 'rotate(	0deg)');
+				$('.pull-right.btn-raised.btn-sm').css('transform', 'rotate(0deg)');
 				if (this.dir == 'ASC') {
 					this.dir = 'DESC';
 					$(e.target).css('transform', 'rotate(-90deg)');

@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<spinner></spinner>
+		<h1 class="text-center">In Progress...</h1>
 	</div>
 </template>
 

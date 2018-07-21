@@ -1,78 +1,63 @@
 @extends('layouts.app')
 
-@section('title', 'Login | ')
+@section('title', 'LogIn | ')
 
 @section('end')
-<body class="hold-transition login-page layout-top-nav">
-    <div id="app" class="wrapper">
-        <div class="login-box">
-            <div class="login-logo">
-                {!! config('frontend.logo_lg') !!}
-            </div>
-            {{-- /.login-logo --}}
-            <div class="login-box-body">
-                <p class="login-box-msg">Ingresa para comenzar tu sesión.</p>
+<body class="cover" style="background-image: url(./img/loginFont.jpg);">
+    <div id="app">
+        <form action="{{ route('login') }}" method="POST" class="full-box logInForm" autocomplete="off">
 
-                <form action="{{ route('login') }}" method="post">
-                    {{ csrf_field() }}
+            {{-- <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i> --}}
+            <p class="text-center text-muted"><img src="{{ asset('./img/logo.jpeg') }}" alt="logo" width="270"></p>
+            <p class="text-center text-muted text-uppercase">Inicia sesión con tu cuenta</p>
 
-                    <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
-                        <label for="email" class="control-label">Correo:</label>
-                        <input id="email" type="email" class="form-control" name="email"  placeholder="Email" value="root@smoothtalkers.com" required autofocus> {{-- {{ old('email') }} --}}
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                        @if ($errors->has('email'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }} has-feedback">
-                        <label for="password" class="control-label">Contraseña:</label>
-                        <input id="password" type="password" class="form-control" name="password"  placeholder="Contraseña" value="secret" required>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                        @if ($errors->has('password'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div class="checkbox icheck">
-                                <label class="control control--checkbox">
-                                    <input id="checkboxRemenber" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    <div class="control__indicator"></div>
-                                </label>
-                                 <label for="checkboxRemenber" class="remenber">Recuérdame</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Ingresar</button>
-                        </div>
-                    </div>
-                </form>
-
-{{--                 <div class="social-auth-links text-center">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-                    Facebook</a>
-                    <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-                    Google+</a>
-                </div>
-                <!-- /.social-auth-links --> --}}
-
-                {{-- <a class="btn btn-link" href="{{ route('password.request') }}"> Forgot Your Password? </a> --}}
-                {{-- <a href="#">Olvidé mi contraseña.</a><br> --}}
-                @if(config('frontend.registration_open'))
-                <a href="{{ route('register') }}">Registra nueva membresía.</a>
+            {{ csrf_field() }}
+            <div class="form-group label-floating has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
+                <label for="email" class="control-label">Correo:</label>
+                <input id="email" type="email" class="form-control" name="email" value="root@smoothtalkers.com" required autofocus> 
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                @if ($errors->has('email'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
+                @else
+                <p class="help-block">Escribe tu Correo</p>
                 @endif
-
             </div>
-            <!-- /.login-box-body -->
-        </div>
-        <!-- /.login-box -->
+
+            <div class="form-group label-floating has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
+                <label for="password" class="control-label">Contraseña:</label>
+                <input id="password" type="password" class="form-control" name="password" value="secret" required>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                @if ($errors->has('email'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+                @else
+                <p class="help-block">Escribe tu contraseña</p>
+                @endif
+            </div>
+
+            <div class="row">
+                <div class="col-xs-5">
+                    <div class="checkbox icheck">
+                        <label class="control control--checkbox">
+                            <input id="checkboxRemenber" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label for="checkboxRemenber" class="remenber">Recuérdame</label>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <button type="submit" class="btn btn-raised btn-danger">Iniciar sesión</button>
+                </div>
+            </div>
+
+            @if(config('frontend.registration_open'))
+            <a href="{{ route('register') }}">Registra nueva membresía.</a>
+            @endif
+
+        </form>
     </div>
 </body>
 @endsection

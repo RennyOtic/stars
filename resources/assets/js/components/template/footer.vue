@@ -1,5 +1,5 @@
 <template>
-	<footer class="main-footer">
+	<footer class="nav nav-bottom main-footer">
 		<div class="row">
 			<div class="pull-right hidden-xs">
 				<strong>Copyright &copy; {{ all.y }}. <span v-html="all.credits"></span></strong>. Todos los derechos reservados.

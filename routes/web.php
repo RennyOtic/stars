@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('courses', 'CourseController')->except(['create', 'edit']);
         Route::post('get-data-course/{id}', 'CourseController@dataForRegister');
 
+        // CourseAlumns Routes...
+        // Route::resource('coursestudents', 'CourseStudensController')->except(['create', 'edit']);
     });
 
     Route::post('admin/app', 'RouteController@canPermission');

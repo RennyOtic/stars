@@ -1,40 +1,52 @@
 <template>
 	<div>
-		<v-header :all="all"></v-header>
-		<v-sidebar :all="all"></v-sidebar>
+		<rs-sidebar :all="all"></rs-sidebar>
 
-		<div class="content-wrapper">
-			<!-- <section class="content-header"> -->
-				<!-- <h1> -->
-					<!-- @yield('page-title') -->
-					<!-- <small>@yield('page-subtitle')</small> -->
-				<!-- </h1> -->
-				<!-- @yield('breadcrumbs') -->
-			<!-- </section> -->
+		<section class="full-box dashboard-contentPage"> <!-- Content page-->
 
-			<section class="content">
-				<router-view></router-view>
-			</section>
-		</div>
+			<rs-nav :all="all"></rs-nav>
 
-		<v-footer :all="all.foot"></v-footer>
+			<div class="container-fluid"> <!-- Content page -->
+				<div class="page-header">
+					<h1 id="breadcrumb" class="text-titles"> <small>Tiles</small></h1>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="full-box rs">
+					<router-view></router-view>
+				</div>
+			</div>
+
+			<!-- <rs-footer :all="all.foot"></rs-footer> -->
+
+		</section>
+
+		<!-- <rs-notifications></rs-notifications> -->
 
 	</div>
 </template>
 
+<style>
+.container-fluid .page-header {margin: 15px;}
+div.full-box.rs {margin-top: -35px;}
+</style>
+
 <script>
 	import Header from './template/header.vue';
 	import Sidebar from './template/sidebar.vue';
-	import Footer from './template/footer.vue';
+	// import Footer from './template/footer.vue';
+	// import Notification from './template/notifications.vue';
 
 	export default {
 		components: {
-			'v-header': Header,
-			'v-sidebar': Sidebar,
-			'v-footer': Footer,
+			'rs-nav': Header,
+			'rs-sidebar': Sidebar,
+			// 'rs-footer': Footer,
+			// 'rs-notifications': Notification
 		},
 		data() {
 			return {
+				title: '',
 				all: {
 					L: {Lg: '', Lm: ''},
 					user: {fullName: '', logoPath: ''},
@@ -42,14 +54,6 @@
 				}
 			}
 		},
-		updated: function () {
-			$('ul.sidebar-menu.tree > li').unbind('click');
-			$('ul.sidebar-menu.tree > li').click(function () {
-				$('ul.sidebar-menu.tree > li').removeClass('active');
-				$(this).addClass('active');
-			});
-		},
-		methods: {},
 		created() {
 			axios.post('/app', {rs: 'ras'})
 			.then(response => {

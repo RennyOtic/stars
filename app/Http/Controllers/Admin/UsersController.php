@@ -28,7 +28,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::dataForPaginate(['email','id','last_name','name','num_id','position'], function ($u) {
+        $users = User::dataForPaginate(['email','id','last_name','name','num_id'], function ($u) {
             $rol = '';
             foreach ($u->roles as $r) {
                 $rol .= '<span class="badge">' . $r->name . '</span>';
@@ -49,12 +49,12 @@ class UsersController extends Controller
     public function store(UserStoreRequest $request)
     {
         $data = $request->validated();
-        $data['roles'] = $this->idsOfRol($data['roles']);
+        // $data['roles'] = $this->idsOfRol($data['roles']);
         $user = new User($data);
         $user->password = bcrypt($data['password']);
         $user->save();
         $user->roles()->attach($data['roles']);
-        $user->assignPermissionsOneUser($data['roles']);
+        $user->assignPermissionsOneUser([$data['roles']]);
         return response()->json($user);
     }
 
@@ -68,7 +68,7 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
         $user->fullName = $user->fullName();
-        $user->roles->pluck('name')->toArray();
+        $user->roles;
         return response()->json($user);
     }
 
@@ -84,7 +84,7 @@ class UsersController extends Controller
         if($request->id == 1) return response(['errors' => 'Error al modificar usuario'], 422);
 
         $data = $request->validated();
-        $data['roles'] = $this->idsOfRol($data['roles']);
+        // $data['roles'] = $this->idsOfRol($data['roles']);
 
         if( !empty($request->password) ){
             $data['password'] = bcrypt($this->validate($request, [
@@ -93,8 +93,8 @@ class UsersController extends Controller
         }
 
         $user = User::findOrFail($id)->fill($data);
-        $user->update_pivot($data['roles'], 'roles', 'role_id');
-        $user->assignPermissionsOneUser($data['roles']);
+        $user->update_pivot([$data['roles']], 'roles', 'role_id');
+        $user->assignPermissionsOneUser([$data['roles']]);
 
         return response()->json($user->save());
     }
@@ -119,7 +119,7 @@ class UsersController extends Controller
      */
     public function dataForRegister()
     {
-        $roles = Role::all()->pluck('name');
+        $roles = Role::all()->pluck('name', 'id');
         return response()->json(compact(['roles']));
     }
 

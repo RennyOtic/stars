@@ -30,7 +30,7 @@
             v-show="id"
             v-if="1"><span class="fa fa-users"></span></button>
             <v-modal-form :formData="formData" @input="$children[1].get()" v-if="can(['courseManagement.store','courseManagement.update'])"></v-modal-form>
-            <v-modal-course_alumns :formData="formData" @input="" v-if="1"></v-modal-course_alumns>
+            <v-modal-course_students :formData="formData" @input="" v-if="1"></v-modal-course_students>
         </div>
         <div class="box-body">
             <div class="row">
@@ -45,14 +45,14 @@
 <script>
     import Modal from './../forms/modal-form-course.vue';
     import Tabla from './../partials/table.vue';
-    import Modal2 from './../forms/modal-form-course_alumns.vue';
+    import Modal2 from './../forms/modal-form-course_students.vue';
 
     export default {
         name: 'Courses',
         components: {
             'v-modal-form': Modal,
             'v-table': Tabla,
-            'v-modal-course_alumns': Modal2,
+            'v-modal-course_students': Modal2,
         },
         data() {
             return {
@@ -101,7 +101,10 @@
                     .then(response => {
                         this.formData.ico = 'edit';
                         this.formData.title = 'Editar Curso: ' + response.data.name + '.';
-                        if (cond == 'add') this.formData.title = 'Alumnos registrados en: ' + response.data.name + '.';
+                        if (cond == 'add') {
+                            this.formData.ico = 'plus';
+                            this.formData.title = 'Estudiantes registrados en: ' + response.data.name + '.';
+                        }
                         this.formData.data = response.data;
                         this.$children[1].$data.teacher = response.data.teacher_
                         this.formData.ready = true;
@@ -109,7 +112,7 @@
                 }
                 this.formData.cond = cond;
                 if (cond == 'add') {
-                    $('#course_alumns-form').modal('show');
+                    $('#course_students-form').modal('show');
                     return;
                 }
                 $('#course-form').modal('show');

@@ -1,56 +1,28 @@
 <template>
-    <header class="main-header">
-        <router-link :to="{ name: 'dashboard' }" class="logo">
-            <span class="logo-mini" v-html="all.L.Lm"></span>
-            <span class="logo-lg" v-html="all.L.Lg"></span>
-        </router-link>
-        <nav class="navbar navbar-static-top">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only">Menú</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img :src="all.user.logoPath" class="user-image" alt="">
-                            <span class="hidden-xs" v-text="all.user.fullName"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="user-header">
-                                <img :src="all.user.logoPath" class="img-circle" :alt="all.user.fullName">
-                                <p>
-                                    {{ all.user.fullName }}.
-                                    <div class="row">
-                                        <p class="small">Miembro desde {{ all.user.from }}.</p>
-                                    </div>
-                                </p>
-                            </li>
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <router-link :to="{ name: 'profile' }" class="btn btn-default btn-flat" data-toggle="tooltip" title="Perfil">
-                                        <span class="fa fa-user"></span>
-                                    </router-link>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" data-toggle="tooltip" title="Salir" class="btn btn-default btn-flat" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <span class="fa fa-lock"></span>
-                                    </a>
-                                    <form id="logout-form" action="/logout" method="POST" style="display:none;">
-                                        <input type="hidden" name="_token" :value="token">
-                                        <input type="hidden" name="_method" value="POST">
-                                    </form>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <!-- NavBar -->
+    <nav class="full-box dashboard-Navbar">
+        <ul class="full-box list-unstyled text-right">
+            <li class="pull-left">
+                <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+            </li>
+            <!-- <li>
+                <a href="#!" class="btn-Notifications-area">
+                    <i class="zmdi zmdi-notifications-none"></i>
+                    <span class="badge">7</span>
+                </a>
+            </li> -->
+            <!-- <li>
+                <a href="#!" class="btn-search">
+                    <i class="zmdi zmdi-search"></i>
+                </a>
+            </li> -->
+            <!-- <li>
+                <a href="#!" class="btn-modal-help">
+                    <i class="zmdi zmdi-help-outline"></i>
+                </a>
+            </li> -->
+        </ul>
+    </nav>
 </template>
 
 <script>

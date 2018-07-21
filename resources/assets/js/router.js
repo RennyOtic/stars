@@ -63,20 +63,37 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 	let permission = to.name;
 	if (to.path == '/') {next(); return;}
-
 	if (location.href.indexOf('/login') > 0) return;
 	if (location.href.indexOf('/registro') > 0) return;
-
-	if (permission == undefined) permission = 'error';
-	axios.post('/admin/app', {p: permission})
-	.then(response => {
-		if (response.data) {next(); return;}
-		next(false);
-	});
+	if (permission == undefined) {next('error'); return;}
+	if (to.path.split('/')[1] == 'js' || to.path.split('/')[1] == 'css') {next('/'); return;}
+	
+	setTimeout(() => {
+		if (this.a.app.can(permission)) {
+			next(); return;
+		} else if (permission.indexOf('-') != -1) {
+			let split = permission.split('-');
+			for(let i in split) {
+				if (split[i].indexOf('.index') != -1) {
+					if (this.a.app.can(split[i])) {next(); return; }
+				} else {
+					if (this.a.app.can(split[i] + '.index')) {next(); return; }
+				}
+			}
+		}
+		axios.post('/admin/app', { p: permission })
+		.then(response => {
+			if (response.data) {next(); return;}
+			next(false);
+		});
+	}, 10);
 });
+
 router.afterEach((to, from, next) => {
 	setTimeout(function () {
-		$('[data-tool="tooltip"]').tooltip();
+		$('#breadcrumb').text(to.path.split('/').join(' > ').replace('-', ' ').replace('-', ' '));
+		if (to.path == '/') $('#breadcrumb').text(' > Dashboard');
+		$('[data-tooltip="tooltip"]').tooltip();
 	}, 1000);
 });
 

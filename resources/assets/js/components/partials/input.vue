@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group">
+    <div class="form-group label-floating" :class="!value ? 'is-empty' : ''">
         <label :for="name.id" class="control-label">
             <span :class="name.icon"></span> {{ name.label }}:
         </label>

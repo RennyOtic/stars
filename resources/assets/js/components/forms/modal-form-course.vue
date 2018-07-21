@@ -143,7 +143,7 @@
     mounted: function () {
       axios.post('/get-data-course/2')
       .then(response => {
-        this.teachers = response.data.users_teachers;
+        this.teachers = response.data;
       });
     },
     methods: {

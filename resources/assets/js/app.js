@@ -11,6 +11,8 @@ import VueRouter from 'vue-router';
 import router from './router';
 import App from './components/App.vue';
 
+$.material.init();
+
 Vue.use(VueRouter);
 
 /**
@@ -43,7 +45,7 @@ Vue.mixin({
 			msg.options.tapToDismiss = false;
 			axios.get(url)
 			.then(response => {
-				msg.info(response.data[name] + '<br /><br /><button id="btn-delete" type="button" class="btn btn-success">Si</button> <button id="no-delete" type="button" class="btn btn-danger" role="button">No</button>', 'Esta seguro de Borrar este Elemento?')
+				msg.info(response.data[name] + '<br /><br /><button id="btn-delete" type="button" class="btn btn-success btn-raised btn-xs">Si</button> <button id="no-delete" type="button" class="btn btn-danger btn-raised btn-xs" role="button">No</button>', 'Esta seguro de Borrar este Elemento?')
 			})
 			.then(() => {
 				$('button#btn-delete').click(function () {

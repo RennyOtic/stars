@@ -22,7 +22,7 @@ trait ModelsTrait
 				return asset('storage\users\image\\') . \Auth::user()->id . '.' . $e;
 			}
 		}
-		return "/adminlte/img/icon-avatar-default.png";
+		return "/img/avatar.png";
 	}
 
 	/**

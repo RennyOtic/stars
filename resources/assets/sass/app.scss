@@ -4,9 +4,6 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
-
 // Font-awesome css
 @import '~font-awesome/scss/font-awesome.scss';
 
@@ -16,29 +13,54 @@
 // Toastr
 @import '~toastr/build/toastr.min.css';
 
+// Template
+@import 'template.css';
+
 // checkbox
-@import 'checkbox.scss';
+// @import 'checkbox.scss';
 
 // select2
-@import '~vue-multiselect/dist/vue-multiselect.min.css';
+// @import '~vue-multiselect/dist/vue-multiselect.min.css';
 
-label.remenber {
-	position: absolute;
-	top: -1px;
-	left: 30px;
+// label.remenber {
+	// position: absolute;
+	// top: -1px;
+	// left: 30px;
+// }
+
+// .navbar-laravel {
+// 	background-color: #fff;
+// 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// }
+
+// nav.navbar.navbar-static-top,
+// nav.navbar.navbar-static-top a.sidebar-toggle {
+// 	max-height: 50px !important;
+// }
+
+// .multiselect__tags {
+// 	border-radius: 0px;
+// 	border: 1px solid #d2d6de;
+// }
+
+#breadcrumb {
+	margin: 0px;
+	font-size: 24px;
+	display: inline;
 }
 
-.navbar-laravel {
-	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+.has-feedback label~.form-control-feedback {top: 0px; }
 
-nav.navbar.navbar-static-top,
-nav.navbar.navbar-static-top a.sidebar-toggle {
-	max-height: 50px !important;
-}
+.logInForm input {color: white; }
 
-.multiselect__tags {
-	border-radius: 0px;
-	border: 1px solid #d2d6de;
-}
+.modal-backdrop.fade.in {display: none; }
+
+.box-header {margin-top: 20px !important; }
+
+.box-header button {z-index: 3; margin: 0; }
+
+.box-body {margin-top: -30px; }
+
+.form-group.rs-select {margin-top: 5px; }
+
+.form-group.rs-select label {margin: 0px; }

@@ -70,7 +70,7 @@
                     { title: 'Nombre y Apellido', field: 'fullName', sort: 'name', sortable: true },
                     { title: 'RUT', field: 'num_id', sortable: true },
                     { title: 'Correo', field: 'email', sortable: true },
-                    { title: 'Rol', field: 'rol' },
+                    { title: 'Perfil', field: 'rol' },
                     ]
                 }
             };

@@ -4,28 +4,28 @@
 			<button type="button"
 			class="btn btn-info btn-raised btn-xs"
 			data-tooltip="tooltip"
-			title="Lista de Usuarios"
+			title="Lista de Perfiles"
 			@click="show = 1"
 			v-if="can('user.index')"
 			v-show="show == 2"><span class="glyphicon glyphicon-list"></span></button>
 			<button type="button"
 			class="btn btn-success btn-raised btn-xs"
 			data-tooltip="tooltip"
-			title="Registrar Rol"
+			title="Registrar Perfil"
 			@click="openform('create')"
 			v-if="can('rol.store')"
 			v-show="show == 1"><span class="glyphicon glyphicon-plus"></span></button>
 			<button type="button"
 			class="btn btn-info btn-raised btn-xs"
 			data-tooltip="tooltip"
-			title="Editar Rol"
+			title="Editar Perfil"
 			@click="openform('edit')"
 			v-show="id && show == 1"
 			v-if="can('rol.update')"><span class="glyphicon glyphicon-edit"></span></button>
 			<button type="button"
 			class="btn btn-danger btn-raised btn-xs"
 			data-tooltip="tooltip"
-			title="Borrar Rol"
+			title="Borrar Perfil"
 			@click="deleted('/admin/roles/'+id, $children[1].get, 'name')"
 			v-show="id && show == 1"
 			v-if="can('rol.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
@@ -84,10 +84,10 @@
 			};
 		},
 		methods: {
-			openform: function (cond, user = null) {
+			openform: function (cond) {
 				this.formData.ready = false;
 				if (cond == 'create') {
-					this.formData.title = 'Registrar Rol.';
+					this.formData.title = 'Registrar Perfil.';
 					this.formData.url = '/admin/roles';
 					this.formData.ico = 'plus';
 					this.formData.rol = {
@@ -105,7 +105,7 @@
 					axios.get(this.formData.url)
 					.then(response => {
 						this.formData.ico = 'edit';
-						this.formData.title = 'Editar Rol: ' + response.data.name;
+						this.formData.title = 'Editar Perfil: ' + response.data.name;
 						this.formData.rol = response.data;
 
 						let permissions = response.data.permissions;

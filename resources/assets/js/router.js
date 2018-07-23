@@ -32,7 +32,7 @@ const router = new VueRouter({
 			component: Users,
 		},
 		{
-			path: 'roles',
+			path: 'perfiles',
 			name: 'rol.index',
 			component: Roles,
 		},
@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
 	if (location.href.indexOf('/registro') > 0) return;
 	if (permission == undefined) {next('error'); return;}
 	if (to.path.split('/')[1] == 'js' || to.path.split('/')[1] == 'css') {next('/'); return;}
-	
+
 	setTimeout(() => {
 		if (this.a.app.can(permission)) {
 			next(); return;
@@ -91,7 +91,9 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from, next) => {
 	setTimeout(function () {
-		$('#breadcrumb').text(to.path.split('/').join(' > ').replace('-', ' ').replace('-', ' '));
+		let breadcrumb = to.path.split('/').join(' > ');
+		do {breadcrumb = breadcrumb.replace('-', ' ');} while(breadcrumb.indexOf('-') != -1);
+		$('#breadcrumb').text(breadcrumb.toUpperCase());
 		if (to.path == '/') $('#breadcrumb').text(' > Dashboard');
 		$('[data-tooltip="tooltip"]').tooltip();
 	}, 1000);

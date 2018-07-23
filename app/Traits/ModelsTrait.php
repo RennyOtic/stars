@@ -59,11 +59,11 @@ trait ModelsTrait
 	 */
 	public function permissionsOfUser()
 	{
-		if ($this->id == 1) return 'all-access';
-		foreach ($this->roles as $rol) {
-			if ($rol->special == 'all-access') return $rol->special;
-			if ($rol->special == 'no-access') return [];
-		}
+		// if ($this->id == 1) return 'all-access';
+		// foreach ($this->roles as $rol) {
+		// 	if ($rol->special == 'all-access') return $rol->special;
+		// 	if ($rol->special == 'no-access') return [];
+		// }
 		$all = [];
 		foreach ($this->permissions as $p) {
 			$all[] = $p->module . '.' . $p->action;
@@ -73,7 +73,7 @@ trait ModelsTrait
 
 	/**
 	 * Actualiza las tablas pivot quitando o agregando nuevos valores.
-	 * @model Role || User
+	 * @model All
 	 * @return $this
 	 */
 	public function update_pivot(Array $values = [], $relation, $campo = 'id')

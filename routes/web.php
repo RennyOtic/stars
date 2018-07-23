@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Courses Routes...
         Route::resource('courses', 'CourseController')->except(['create', 'edit']);
-        Route::post('get-data-course/{id}', 'CourseController@dataForRegister');
+        Route::post('get-data-course', 'CourseController@dataForRegister');
 
         // CourseAlumns Routes...
         // Route::resource('coursestudents', 'CourseStudensController')->except(['create', 'edit']);

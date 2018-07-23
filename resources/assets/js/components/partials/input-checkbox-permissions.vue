@@ -38,7 +38,7 @@ export default {
 			permissionsRol: this.user,
 			permissions: [],
 			modules: {
-				'rol': 'Roles',
+				'rol': 'Perfiles',
 				'permission': 'Permisos',
 				'user': 'Usuarios',
 			},

@@ -1,27 +1,33 @@
 <template>
-    <div class="row">
+    <div class="row" style="margin-top: 70px">
         <div class="col-md-3">
-            <div class="box box-primary">
-                <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" :src="user.logoPath" :alt="user.fullName">
+            <div class="box-body box-profile">
+                <img class="profile-user-img img-responsive img-circle" :src="user.logoPath" :alt="user.fullName" width="150" style="margin: 0 auto">
 
-                    <h3 class="profile-username text-center" v-text="user.fullName"></h3>
+                <h3 class="profile-username text-center" v-text="user.fullName"></h3>
 
-                    <p class="text-muted text-center" v-for="rol in user.roles">{{ rol.name }}<br></p>
-                </div>
+                <p class="text-muted text-center" v-for="rol in user.roles">{{ rol.name }}<br></p>
             </div>
         </div>
 
         <div class="col-md-9">
-            <div class="nav-tabs-custom">
+            <div class="nm">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">Configuraciones</a></li>
-                    <li><a href="#changePass" data-toggle="tab" aria-expanded="true">Cambio de Contraseña</a></li>
+                    <li class="active">
+                        <a href="#settings" data-toggle="tab" aria-expanded="true">
+                            <i class="zmdi zmdi-settings"></i> Configuraciones<div class="ripple-container"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#changePass" data-toggle="tab" aria-expanded="true">
+                            <i class="glyphicon glyphicon-lock"></i> Cambio de Contraseña<div class="ripple-container"></div>
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="settings" class="tab-pane active">
                         <form class="form-horizontal" enctype="multipart/form-data" @submit.prevent="updateUser">
-                            <div class="form-group"> <!-- has-feedback -->
+                            <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label">Nombres:</label>
                                 <div class="col-sm-10">
                                     <input id="name" type="text" class="form-control" placeholder="Nombres" v-model="user.name">
@@ -55,15 +61,16 @@
                                     <input type="text" class="form-control" id="module" placeholder="Módulo" v-model="user.module.module" readonly>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="imagen" class="col-sm-2 control-label">Imagen:</label>
+                            <div class="form-group is-empty is-fileinput">
+                                <label for="image" class="col-sm-2 control-label">Imagen:</label>
                                 <div class="col-sm-10">
+                                    <input type="text" readonly="" class="form-control" placeholder="Imagen...">
                                     <input type="file" id="image" class="form-control" name="image" @change="getImage" accept="image/*">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success"> Guardar</button>
+                                    <button type="submit" class="btn btn-success btn-raised"> Guardar</button>
                                 </div>
                             </div>
                         </form>
@@ -93,7 +100,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <button type="submit" class="btn btn-success"> Guardar</button>
+                                    <button type="submit" class="btn btn-success btn-raised"> Guardar</button>
                                 </div>
                             </div>
                         </form>
@@ -103,6 +110,10 @@
         </div>
     </div>
 </template>
+
+<style>
+li.active {background-color:#00c3b1;}
+</style>
 
 <script>
     export default {

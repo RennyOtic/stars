@@ -26,7 +26,7 @@
 
             <div class="form-group rs-select">
               <label for="roles" class="control-label">
-                <span class="glyphicon glyphicon-compressed"></span> Roles:
+                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Perfil:
               </label>
               <select id="roles" class="form-control" v-model="formData.user.roles">
                 <option :value="[]">Seleccione un rol</option>

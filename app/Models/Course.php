@@ -16,18 +16,23 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'code',
-        'date_end_at',
-        'date_inscription_end_at',
-        'date_inscription_start_at',
-        'date_start_at',
-        'hour_end',
-        'hour_start',
-        'max_students',
         'name',
         'slug',
+        'code',
+        'hour_start',
+        'hour_end',
+        'idioma_id',
         'teacher_id',
         'user_id',
+        'max_students',
+        'max_class',
+        // 'type_student_id',
+        'level_id',
+        'class_type_id',
+        'date_start_at',
+        'date_inscription_start_at',
+        'date_inscription_end_at',
+        'date_end_at',
     ];
 
     /**
@@ -44,8 +49,18 @@ class Course extends Model
         return $this->belongsTo(\App\User::class);
     }
 
-    public function users()
+    public function idioma()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsTo(Idioma::class);
+    }
+
+    public function level()
+    {
+        return $this->belongsTo(Level::class);
+    }
+
+    public function materials()
+    {
+        return $this->belongsToMany(Material::class);
     }
 }

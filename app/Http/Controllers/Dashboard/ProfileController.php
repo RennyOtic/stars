@@ -32,7 +32,10 @@ class ProfileController extends Controller
      */
     public function editUser(UpdatePerfilUserRequest $request)
     {
-        $user = \Auth::user()->update($request->validated());
+        $data = $request->validated();
+        $data['name'] = ucfirst($data['name']);
+        $data['last_name'] = ucfirst($data['last_name']);
+        $user = \Auth::user()->update($data);
         if ($request->hasFile('image')) {
             $extension = $request->image->getClientOriginalExtension();
             $url = $request->image->storeAs('users/image', \Auth::user()->id.'.'.$extension);

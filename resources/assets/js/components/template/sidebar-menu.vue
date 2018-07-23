@@ -18,7 +18,7 @@
                 </li>
                 <li v-if="can('rol.index')">
                     <router-link :to="{ name: 'rol.index' }">
-                        <i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Roles
+                        <i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> Perfiles
                     </router-link>
                 </li>
                 <li v-if="can('permission.index')">
@@ -30,7 +30,7 @@
         </li>
         <li v-if="can('courseManagement.index')">
             <router-link :to="{ name: 'courseManagement.index' }">
-                <i class="glyphicon glyphicon-blackboard zmdi zmdi-hc-fw"></i> Gestión de cursos
+                <i class="glyphicon glyphicon-blackboard zmdi-hc-fw"></i> Gestión de cursos
             </router-link>
         </li>
     </ul>

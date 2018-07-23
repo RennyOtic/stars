@@ -6,9 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Permisologia\Role;
+use App\Http\Requests\ { CourseStoreRequest, CourseUpdateRequest };
 
 class CourseController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('onlyAjax');
+        $this->middleware('can:courseManagement,index')->only(['index']);
+        $this->middleware('can:courseManagement,show')->only(['show']);
+        $this->middleware('can:courseManagement,destroy')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +26,11 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::dataForPaginate(['id', 'code', 'name', 'teacher_id'], function ($c) {
+        $courses = Course::dataForPaginate(['id', 'code', 'name', 'teacher_id', 'idioma_id', 'level_id'], function ($c) {
             $c->teacher_id = $c->teacher->fullName();
+            $c->idioma_id = $c->idioma->name;
+            $c->level_id = $c->level->name;
+            unset($c->teacher, $c->idioma, $c->level);
         });
         return $this->dataWithPagination($courses);
     }
@@ -25,37 +38,16 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CourseStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CourseStoreRequest $request)
     {
-        $data = $this->validate($request, [
-            'code' => 'required|max:15|min:2',
-            'date_end_at' => 'required|date',
-            'date_inscription_end_at' => 'required|date',
-            'date_inscription_start_at' => 'required|date',
-            'date_start_at' => 'required|date',
-            'hour_end' => 'required|hour_corret',
-            'hour_start' => 'required|hour_corret',
-            'max_students' => 'required|numeric|max:100|min:1',
-            'name' => 'required|string|max:50|min:5',
-            'teacher_id' => 'required|numeric',
-        ], [], [
-            'code' => 'código',
-            'date_end_at' => 'fecha final',
-            'date_inscription_end_at' => 'fecha final',
-            'date_inscription_start_at' => 'fecha inicial',
-            'date_start_at' => 'fecha inicial',
-            'hour_end' => 'hora final',
-            'hour_start' => 'hora inicial',
-            'max_students' => '',
-            'name' => 'nombre',
-            'teacher_id' => 'profesor',
-        ]);
+        $data = $request->validated();
         $data['user_id'] = \Auth::user()->id;
-        $data['slug'] = $data['name'] . ' - ' . \Carbon::now()->format('Y-m-d');
-        $courses = Course::create($data);
+        $data['slug'] = str_replace(' ', '-', $data['name']) . '-' . $data['code'];
+        $course = Course::create($data);
+        $course->materials()->attach($data['materials']);
     }
 
     /**
@@ -67,6 +59,9 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::findOrFail($id);
+        $materials = $course->materials->pluck('id');
+        unset($course->materials);
+        $course->materials = $materials;
         $course->teacher_ = $course->teacher->fullName() . ' - ' . $course->teacher->num_id;
         return response()->json($course);
     }
@@ -74,36 +69,15 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CourseUpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CourseUpdateRequest $request, $id)
     {
-        $data = $this->validate($request, [
-            'code' => 'required|max:15|min:2',
-            'date_end_at' => 'required|date',
-            'date_inscription_end_at' => 'required|date',
-            'date_inscription_start_at' => 'required|date',
-            'date_start_at' => 'required|date',
-            'hour_end' => 'required|hour_corret',
-            'hour_start' => 'required|hour_corret',
-            'max_students' => 'required|numeric|max:100|min:1',
-            'name' => 'required|string|max:50|min:5',
-            'teacher_id' => 'required|numeric',
-        ], [], [
-            'code' => 'código',
-            'date_end_at' => 'fecha final',
-            'date_inscription_end_at' => 'fecha final',
-            'date_inscription_start_at' => 'fecha inicial',
-            'date_start_at' => 'fecha inicial',
-            'hour_end' => 'hora final',
-            'hour_start' => 'hora inicial',
-            'max_students' => '',
-            'name' => 'nombre',
-            'teacher_id' => 'profesor',
-        ]);
-        Course::findOrFail($id)->update($data);
+        $course = Course::findOrFail($id);
+        $course->update_pivot($request->materials, 'materials');
+        $course->update($request->validated());
     }
 
     /**
@@ -123,16 +97,20 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dataForRegister($id)
+    public function dataForRegister()
     {
-        $users = Role::findOrFail($id)
-        ->users()
-        ->orderBy('name', 'ASC')
+        $teachers = \App\Models\Permisologia\Role::where('slug', '=', 'Profesor')
+        ->findOrFail(2)->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
-        $users->each(function ($u) {
+        // $typestudents = \App\Models\TypeStudents::get(['id', 'name']);
+        $idiomas = \App\Models\Idioma::get(['id', 'name']);
+        $levels = \App\Models\Level::get(['id', 'name']);
+        $classtypes = \App\Models\ClassType::get(['id', 'name']);
+        $materials = \App\Models\Material::get(['id', 'name']);
+        $teachers->each(function ($u) {
             $u->fullName = $u->fullName() . ' - ' . $u->num_id;
             unset($u->pivot);
         });
-        return response()->json($users);
+        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials'));
     }
 }

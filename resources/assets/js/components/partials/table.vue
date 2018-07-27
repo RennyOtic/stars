@@ -44,6 +44,7 @@ th span, tbody tr {
 		},
 		props: {
 			uri: {},
+			data: {},
 			columns: {},
 			id: {},
 			n: {
@@ -113,6 +114,7 @@ th span, tbody tr {
 				if (this.search) url += '&search=' + this.search;
 				if (this.dir) url += '&dir=' + this.dir;
 				if (this.order) url += '&order=' + this.order;
+				if (this.data) url += '&data=' + this.data;
 				$('tbody tr').removeClass('active');
 				this.$emit('output', false);
 				axios.get(url)

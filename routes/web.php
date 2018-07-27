@@ -17,15 +17,18 @@
  */
 Route::group(['namespace' => 'Auth'], function () {
     Route::group(['middleware' => 'guest'], function () {
+
         // Rutas de Autentificación...
         Route::get('login', 'LoginController@showLoginForm')->name('login');
         Route::post('login', 'LoginController@login');
+
         // Rutas de Registro... 
         if (config('frontend.registration_open')) {
             Route::get('registro', 'RegisterController@showRegistrationForm')->name('register');
             Route::post('register', 'RegisterController@register');
         }
     });
+
     Route::post('logout', 'LoginController@logout')->name('logout');
 });
 Route::post('app', 'RouteController@dataForTemplate');
@@ -68,7 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-data-course', 'CourseController@dataForRegister');
 
         // CourseAlumns Routes...
-        // Route::resource('coursestudents', 'CourseStudensController')->except(['create', 'edit']);
+        Route::resource('inscriptions', 'InscriptionsController')->only(['index', 'store', 'destroy']);
+        Route::post('get-data-inscription', 'InscriptionsController@dataForRegister');
     });
 
     Route::post('admin/app', 'RouteController@canPermission');

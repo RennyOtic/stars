@@ -7,7 +7,7 @@
             title="Lista de Cursos"
             @click="show = 1"
             v-if="can('courseManagement.index')"
-            v-show="show == 2"><span class="glyphicon glyphicon-list"></span></button>
+            v-show="show > 1"><span class="glyphicon glyphicon-list"></span></button>
             <button type="button"
             class="btn btn-success btn-raised btn-xs"
             data-tooltip="tooltip"
@@ -26,28 +26,25 @@
             class="btn btn-danger btn-raised btn-xs"
             data-tooltip="tooltip"
             title="Borrar Curso"
-            @click="deleted('/courses/'+id, $children[1].get, 'name')"
+            @click="deleted('/courses/'+id, $children[2].get, 'name')"
             v-show="id && show == 1"
             v-if="can('courseManagement.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
-            <!-- |  -->
-            <!-- <button type="button"
-            class="btn btn-default btn-xs"
-            data-tool="tooltip"
-            title="Ver Alumnos del Curso"
+            <span v-show="id && show == 1">|</span>
+            <button type="button"
+            class="btn btn-success btn-raised btn-xs"
+            data-tooltip="tooltip"
+            title="Lista de Alumnos Inscritos"
             @click="openform('add')"
-            v-show="id"
-            v-if="1"><span class="fa fa-users"></span></button> -->
+            v-show="id && show == 1"
+            v-if="can('inscription.index')"><span class="fa fa-list"></span></button>
         </div>
         <div class="box-body">
-            <!--<rs-form :formData="formData"
-            @input="$children[1].get()"
-            v-if="can(['rol.store','rol.update'])"
-            v-show="show == 2"></rs-form> -->
-            <!-- <rs-modal-course_students :formData="formData"
-            @input=""
-            v-if="1"></rs-modal-course_students> -->
+            <rs-list-students :formData="formData"
+            @input="$children[2].get()"
+            v-if="can() || 1"
+            v-show="show == 3"></rs-list-students>
             <rs-form :formData="formData"
-            @input="$children[1].get()"
+            @input="$children[2].get()"
             v-if="can(['courseManagement.store','courseManagement.update'])"
             v-show="show == 2"></rs-form>
             <rs-table :columns="tabla.columns"
@@ -61,14 +58,14 @@
 <script>
     import Tabla from './../partials/table.vue';
     import Form from './../forms/Form-course.vue';
-    // import Modal2 from './../forms/modal-form-course_students.vue';
+    import Form2 from './../forms/Form-course-students.vue';
 
     export default {
         name: 'Courses',
         components: {
             'rs-table': Tabla,
             'rs-form': Form,
-            // 'rs-modal-course_students': Modal2,
+            'rs-list-students': Form2,
         },
         data() {
             return {
@@ -89,6 +86,8 @@
                     { title: 'Idioma', field: 'idioma_id', sortable: true },
                     { title: 'Nivel', field: 'level_id', sortable: true },
                     { title: 'Profesor', field: 'teacher_id', sortable: true },
+                    { title: 'Cupos', field: 'max_students' },
+                    { title: 'Inscritos', field: 'cupos' },
                     ]
                 }
             };
@@ -128,10 +127,9 @@
                         this.formData.title = 'Editar Curso: ' + response.data.name + '.';
                         if (cond == 'add') {
                             this.formData.ico = 'plus';
-                            this.formData.title = 'Estudiantes registrados en: ' + response.data.name + '.';
+                            this.formData.title = 'Curso: ' + response.data.code + '.';
                         }
                         this.formData.data = response.data;
-                        // this.$children[1].$data.teacher = response.data.teacher_
                         this.formData.ready = true;
                     });
                 }

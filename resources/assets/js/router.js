@@ -90,11 +90,11 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from, next) => {
+	let breadcrumb = to.path.split('/').join(' > ');
+	do {breadcrumb = breadcrumb.replace('-', ' ');} while(breadcrumb.indexOf('-') != -1);
+	$('#breadcrumb').text(breadcrumb.toUpperCase());
+	if (to.path == '/') $('#breadcrumb').text(' > Dashboard');
 	setTimeout(function () {
-		let breadcrumb = to.path.split('/').join(' > ');
-		do {breadcrumb = breadcrumb.replace('-', ' ');} while(breadcrumb.indexOf('-') != -1);
-		$('#breadcrumb').text(breadcrumb.toUpperCase());
-		if (to.path == '/') $('#breadcrumb').text(' > Dashboard');
 		$('[data-tooltip="tooltip"]').tooltip();
 	}, 1000);
 });

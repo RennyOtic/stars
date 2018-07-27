@@ -6,6 +6,8 @@
 
 require('./bootstrap');
 
+require('./plugins/jquery-clockpicker.min.js');
+
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import router from './router';

@@ -26,11 +26,12 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::dataForPaginate(['id', 'code', 'name', 'teacher_id', 'idioma_id', 'level_id'], function ($c) {
+        $courses = Course::dataForPaginate(['id', 'code', 'name', 'teacher_id', 'idioma_id', 'level_id', 'max_students'], function ($c) {
             $c->teacher_id = $c->teacher->fullName();
             $c->idioma_id = $c->idioma->name;
             $c->level_id = $c->level->name;
-            unset($c->teacher, $c->idioma, $c->level);
+            $c->cupos = $c->users()->count();
+            unset($c->teacher, $c->idioma, $c->level, $c->users);
         });
         return $this->dataWithPagination($courses);
     }
@@ -60,9 +61,14 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
         $materials = $course->materials->pluck('id');
-        unset($course->materials);
+        $teacher = $course->teacher->fullName() . ' - ' . $course->teacher->num_id;
+        $idioma = $course->idioma->name;
+        $inscritos = $course->users()->count();
+        unset($course->materials, $course->teacher, $course->idioma);
+        $course->teacher = $teacher;
         $course->materials = $materials;
-        $course->teacher_ = $course->teacher->fullName() . ' - ' . $course->teacher->num_id;
+        $course->idioma = $idioma;
+        $course->cupos = $course->max_students - $inscritos;
         return response()->json($course);
     }
 
@@ -107,10 +113,13 @@ class CourseController extends Controller
         $levels = \App\Models\Level::get(['id', 'name']);
         $classtypes = \App\Models\ClassType::get(['id', 'name']);
         $materials = \App\Models\Material::get(['id', 'name']);
+
         $teachers->each(function ($u) {
-            $u->fullName = $u->fullName() . ' - ' . $u->num_id;
+            $u->text = $u->fullName() . ' - ' . $u->num_id;
             unset($u->pivot);
         });
+
         return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials'));
     }
+
 }

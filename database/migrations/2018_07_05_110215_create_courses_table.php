@@ -99,13 +99,13 @@ class CreateCoursesTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
 
-        // Schema::create('course_user', function (Blueprint $table) {
-        //     $table->unsignedInteger('user_id');
-        //     $table->unsignedInteger('course_id');
+        Schema::create('course_user', function (Blueprint $table) {
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('course_id');
 
-        //     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        //     $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-        // });
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+        });
     }
 
     /**
@@ -115,11 +115,14 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
+        // Schema::dropIfExists('days_weeks');
         Schema::dropIfExists('type_students');
         Schema::dropIfExists('idiomas');
         Schema::dropIfExists('levels');
         Schema::dropIfExists('class_types');
+        Schema::dropIfExists('materials');
         Schema::dropIfExists('courses');
+        Schema::dropIfExists('course_material');
         Schema::dropIfExists('course_user');
     }
 }

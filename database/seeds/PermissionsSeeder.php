@@ -148,5 +148,30 @@ class PermissionsSeeder extends Seeder
             'action' => 'destroy',
             'description' => 'Permiso para Eliminar Cursos'
         ]);
+
+        /**
+         * Permisos de Inscripciones
+         */
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Ver Inscripciones',
+            'module' => 'inscription',
+            'action' => 'index',
+            'description' => 'Permiso para ver los alumnos inscritos'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Inscribir alumno',
+            'module' => 'inscription',
+            'action' => 'store',
+            'description' => 'Permiso para registrar alumnos al curso'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Quitar alumno',
+            'module' => 'inscription',
+            'action' => 'destroy',
+            'description' => 'Permiso para Eliminar Alumno del curso'
+        ]);
+
     }
 }

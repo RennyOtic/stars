@@ -27,6 +27,7 @@
 <script src="{{ asset('js/material.min.js') }}"></script>
 {{-- <script src="{{ asset('js/ripples.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+<script src="{{ asset('js/select2.min.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
 <script src="{{ asset('/js/app.js') }}"></script>
 @yield('footer')

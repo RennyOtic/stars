@@ -60,7 +60,8 @@ axios.interceptors.request.use(function (config) {
 		// $('input, select').parent().removeClass('has-error');
 		$('small').removeClass('text-danger').addClass('text-muted');
 	}
-	$('button').removeAttr('disabled')
+	$('[role="tooltip"]').hide();
+	// $('button').removeAttr('disabled')
 	// $('small').parent().find('input, select').removeClass('is-invalid');
 	// $('.modal small').removeClass('text-danger').addClass('text-muted');
 	return config;

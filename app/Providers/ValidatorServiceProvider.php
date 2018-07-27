@@ -62,12 +62,12 @@ class ValidatorServiceProvider extends ServiceProvider
         {
             $sections = explode(':', $value);
 
-            if (count($sections) === 3)
+            if (count($sections) === 2)
                 if ($sections[0] >= 0 && $sections[0] <= 23)
-                    if ($sections[1] >= 0 && $sections[1] <= 59)
-                        if ($sections[2] >= 0 && $sections[2] <= 59) return true;
+                    if ($sections[1] >= 0 && $sections[1] <= 59) return true;
+                        // if ($sections[2] >= 0 && $sections[2] <= 59)
             return false;
-        }, 'El campo :attribute no posee un formato correcto.');
+        }, 'El formato debe poseer un formato "00:00".');
 
         /**
          * Verifiva el campo solo tenga letras y espacios.
@@ -90,6 +90,21 @@ class ValidatorServiceProvider extends ServiceProvider
             }
             return true;
         }, 'El elemento :attribute ya está en uso.');
+
+        /**
+         * Verifiva el usuario tenga un rol alumno
+         */
+        Validator::extend('is_student', function($attribute, $value, $parameters)
+        {
+            $count = \App\User::findOrFail($value)->roles()
+            ->where('slug', '=', 'Alumno')
+            ->where('id', '=', '3')->count();
+            if ($count) {
+                return true;
+            }
+            return false;
+        }, 'El usuario agregado no es un alumno.');
+
     }
 
     /**

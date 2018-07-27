@@ -15,15 +15,11 @@
           </div>
 
           <div class="col-md-6">
-            <div class="form-group label-floating" :class="!formData.data.teacher_id ? 'is-empty' : ''">
+            <div class="form-group label-floating">
               <label for="teacher_id" class="control-label">
                 <span class="fa fa-user"></span> Profesor:
               </label>
-              <!-- <v-multiselect v-model="teacher" :options="option_teachers" ></v-multiselect> -->
-              <select class="form-control" v-model="formData.data.teacher_id">
-                <option value="" selected="" disabled=""></option>
-                <option v-for="t in teachers" :value="t.id" v-text="t.fullName"></option>
-              </select>
+              <rs-select :options="teachers" v-model="formData.data.teacher_id"></rs-select>
               <small id="teacher_idHelp" class="form-text text-muted">
                 <span v-text="msg.teacher_id"></span>
               </small>
@@ -94,15 +90,14 @@
             </div>
           </div>
 
-          <!-- <date-picker :id="input.id" v-model="formData.data[input.id]" :config="{format: 'HH:mm:ss', useCurrent: true} " required="required"></date-picker> -->
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-6" v-for="input in entries.hours">
-                <div class="form-group label-floating" :class="!formData.data[input.id] ? 'is-empty' : ''">
+                <div class="form-group label-floating clockpicker" :class="!formData.data[input.id] ? 'is-empty' : ''">
                   <label :for="input.id" class="control-label">
                     <span :class="'fa fa-' + input.icon"></span> {{ input.label }}:
                   </label>
-                  <input type="text" class="form-control" v-model="formData.data[input.id]">
+                  <input type="text" class="form-control" :class="input.id" v-model="formData.data[input.id]">
                   <small :id="input.id+'Help'" class="form-text text-muted">
                     <span v-text="msg[input.id]"></span>
                   </small>
@@ -150,36 +145,24 @@
 
 <script>
   import Input from './../partials/input.vue';
-  // import Modal from './../partials/modal.vue';
-  // import datePicker from 'vue-bootstrap-datetimepicker';
-  // import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
-  // import Multiselect from 'vue-multiselect';
+  import Select2 from './../partials/select2.vue';
 
   export default {
     name: 'form-course',
     components: {
       'rs-input': Input,
-      // 'modal': Modal,
-      // datePicker,
-      // 'v-multiselect': Multiselect,
+      'rs-select': Select2,
     },
     props: ['formData'],
-    computed: {
-      // option_teachers: function () {
-      //   let options = [];
-      //   for(let i in this.teachers) options.push(this.teachers[i].fullName);
-      //     return options;
-      // }
-    },
     watch: {
-      // teacher: function () {
-      //   for(let i in this.teachers) {
-      //     if (this.teachers[i].fullName == this.teacher) {
-      //       this.formData.data.teacher_id = this.teachers[i].id;
-      //       return;
-      //     }
-      //   }
-      // }
+      teacher: function () {
+        for(let i in this.teachers) {
+          if (this.teachers[i].fullName == this.teacher) {
+            this.formData.data.teacher_id = this.teachers[i].id;
+            return;
+          }
+        }
+      }
     },
     data () {
       return {
@@ -189,7 +172,7 @@
         classtypes: [],
         levels: [],
         materials: [],
-        // teacher: null,
+        teacher: null,
         entries: {
           uno: [
           {label: 'Nombre', id: 'name', icon: 'glyphicon glyphicon-blackboard'},
@@ -228,6 +211,18 @@
       };
     },
     mounted: function () {
+      let vm = this;
+      $('.clockpicker').clockpicker({
+        autoclose: true,
+        default: 'now'
+      })
+      .find('input').change(function() {
+        if ($(this).hasClass('hour_end')) {
+          vm.formData.data.hour_end = this.value;
+        } else if ($(this).hasClass('hour_start')) {
+          vm.formData.data.hour_start = this.value;
+        }
+      });
       axios.post('/get-data-course')
       .then(response => {
         this.teachers = response.data.teachers;

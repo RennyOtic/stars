@@ -16,6 +16,12 @@
 // Template
 @import 'template.css';
 
+// Clock
+@import 'jquery-clockpicker.min';
+
+// Select2
+@import 'select2-bootstrap.min.css';
+
 // checkbox
 // @import 'checkbox.scss';
 
@@ -64,3 +70,12 @@
 .form-group.rs-select {margin-top: 5px; }
 
 .form-group.rs-select label {margin: 0px; }
+
+.select2.select2-container {
+	width: 100% !important;
+	background-color: transparent;
+}
+
+.select2.select2-container  .selection {background-color: transparent; }
+
+.select2-container--default .select2-selection--single {border: none; }

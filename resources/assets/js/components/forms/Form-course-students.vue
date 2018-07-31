@@ -32,9 +32,13 @@
             style="margin-top: 60px;"
             data-tooltip="tooltip"
             title="Agregar Alumno"
-            @click="add"><i class="fa fa-plus"></i></button>
+            @click="show"><i class="fa fa-plus"></i></button>
           </div>
         </div>
+
+        <rs-modal :formData="formData2"
+        :course="formData.data.id"
+        @input="get"></rs-modal>
 
         <div class="col-md-12">
           <div class="row text-center" v-if="can('inscription.destroy')">
@@ -45,12 +49,12 @@
             @click="remove"
             v-if="id"><i class="fa fa-minus"></i></button>
           </div>
-          <v-table id="course_students"
+          <rs-table id="course_students"
           :columns="tabla.columns"
           :uri="'/inscriptions'"
           @output="id = arguments[0]"
           :data="formData.data.id"
-          v-if="formData.data.id"></v-table>
+          v-if="formData.data.id"></rs-table>
         </div>
 
       </div>
@@ -61,12 +65,14 @@
 <script>
   import Tabla from './../partials/table.vue';
   import Select2 from './../partials/select2.vue';
+  import Modal from './Modal-form-inscription.vue';
 
   export default {
     name: 'form-students-list',
     components: {
       'rs-select': Select2,
-      'v-table': Tabla,
+      'rs-table': Tabla,
+      'rs-modal': Modal,
     },
     props: ['formData'],
     data () {
@@ -75,6 +81,25 @@
         students: [],
         student_id: '',
         students_incription: [],
+        formData2: {
+          data: {
+            email: '',
+            last_name: '',
+            name: '',
+            num_id: '',
+            password: '',
+            password_confirmation: '',
+            position: '',
+            roles: [],
+            birthday_date: '',
+            nationality_id: '',
+            occupation: '',
+            phone_home: '',
+            phone_movil: '',
+            how_finds_id: '',
+            how_find: ''
+          }
+        },
         msg: {student_id: 'Seleccione el alumno a realizar el curso.'},
         tabla: {
           columns: [
@@ -84,7 +109,9 @@
         }
       };
     },
-    updated() {$('[data-tooltip="tooltip"]').tooltip();},
+    updated() {
+      $('[data-tooltip="tooltip"]').tooltip();
+    },
     mounted() {
       axios.post('/get-data-inscription')
       .then(response => {
@@ -92,26 +119,29 @@
       });
     },
     methods: {
-      add() {
-        if (this.formData.data.cupos == 0) return toastr.info('Curso lleno.');
-        axios.post('/inscriptions', {
-          id: this.formData.data.id,
-          student_id: this.student_id
-        })
-        .then(response => {
-          toastr.success('Alumno Registrado');
-          --this.formData.data.cupos;
-          this.$children[1].get();
-        });
+      get: function () {
+        --this.formData.data.cupos;
+        this.$children[2].get();
         this.student_id = null;
       },
-      remove() {
+      show: function () {
+        if (this.$parent.formData.data.cupos == 0) return toastr.info('Curso lleno.');
+        axios.get('/admin/users/' + this.student_id)
+        .then(response => {
+          this.formData2.ico = 'plus';
+          this.formData2.title = 'Registrar Alumno: ' + response.data.fullName + '.';
+          this.formData2.data = response.data;
+          $('#inscription-form').modal('show');
+        });
+      },
+      remove: function () {
         if (this.formData.data.cupos == this.formData.data.max_students) return toastr.info('Curso Vacio.');
+        if (this.id == '') return toastr.info('Seleccione un estudiante.');
         axios.delete('/inscriptions/' + this.formData.data.id + '?id=' + this.id)
         .then(response => {
           toastr.success('Alumno Borrado');
           ++this.formData.data.cupos;
-          this.$children[1].get();
+          this.$children[2].get();
         });
       }
     }

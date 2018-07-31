@@ -173,5 +173,43 @@ class PermissionsSeeder extends Seeder
             'description' => 'Permiso para Eliminar Alumno del curso'
         ]);
 
+        /**
+         * Permisos de Control de Asistencias
+         */
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Ver Control de Asistencia',
+            'module' => 'assistanceControl',
+            'action' => 'index',
+            'description' => 'Permiso para ver Cursos'
+        ]);
+
+        // App\Models\Permisologia\Permission::create([
+        //     'name' => 'Crear Cursos',
+        //     'module' => 'assistanceControl',
+        //     'action' => 'store',
+        //     'description' => 'Permiso para registrar Cursos'
+        // ]);
+
+        // App\Models\Permisologia\Permission::create([
+        //     'name' => 'Ver Curso',
+        //     'module' => 'assistanceControl',
+        //     'action' => 'show',
+        //     'description' => 'Permiso para ver un Curso'
+        // ]);
+
+        // App\Models\Permisologia\Permission::create([
+        //     'name' => 'Actualizar Cursos',
+        //     'module' => 'assistanceControl',
+        //     'action' => 'update',
+        //     'description' => 'Permiso para actualizar Cursos'
+        // ]);
+
+        // App\Models\Permisologia\Permission::create([
+        //     'name' => 'Eliminar Cursos',
+        //     'module' => 'assistanceControl',
+        //     'action' => 'destroy',
+        //     'description' => 'Permiso para Eliminar Cursos'
+        // ]);
+
     }
 }

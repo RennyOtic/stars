@@ -16,23 +16,23 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
+        'class_type_id',
+        'code',
+        'date_end_at',
+        'date_inscription_end_at',
+        'date_inscription_start_at',
+        'date_start_at',
+        'hour_end',
+        'hour_start',
+        'idioma_id',
+        'level_id',
+        'max_class',
+        'max_students',
         'name',
         'slug',
-        'code',
-        'hour_start',
-        'hour_end',
-        'idioma_id',
         'teacher_id',
+        'type_student_id',
         'user_id',
-        'max_students',
-        'max_class',
-        // 'type_student_id',
-        'level_id',
-        'class_type_id',
-        'date_start_at',
-        'date_inscription_start_at',
-        'date_inscription_end_at',
-        'date_end_at',
     ];
 
     /**
@@ -67,5 +67,10 @@ class Course extends Model
     public function users()
     {
         return $this->belongsToMany(\App\User::class);
+    }
+
+    public function days()
+    {
+        return $this->belongsToMany(Day::class);
     }
 }

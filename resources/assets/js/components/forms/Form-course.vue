@@ -9,37 +9,11 @@
 
           <div class="col-md-6" v-for="input in entries.uno">
             <rs-input :name="input" required="true"
+            :readonly="input.readonly"
             v-model="formData.data[input.id]"
             :msg="msg[input.id]"
             @input="formData.data[input.id] = arguments[0]"></rs-input>
           </div>
-
-          <div class="col-md-6">
-            <div class="form-group label-floating">
-              <label for="teacher_id" class="control-label">
-                <span class="fa fa-user"></span> Profesor:
-              </label>
-              <rs-select :options="teachers" v-model="formData.data.teacher_id"></rs-select>
-              <small id="teacher_idHelp" class="form-text text-muted">
-                <span v-text="msg.teacher_id"></span>
-              </small>
-            </div>
-          </div>
-
-          <!-- <div class="col-md-6">
-            <div class="form-group label-floating" :class="!formData.data.type_student_id ? 'is-empty' : ''">
-              <label for="type_student_id" class="control-label">
-                <span class="fa fa-users"></span> Tipos de estudiantes:
-              </label>
-              <select class="form-control" v-model="formData.data.type_student_id">
-                <option value="" selected="" disabled=""></option>
-                <option v-for="t in typestudents" :value="t.id" v-text="t.name"></option>
-              </select>
-              <small id="type_student_idHelp" class="form-text text-muted">
-                <span v-text="msg.type_student_id"></span>
-              </small>
-            </div>
-          </div> -->
 
           <div class="col-md-6">
             <div class="form-group label-floating" :class="!formData.data.class_type_id ? 'is-empty' : ''">
@@ -56,53 +30,72 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="col-md-6">
-                <div class="form-group label-floating" :class="!formData.data.idioma_id ? 'is-empty' : ''">
-                  <label for="idioma_id" class="control-label">
-                    <span class="fa fa-users"></span> Idioma:
-                  </label>
-                  <select class="form-control" v-model="formData.data.idioma_id">
-                    <option value="" selected="" disabled=""></option>
-                    <option v-for="i in idiomas" :value="i.id" v-text="i.name"></option>
-                  </select>
-                  <small id="idioma_idHelp" class="form-text text-muted">
-                    <span v-text="msg.idioma_id"></span>
-                  </small>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group label-floating" :class="!formData.data.level_id ? 'is-empty' : ''">
-                  <label for="level_id" class="control-label">
-                    <span class="fa fa-users"></span> Nivel del Curso:
-                  </label>
-                  <select class="form-control" v-model="formData.data.level_id">
-                    <option value="" selected="" disabled=""></option>
-                    <option v-for="l in levels" :value="l.id" v-text="l.name"></option>
-                  </select>
-                  <small id="level_idHelp" class="form-text text-muted">
-                    <span v-text="msg.level_id"></span>
-                  </small>
-                </div>
-              </div>
+          <div class="col-md-6">
+            <div class="form-group label-floating" :class="!formData.data.max_students ? 'is-empty' : ''">
+              <label for="max_students" class="control-label">
+                <span class="fa fa-users"></span> Número de estudiantes: {{formData.data.max_students}}
+              </label>
+              <input type="text" class="form-control" :readonly="form" v-model="formData.data.max_students">
+              <small id="max_studentsHelp" class="form-text text-muted">
+                <span v-text="msg.max_students"></span>
+              </small>
             </div>
           </div>
 
-          <div class="col-md-12">
-            <div class="row">
-              <div class="col-md-6" v-for="input in entries.hours">
-                <div class="form-group label-floating clockpicker" :class="!formData.data[input.id] ? 'is-empty' : ''">
-                  <label :for="input.id" class="control-label">
-                    <span :class="'fa fa-' + input.icon"></span> {{ input.label }}:
-                  </label>
-                  <input type="text" class="form-control" :class="input.id" v-model="formData.data[input.id]">
-                  <small :id="input.id+'Help'" class="form-text text-muted">
-                    <span v-text="msg[input.id]"></span>
-                  </small>
-                </div>
-              </div>
+          <div class="col-md-6">
+            <div class="form-group label-floating">
+              <label for="teacher_id" class="control-label">
+                <span class="fa fa-user"></span> Profesor:
+              </label>
+              <rs-select :options="teachers" v-model="formData.data.teacher_id"></rs-select>
+              <small id="teacher_idHelp" class="form-text text-muted">
+                <span v-text="msg.teacher_id"></span>
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group label-floating" :class="!formData.data.type_student_id ? 'is-empty' : ''">
+              <label for="type_student_id" class="control-label">
+                <span class="fa fa-users"></span> Tipos de estudiantes:
+              </label>
+              <select class="form-control" v-model="formData.data.type_student_id">
+                <option value="" selected="" disabled=""></option>
+                <option v-for="t in typestudents" :value="t.id" v-text="t.name"></option>
+              </select>
+              <small id="type_student_idHelp" class="form-text text-muted">
+                <span v-text="msg.type_student_id"></span>
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group label-floating" :class="!formData.data.idioma_id ? 'is-empty' : ''">
+              <label for="idioma_id" class="control-label">
+                <span class="fa fa-users"></span> Idioma:
+              </label>
+              <select class="form-control" v-model="formData.data.idioma_id">
+                <option value="" selected="" disabled=""></option>
+                <option v-for="i in idiomas" :value="i.id" v-text="i.name"></option>
+              </select>
+              <small id="idioma_idHelp" class="form-text text-muted">
+                <span v-text="msg.idioma_id"></span>
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group label-floating" :class="!formData.data.level_id ? 'is-empty' : ''">
+              <label for="level_id" class="control-label">
+                <span class="fa fa-users"></span> Nivel del Curso:
+              </label>
+              <select class="form-control" v-model="formData.data.level_id">
+                <option value="" selected="" disabled=""></option>
+                <option v-for="l in levels" :value="l.id" v-text="l.name"></option>
+              </select>
+              <small id="level_idHelp" class="form-text text-muted">
+                <span v-text="msg.level_id"></span>
+              </small>
             </div>
           </div>
 
@@ -120,6 +113,39 @@
               <small id="materialsHelp" class="form-text text-muted">
                 <span v-text="msg.materials"></span>
               </small>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group label-floatng">
+              <label for="days" class="control-label">
+                <span class="fa fa-icon"></span> Dias a realizar el curso:
+              </label>
+              <div class="row">
+                <div class="col-md-3" v-for="(d, i) in days">
+                  <input type="checkbox" :id="d.name + i" class="" :value="d.id" v-model="formData.data.days">
+                  <label :for="d.name + i" v-text="d.name"></label>
+                </div>
+              </div>
+              <small id="daysHelp" class="form-text text-muted">
+                <span v-text="msg.days"></span>
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6" v-for="input in entries.hours">
+                <div class="form-group label-floating clockpicker" :class="!formData.data[input.id] ? 'is-empty' : ''">
+                  <label :for="input.id" class="control-label">
+                    <span :class="'fa fa-' + input.icon"></span> {{ input.label }}:
+                  </label>
+                  <input type="text" class="form-control" :class="input.id" v-model="formData.data[input.id]">
+                  <small :id="input.id+'Help'" class="form-text text-muted">
+                    <span v-text="msg[input.id]"></span>
+                  </small>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -172,12 +198,13 @@
         classtypes: [],
         levels: [],
         materials: [],
+        days: [],
         teacher: null,
         entries: {
           uno: [
           {label: 'Nombre', id: 'name', icon: 'glyphicon glyphicon-blackboard'},
           {label: 'Submission ID', id: 'code', icon: 'fa fa-qrcode'},
-          {label: 'Número de estudiantes', id: 'max_students', icon: 'fa fa-users'},
+          // {label: 'Número de estudiantes', id: 'max_students', icon: 'fa fa-users'},
           {label: 'Número de clases', id: 'max_class', icon: 'fa fa-users'},
           ],
           hours: [
@@ -192,6 +219,7 @@
           ]
         },
         msg: {
+          class_type_id: 'Tipo de asistencia a las clases.',
           code: 'Código único usado para los cursos.',
           date_end_at: 'Fecha para finalizar el curso.',
           date_inscription_end_at: 'Fecha a finalizar el periodo de inscripción.',
@@ -199,30 +227,29 @@
           date_start_at: 'Fecha para iniciar el curso.',
           hour_end: 'Hora establecida para iniciar el curso.',
           hour_start: 'Hora establecida para terminar el curso.',
+          idioma_id: 'Idioma a impartir en clase.',
+          materials: 'Materiales usados para impartir las clases.',
+          max_class: 'Asigne el número maximo de clases que se impartiran.',
           max_students: 'Número maximo de cupos disponibles.',
           name: 'Nombre que se le asignará al curso.',
           teacher_id: 'Profesor a quien se le asignará.',
-          max_class: 'Asigne el número maximo de clases que se impartiran.',
-          materials: 'Materiales usados para impartir las clases.',
-          class_type_id: 'Tipo de asistencia a las clases.',
-          idioma_id: 'Idioma a impartir en clase.',
-          level_id: 'Nivel del curso.'
+          type_student_id: 'Tipo de estudiantes que haran el curso.',
+          level_id: 'Nivel del curso.',
+          days: 'Dias en la semana que se ejecutara el curso.'
         }
       };
     },
-    mounted: function () {
-      let vm = this;
-      $('.clockpicker').clockpicker({
-        autoclose: true,
-        default: 'now'
-      })
-      .find('input').change(function() {
-        if ($(this).hasClass('hour_end')) {
-          vm.formData.data.hour_end = this.value;
-        } else if ($(this).hasClass('hour_start')) {
-          vm.formData.data.hour_start = this.value;
+    computed: {
+      form: function () {
+        if (this.formData.data.class_type_id == 2) {
+          this.formData.data.max_students = 1;
+          return true;
         }
-      });
+        if (!this.formData.data.max_students) this.formData.data.max_students = '';
+        return false;
+      }
+    },
+    mounted: function () {
       axios.post('/get-data-course')
       .then(response => {
         this.teachers = response.data.teachers;
@@ -231,17 +258,27 @@
         this.levels = response.data.levels;
         this.classtypes = response.data.classtypes;
         this.materials = response.data.materials;
+        this.days = response.data.days;
+      });
+    },
+    updated() {
+      let vm = this;
+      $('.clockpicker').clockpicker({
+        autoclose: true,
+        default: 'now'
+      })
+      .find('input').change(function() {
+        if ($(this).hasClass('hour_end')) {vm.formData.data.hour_end = this.value; }
+        else if ($(this).hasClass('hour_start')) {vm.formData.data.hour_start = this.value; }
       });
     },
     methods: {
       registrar: function (el) {
-        el.target.disabled = true;
         this.restoreMsg(this.msg);
         if (this.formData.cond === 'create') {
           axios.post(this.formData.url, this.formData.data)
           .then(response => {
             toastr.success('Curso Registrado');
-            el.target.disabled = false;
             this.$emit('input');
             this.$parent.show = 1;
           });
@@ -249,7 +286,6 @@
           axios.put(this.formData.url, this.formData.data)
           .then(response => {
             toastr.success('Curso Actualizado');
-            el.target.disabled = false;
             this.$emit('input');
             this.$parent.show = 1;
           });

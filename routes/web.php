@@ -70,9 +70,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('courses', 'CourseController')->except(['create', 'edit']);
         Route::post('get-data-course', 'CourseController@dataForRegister');
 
-        // CourseAlumns Routes...
+        // Inscriptions Routes...
         Route::resource('inscriptions', 'InscriptionsController')->only(['index', 'store', 'destroy']);
         Route::post('get-data-inscription', 'InscriptionsController@dataForRegister');
+
+        // Assistance Control Routes...
+        Route::resource('assistance', 'AssistanceControlController')->only(['index'])/*->except(['create', 'edit'])*/;
+        
     });
 
     Route::post('admin/app', 'RouteController@canPermission');

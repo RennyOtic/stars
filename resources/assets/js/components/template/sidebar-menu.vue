@@ -30,9 +30,14 @@
         </li>
         <li v-if="can('courseManagement.index')">
             <router-link :to="{ name: 'courseManagement.index' }">
-                <i class="glyphicon glyphicon-blackboard zmdi-hc-fw"></i> Gestión de cursos
+                <i class="glyphicon glyphicon-blackboard zmdi-hc-fw"></i> Gestión de Cursos
             </router-link>
         </li>
+        <!-- <li v-if="can('assistanceControl.index')">
+            <router-link :to="{ name: 'assistanceControl.index' }">
+                <i class="glyphicon glyphicon-list zmdi-hc-fw"></i> Control de Asistencia
+            </router-link>
+        </li> -->
     </ul>
 </template>
 

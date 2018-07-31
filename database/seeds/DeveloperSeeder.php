@@ -15,13 +15,14 @@ class DeveloperSeeder extends Seeder
 
         factory(App\User::class, 99)->create();
 
-        // factory(App\Models\Permisologia\Role::class, 7)->create();
-
         for ($i = 2; $i <= 100; $i++) { 
             DB::table('role_user')->insert([
                 'user_id' => $i,
                 'role_id' => rand(2, 4)
             ]);
         }
+
+        factory(App\Models\Course::class, 50)->create();
+
     }
 }

@@ -91,6 +91,11 @@
                         password_confirmation: '',
                         position: '',
                         roles: [],
+                        birthday_date: '',
+                        nationality_id: '',
+                        occupation: '',
+                        phone_home: '',
+                        phone_movil: '',
                     };
                     this.formData.ready = true;
                 } else if (cond == 'edit') {

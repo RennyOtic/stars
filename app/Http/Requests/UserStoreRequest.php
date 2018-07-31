@@ -24,13 +24,17 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'     => 'required|email|min:8|max:35|unique:users',/*DomainValid*/
+            'email'     => 'required|email|min:8|max:35|unique:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
             'num_id'    => 'required|numeric|digits_between:6,8|exr_ced|unique:users',
             'password'  => 'required|string|min:6|max:20|confirmed',
-            'roles'     => 'required'
-            // 'roles'     => 'required|array|max:1'
+            'roles'     => 'required',
+            'birthday_date' => 'required|date',
+            'nationality_id' => 'required|numeric',
+            'occupation' => 'required|string|max:25|min:3',
+            'phone_home' => 'required|numeric|digits:10',
+            'phone_movil' => 'required|numeric|digits:10',
         ];
     }
 
@@ -57,7 +61,12 @@ class UserStoreRequest extends FormRequest
             'name'      => 'nombre',
             'num_id'    => 'cédula',
             'password'  => 'contraseña',
-            'roles'     => 'roles'
+            'roles'     => 'roles',
+            'birthday_date' => 'fecha de cumpleaños',
+            'nationality_id' => 'nacionalidad',
+            'occupation' => 'ocupación',
+            'phone_home' => 'telefono de contacto',
+            'phone_movil' => 'telefono movil',
         ];
     }
 }

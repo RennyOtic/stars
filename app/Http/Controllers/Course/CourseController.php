@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
+use App\Models\ { Course, Idioma, Level, ClassType, Material, TypeStudents, Day };
 use App\Models\Permisologia\Role;
 use App\Http\Requests\ { CourseStoreRequest, CourseUpdateRequest };
 
@@ -14,7 +14,7 @@ class CourseController extends Controller
     public function __construct()
     {
         $this->middleware('onlyAjax');
-        $this->middleware('can:courseManagement,index')->only(['index']);
+        $this->middleware('can:courseManagement,index')->only(['index', 'dataForRegister']);
         $this->middleware('can:courseManagement,show')->only(['show']);
         $this->middleware('can:courseManagement,destroy')->only(['destroy']);
     }
@@ -49,6 +49,7 @@ class CourseController extends Controller
         $data['slug'] = str_replace(' ', '-', $data['name']) . '-' . $data['code'];
         $course = Course::create($data);
         $course->materials()->attach($data['materials']);
+        $course->days()->attach($data['days']);
     }
 
     /**
@@ -61,12 +62,14 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
         $materials = $course->materials->pluck('id');
+        $days = $course->days->pluck('id');
         $teacher = $course->teacher->fullName() . ' - ' . $course->teacher->num_id;
         $idioma = $course->idioma->name;
         $inscritos = $course->users()->count();
-        unset($course->materials, $course->teacher, $course->idioma);
+        unset($course->materials, $course->teacher, $course->idioma, $course->days);
         $course->teacher = $teacher;
         $course->materials = $materials;
+        $course->days = $days;
         $course->idioma = $idioma;
         $course->cupos = $course->max_students - $inscritos;
         return response()->json($course);
@@ -83,6 +86,7 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
         $course->update_pivot($request->materials, 'materials');
+        $course->update_pivot($request->days, 'days');
         $course->update($request->validated());
     }
 
@@ -105,21 +109,22 @@ class CourseController extends Controller
      */
     public function dataForRegister()
     {
-        $teachers = \App\Models\Permisologia\Role::where('slug', '=', 'Profesor')
+        $teachers = Role::where('slug', '=', 'Profesor')
         ->findOrFail(2)->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
-        // $typestudents = \App\Models\TypeStudents::get(['id', 'name']);
-        $idiomas = \App\Models\Idioma::get(['id', 'name']);
-        $levels = \App\Models\Level::get(['id', 'name']);
-        $classtypes = \App\Models\ClassType::get(['id', 'name']);
-        $materials = \App\Models\Material::get(['id', 'name']);
-
         $teachers->each(function ($u) {
             $u->text = $u->fullName() . ' - ' . $u->num_id;
             unset($u->pivot);
         });
 
-        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials'));
+        $typestudents = TypeStudents::get(['id', 'name']);
+        $idiomas = Idioma::get(['id', 'name']);
+        $levels = Level::get(['id', 'name']);
+        $classtypes = ClassType::get(['id', 'name']);
+        $materials = Material::get(['id', 'name']);
+        $days = Day::get(['id', 'name']);
+
+        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials', 'days'));
     }
 
 }

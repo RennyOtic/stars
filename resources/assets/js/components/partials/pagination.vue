@@ -23,7 +23,7 @@
                 <li v-if="data.current_page < data.last_page -3" class="page-item">
                     <a href="#" class="page-link" @click.prevent=""><span>...</span></a>
                 </li>
-                <li v-if="data.current_page < data.last_page-2" class="page-item">
+                <li v-if="data.current_page < data.last_page-4" class="page-item">
                     <a href="#" class="page-link" @click.prevent="updateValue(data.last_page)"><span>{{ data.last_page }}</span></a>
                 </li>
                 <li v-if="data.current_page < data.last_page || 1" class="page-item">

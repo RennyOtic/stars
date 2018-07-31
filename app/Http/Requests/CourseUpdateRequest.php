@@ -24,7 +24,7 @@ class CourseUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|string|max:21|min:21|unique1:courses',
+            'code' => 'required|numeric|digits:21|unique1:courses',
             'date_end_at' => 'required|date',
             'date_inscription_end_at' => 'required|date',
             'date_inscription_start_at' => 'required|date',
@@ -36,10 +36,11 @@ class CourseUpdateRequest extends FormRequest
             'teacher_id' => 'required|numeric',
             'idioma_id' => 'required|numeric',
             'max_class' => 'required|numeric|min:1|max:50',
-            // 'type_student_id' => 'required',
+            'type_student_id' => 'required',
             'level_id' => 'required|numeric',
             'class_type_id' => 'required|numeric',
-            'materials' => 'nullable|array'
+            'materials' => 'nullable|array',
+            'days' => 'required|array'
         ];
     }
 
@@ -66,7 +67,8 @@ class CourseUpdateRequest extends FormRequest
             'type_student_id' => 'tipo de estudiantes',
             'level_id' => 'nivel',
             'class_type_id' => 'tipo de clases',
-            'materials' => 'materiales'
+            'materials' => 'materiales',
+            'days' => 'días'
         ];
     }
 }

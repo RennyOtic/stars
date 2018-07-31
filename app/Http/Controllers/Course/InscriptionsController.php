@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Course;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
+use App\Models\ { Course, HowFind };
+use App\User;
 
 class InscriptionsController extends Controller
 {
@@ -26,9 +27,7 @@ class InscriptionsController extends Controller
     {
         $course = Course::findOrFail($request->data)
         ->users()
-        ->Where('name', 'LIKE', "%{$request->search}%")
-        ->orWhere('num_id', 'LIKE', "%{$request->search}%")
-        ->orWhere('last_name', 'LIKE', "%{$request->search}%")
+        ->Where('num_id', 'LIKE', "%{$request->search}%")
         ->orderBy($request->order?:'id', $request->dir?:'ASC')
         ->select(['email', 'id', 'last_name', 'name', 'num_id'])
         ->paginate($request->num?:10);
@@ -54,11 +53,43 @@ class InscriptionsController extends Controller
             'student_id' => 'required|numeric|is_student',
         ], [], ['student_id' => 'Alumno']);
 
-        $is_in_course = Course::findOrFail($data['id'])->users()->where('user_id', '=', $data['student_id'])->count();
-        if ($is_in_course) {
-            return response()->json(['message' => 'El alumno ya se encuentra inscrito.'], 401);
-        }
+        $data2 = $this->validate($request, [
+            'student_id' => 'required|numeric|is_student',
+            'email'     => 'required|email|min:8|max:35|unique1:users',
+            'last_name' => 'required|alpha_space|min:3|max:15',
+            'name'      => 'required|alpha_space|min:3|max:15',
+            'num_id'    => 'required|numeric|digits_between:6,8|exr_ced|unique1:users',
+            'birthday_date' => 'required|date',
+            'nationality_id' => 'required|numeric',
+            'occupation' => 'required|string|max:25|min:3',
+            'phone_home' => 'required|numeric|digits:10',
+            'phone_movil' => 'required|numeric|digits:10',
+            'how_finds_id' => 'required|numeric',
+            'how_find' => 'required_if:how_finds_id,1|string|max:15|min:3'
+        ], [], [
+            'email'     => 'correo',
+            'last_name' => 'apellido',
+            'name'      => 'nombre',
+            'num_id'    => 'cédula',
+            'password'  => 'contraseña',
+            'roles'     => 'roles',
+            'birthday_date' => 'fecha de cumpleaños',
+            'nationality_id' => 'nacionalidad',
+            'occupation' => 'ocupación',
+            'phone_home' => 'telefono de contacto',
+            'phone_movil' => 'telefono movil',
+            'how_find' => 'medio',
+            'how_finds_id' => ''
+        ]);
 
+        if (isset($data2['how_find']) && $data2['how_find'] != '')
+            HowFind::create(['name' => ucfirst($data2['how_find'])]);
+
+        $is_in_course = Course::findOrFail($data['id'])->users()->where('user_id', '=', $data['student_id'])->count();
+        if ($is_in_course)
+            return response()->json(['message' => 'El alumno ya se encuentra inscrito.'], 401);
+
+        User::findOrFail($data['student_id'])->update($data2);
         Course::findOrFail($data['id'])->users()->attach($data['student_id']);
     }
 

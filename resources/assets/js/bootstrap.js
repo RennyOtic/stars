@@ -61,22 +61,25 @@ axios.interceptors.request.use(function (config) {
 		$('small').removeClass('text-danger').addClass('text-muted');
 	}
 	$('[role="tooltip"]').hide();
-	// $('button').removeAttr('disabled')
+	$('button, input, select, textarea').attr('disabled', 'disabled')
 	// $('small').parent().find('input, select').removeClass('is-invalid');
 	// $('.modal small').removeClass('text-danger').addClass('text-muted');
 	return config;
 }, function (error) {
 	// Hacer algo con un error de solicitud
+	$('button, input, select, textarea').removeAttr('disabled');
 	return Promise.reject(error);
 });
 
 // Añadir un interceptor de respuesta
 axios.interceptors.response.use(function (response) {
 	// Hacer algo con los datos de respuesta
+	$('button, input, select, textarea').removeAttr('disabled');
 	return response;
 }, function (error) {
 	// Hacer algo con un error de respuesta
 	errors = error.response;
+	$('button, input, select, textarea').removeAttr('disabled');
 	if (errors.status >= 500) {
 		// window.location.reload();
 		toastr.warning('Error en el servidor');
@@ -86,7 +89,6 @@ axios.interceptors.response.use(function (response) {
 		setTimeout(function () {console.clear();},100);
 	}
 	if (errors.status == 422) {
-		$('button, input').removeAttr('disabled')
 		errors = errors.data.errors;
 		for(let e in errors) {
 			$('small#' + e + 'Help').addClass('text-danger').text(errors[e][0]);

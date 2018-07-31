@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ { UserStoreRequest, UserUpdateRequest, ChangePasswordRequest };
 use App\User;
-use App\Models\Module;
+use App\Models\ { Nationality, Course, HowFind };
 use App\Models\Permisologia\Role;
 
 class UsersController extends Controller
@@ -55,7 +55,6 @@ class UsersController extends Controller
         $user->save();
         $user->roles()->attach($data['roles']);
         $user->assignPermissionsOneUser([$data['roles']]);
-        return response()->json($user);
     }
 
     /**
@@ -95,8 +94,7 @@ class UsersController extends Controller
         $user = User::findOrFail($id)->fill($data);
         $user->update_pivot([$data['roles']], 'roles', 'role_id');
         $user->assignPermissionsOneUser([$data['roles']]);
-
-        return response()->json($user->save());
+        $user->save();
     }
 
     /**
@@ -108,8 +106,12 @@ class UsersController extends Controller
     public function destroy($id)
     {
         if($id === 1) return response(['msg' => 'Error al modificar usuario'], 422);
-        $user = User::findOrFail($id)->delete();
-        return response()->json($user);
+        $user = User::findOrFail($id);
+        $courses = Course::where('teacher_id', '=', $user->id)->get();
+        $courses->each(function ($c) {
+            $c->update(['teacher_id' => null]);
+        });
+        return response()->json($user->delete());
     }
 
     /**
@@ -119,8 +121,10 @@ class UsersController extends Controller
      */
     public function dataForRegister()
     {
-        $roles = Role::all()->pluck('name', 'id');
-        return response()->json(compact(['roles']));
+        $roles = Role::get(['name', 'id']);
+        $nationalities = Nationality::get(['name', 'id']);
+        $howfinds = HowFind::get(['name', 'id']);
+        return response()->json(compact('roles', 'nationalities', 'howfinds'));
     }
 
 }

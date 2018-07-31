@@ -6,6 +6,8 @@ import Users from './components/views/UsersComponent.vue';
 import Roles from './components/views/RolesComponent.vue';
 import Permission from './components/views/PermissionsComponent.vue';
 import courseManagement from './components/views/CourseManagementsComponent.vue';
+import AssistanceControl from './components/views/AssistanceControlComponent.vue';
+
 import NotFound from './components/views/NotFoundComponent.vue';
 
 const router = new VueRouter({
@@ -51,6 +53,11 @@ const router = new VueRouter({
 		path: '/gestion-de-cursos',
 		name: 'courseManagement.index',
 		component: courseManagement,
+	},
+	{
+		path: '/control-de-asistencias',
+		name: 'assistanceControl.index',
+		component: AssistanceControl,
 	},
 	{ 
 		path: '*', 

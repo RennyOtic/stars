@@ -14,12 +14,26 @@
               :msg="msg[input.id]"
               @input="formData.user[input.id] = arguments[0]"></rs-input>
             </template>
+
+            <div class="form-group rs-select">
+              <label for="nationality_id" class="control-label">
+                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Nacionalidad:
+              </label>
+              <select id="nationality_id" class="form-control" v-model="formData.user.nationality_id">
+                <option value="">Seleccione una nacionalidad</option>
+                <option v-for="(n, i) in nationalities" :value="n.id" v-text="n.name"></option>
+              </select>
+              <small id="nationality_idHelp" class="form-text text-muted">
+                <span v-text="msg.nationality_id"></span>
+              </small>
+            </div>
           </div>
 
           <div class="col-sm-6">
             <template v-for="input in entries.der">
               <rs-input :name="input" required="true"
               v-model="formData.user[input.id]"
+              :type="input.type"
               :msg="msg[input.id]"
               @input="formData.user[input.id] = arguments[0]"></rs-input>
             </template>
@@ -30,7 +44,7 @@
               </label>
               <select id="roles" class="form-control" v-model="formData.user.roles">
                 <option :value="[]">Seleccione un rol</option>
-                <option v-for="(r, i) in roles" :value="i" v-text="r"></option>
+                <option v-for="(r, i) in roles" :value="r.id" v-text="r.name"></option>
               </select>
               <small id="rolesHelp" class="form-text text-muted">
                 <span v-text="msg.roles"></span>
@@ -65,15 +79,20 @@
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
           {label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o'},
+          {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
           {label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password'},
           {label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password'},
           ],
           der: [
           {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
+          {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
+          {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
+          {label: 'Fecha de cumpleaños', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date'},
           {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
           ],
         },
         roles: [],
+        nationalities: [],
         msg: {
           name: 'Nombre del usuario.',
           last_name: 'Apellido del usuario.',
@@ -82,7 +101,12 @@
           password: 'Contraseña.',
           password_confirmation: 'Confirmación de Contraseña.',
           roles: 'Rol a desempeñar.',
-          position: 'Cargo que desempeña.'
+          position: 'Cargo que desempeña.',
+          occupation: 'Ocupación actual del usuario.',
+          phone_home: 'Telefono de habitación o trabajo.',
+          phone_movil: 'Número personal.',
+          birthday_date: 'Fecha de cumpleaños.',
+          nationality_id: 'Nacionalidad natural.'
         }
       };
     },
@@ -90,6 +114,7 @@
       axios.post('/admin/get-data-users')
       .then(response => {
         this.roles = response.data.roles;
+        this.nationalities = response.data.nationalities;
       });
     },
     methods: {

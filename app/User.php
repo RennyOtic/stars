@@ -17,11 +17,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'last_name',
-        'num_id',
+        'birthday_date',
         'email',
-        'password'
+        'how_finds_id',
+        'last_name',
+        'name',
+        'nationality_id',
+        'num_id',
+        'occupation',
+        'password',
+        'phone_home',
+        'phone_movil',
     ];
 
     /**
@@ -51,5 +57,10 @@ class User extends Authenticatable
     public function permissions()
     {
         return $this->belongsToMany(Models\Permisologia\Permission::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(\App\Models\Course::class);
     }
 }

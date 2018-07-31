@@ -19,6 +19,11 @@ class UserRootSeeder extends Seeder
             'num_id'    => '99999999',
             'email'     => 'root@smoothtalkers.com',
             'password'  => bcrypt('secret'),
+            'birthday_date' => \Carbon::now(),
+            'nationality_id' => 1,
+            'occupation' => 'Developer',
+            'phone_home' => rand(10000, 90000) . rand(10000, 90000),
+            'phone_movil' => rand(10000, 90000) . rand(10000, 90000),
         ]);
 
         $rol = App\Models\Permisologia\Role::create([

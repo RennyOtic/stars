@@ -176,25 +176,25 @@ class PermissionsSeeder extends Seeder
         /**
          * Permisos de Control de Asistencias
          */
-        App\Models\Permisologia\Permission::create([
-            'name' => 'Ver Control de Asistencia',
-            'module' => 'assistanceControl',
-            'action' => 'index',
-            'description' => 'Permiso para ver Cursos'
-        ]);
-
         // App\Models\Permisologia\Permission::create([
-        //     'name' => 'Crear Cursos',
+        //     'name' => 'Ver Control de Asistencia',
         //     'module' => 'assistanceControl',
-        //     'action' => 'store',
-        //     'description' => 'Permiso para registrar Cursos'
+        //     'action' => 'index',
+        //     'description' => 'Permiso para ver Cursos'
         // ]);
 
         // App\Models\Permisologia\Permission::create([
-        //     'name' => 'Ver Curso',
+        //     'name' => 'Registrar Asistencia',
+        //     'module' => 'assistanceControl',
+        //     'action' => 'store',
+        //     'description' => 'Permiso para registrar Asistencia'
+        // ]);
+
+        // App\Models\Permisologia\Permission::create([
+        //     'name' => 'Ver Asistencia',
         //     'module' => 'assistanceControl',
         //     'action' => 'show',
-        //     'description' => 'Permiso para ver un Curso'
+        //     'description' => 'Permiso para ver Asistencias'
         // ]);
 
         // App\Models\Permisologia\Permission::create([
@@ -210,6 +210,44 @@ class PermissionsSeeder extends Seeder
         //     'action' => 'destroy',
         //     'description' => 'Permiso para Eliminar Cursos'
         // ]);
+
+        /**
+         * Permisos de Empresas
+         */
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Ver Empresas',
+            'module' => 'company',
+            'action' => 'index',
+            'description' => 'Permiso para ver Empresas'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Crear Empresas',
+            'module' => 'company',
+            'action' => 'store',
+            'description' => 'Permiso para registrar Empresas'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Ver Empresa',
+            'module' => 'company',
+            'action' => 'show',
+            'description' => 'Permiso para ver un Empresa'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Actualizar Empresas',
+            'module' => 'company',
+            'action' => 'update',
+            'description' => 'Permiso para actualizar Empresas'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Eliminar Empresas',
+            'module' => 'company',
+            'action' => 'destroy',
+            'description' => 'Permiso para Eliminar Empresas'
+        ]);
 
     }
 }

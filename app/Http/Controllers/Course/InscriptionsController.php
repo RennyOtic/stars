@@ -28,7 +28,7 @@ class InscriptionsController extends Controller
         $course = Course::findOrFail($request->data)
         ->users()
         ->Where('num_id', 'LIKE', "%{$request->search}%")
-        ->orderBy($request->order?:'id', $request->dir?:'ASC')
+        ->orderBy($request->order?:'id', $request->dir?:'DESC')
         ->select(['email', 'id', 'last_name', 'name', 'num_id'])
         ->paginate($request->num?:10);
 
@@ -64,9 +64,11 @@ class InscriptionsController extends Controller
             'occupation' => 'required|string|max:25|min:3',
             'phone_home' => 'required|numeric|digits:10',
             'phone_movil' => 'required|numeric|digits:10',
-            'how_finds_id' => 'required|numeric',
-            'how_find' => 'required_if:how_finds_id,1|string|max:15|min:3'
+            'how_find' => 'required|alpha_space',
+            'how_find_other' => 'required_if:how_finds_id,1|string|max:30|min:3',
+            'company_id' => 'required|numeric'
         ], [], [
+            'company_id'     => 'empresa',
             'email'     => 'correo',
             'last_name' => 'apellido',
             'name'      => 'nombre',
@@ -79,18 +81,19 @@ class InscriptionsController extends Controller
             'phone_home' => 'telefono de contacto',
             'phone_movil' => 'telefono movil',
             'how_find' => 'medio',
-            'how_finds_id' => ''
+            'how_find_other' => 'medio'
         ]);
 
-        if (isset($data2['how_find']) && $data2['how_find'] != '')
-            HowFind::create(['name' => ucfirst($data2['how_find'])]);
+        if ($data2['how_find'] == 'Otro') $data2['how_find'] = $data2['how_find_other'];
 
-        $is_in_course = Course::findOrFail($data['id'])->users()->where('user_id', '=', $data['student_id'])->count();
+        $course = Course::findOrFail($data['id']);
+        $is_in_course = $course->users()->where('user_id', '=', $data['student_id'])->count();
         if ($is_in_course)
             return response()->json(['message' => 'El alumno ya se encuentra inscrito.'], 401);
 
+        $now = \Carbon::now();
         User::findOrFail($data['student_id'])->update($data2);
-        Course::findOrFail($data['id'])->users()->attach($data['student_id']);
+        $course->users()->attach($data['student_id']);
     }
 
     /**
@@ -101,7 +104,11 @@ class InscriptionsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $data = $this->validate($request, ['id' => 'required|numeric|is_student'],[],['id' => 'estudiante']);
+        $data = $this->validate($request, [
+            'id' => 'required|numeric|is_student'
+        ], [], [
+            'id' => 'estudiante'
+        ]);
         $alumn = Course::findOrFail($id)->users()->where('user_id', '=', $data['id'])->count();
         if ($alumn) {
             return Course::findOrFail($id)->users()->detach($data['id']);

@@ -42,7 +42,7 @@ class UpdatePerfilUserRequest extends FormRequest
             'email' => 'correo',
             'last_name' => 'apellido',
             'name' => 'nombre',
-            'num_id' => 'cédula'
+            'num_id' => 'RUT'
         ];
     }
 }

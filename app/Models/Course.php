@@ -18,21 +18,15 @@ class Course extends Model
     protected $fillable = [
         'class_type_id',
         'code',
-        'date_end_at',
-        'date_inscription_end_at',
-        'date_inscription_start_at',
-        'date_start_at',
-        'hour_end',
-        'hour_start',
+        'company_id',
+        'coordinator_id',
         'idioma_id',
         'level_id',
-        'max_class',
-        'max_students',
-        'name',
-        'slug',
+        'material_id',
         'teacher_id',
         'type_student_id',
         'user_id',
+        'coursestate_id',
     ];
 
     /**
@@ -41,7 +35,7 @@ class Course extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at' , 'updated_at', 'deleted_at'
+        'slug', 'created_at' , 'updated_at', 'deleted_at'
     ];
 
     public function teacher()
@@ -59,18 +53,23 @@ class Course extends Model
         return $this->belongsTo(Level::class);
     }
 
-    public function materials()
-    {
-        return $this->belongsToMany(Material::class);
-    }
-
     public function users()
     {
         return $this->belongsToMany(\App\User::class);
     }
 
+    public function coordinator()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
+
     public function days()
     {
-        return $this->belongsToMany(Day::class);
+        return $this->hasMany(CourseDay::class);
+    }
+
+    public function clase()
+    {
+        return $this->hasMany(Clase::class);
     }
 }

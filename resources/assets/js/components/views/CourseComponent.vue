@@ -26,31 +26,26 @@
             class="btn btn-danger btn-raised btn-xs"
             data-tooltip="tooltip"
             title="Borrar Curso"
-            @click="deleted('/courses/'+id, $children[2].get, 'name')"
+            @click="deleted('/courses/'+id, $children[2].get, 'code')"
             v-show="id && show == 1"
             v-if="can('courseManagement.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
             <span v-show="id && show == 1">|</span>
-            <button type="button"
+            <router-link :to="{ name: 'inscription.index', params: { id: id } }"
             class="btn btn-success btn-raised btn-xs"
             data-tooltip="tooltip"
             title="Lista de Alumnos Inscritos"
-            @click="openform('add')"
-            v-show="id && show == 1"
-            v-if="can('inscription.index')"><span class="fa fa-list"></span></button>
+            v-show="show == 1"
+            v-if="can('inscription.index') && id"><span class="glyphicon glyphicon-plus"></span></router-link>
         </div>
         <div class="box-body">
-            <rs-list-students :formData="formData"
-            @input="$children[2].get()"
-            v-if="can() || 1"
-            v-show="show == 3"></rs-list-students>
-            <rs-form :formData="formData"
-            @input="$children[2].get()"
-            v-if="can(['courseManagement.store','courseManagement.update'])"
-            v-show="show == 2"></rs-form>
             <rs-table :columns="tabla.columns"
             uri="/courses"
             @output="id = arguments[0]"
             v-show="show == 1"></rs-table>
+            <rs-form :formData="formData"
+            @input="$children[0].get()"
+            v-if="can(['courseManagement.store','courseManagement.update'])"
+            v-show="show == 2"></rs-form>
         </div>
     </div>
 </template>
@@ -58,14 +53,15 @@
 <script>
     import Tabla from './../partials/table.vue';
     import Form from './../forms/Form-course.vue';
-    import Form2 from './../forms/Form-course-students.vue';
 
     export default {
         name: 'Courses',
         components: {
             'rs-table': Tabla,
             'rs-form': Form,
-            'rs-list-students': Form2,
+        },
+        update() {
+            $('[data-tooltip="tooltip"]').tooltip();
         },
         data() {
             return {
@@ -82,11 +78,9 @@
                 tabla: {
                     columns: [
                     { title: 'Submission ID', field: 'code', sortable: true },
-                    { title: 'Nombre del Curso', field: 'name', sortable: true },
                     { title: 'Idioma', field: 'idioma_id', sortable: true },
                     { title: 'Nivel', field: 'level_id', sortable: true },
                     { title: 'Profesor', field: 'teacher_id', sortable: true },
-                    { title: 'Cupos', field: 'max_students' },
                     { title: 'Inscritos', field: 'cupos' },
                     ]
                 }
@@ -100,9 +94,11 @@
                     this.formData.title = ' Registrar Curso.';
                     this.formData.url = '/courses';
                     this.formData.ico = 'plus';
+                    this.$children[1].days_selected = [];
                     this.formData.data = {
                         name: '',
                         code: '',
+                        coordinator_id: '',
                         hour_start: '',
                         hour_end: '',
                         idioma_id: '',
@@ -116,26 +112,31 @@
                         date_end_at: '',
                         date_inscription_start_at: '',
                         date_inscription_end_at: '',
-                        materials: [],
+                        material_id: '',
                         days: []
                     };
                     this.formData.ready = true;
-                } else if (cond == 'edit' || cond == 'add') {
+                } else if (cond == 'edit') {
+                    this.formData.ico = cond;
                     this.formData.url = '/courses/' + this.id;
                     axios.get(this.formData.url)
                     .then(response => {
-                        this.formData.ico = 'edit';
-                        this.formData.title = 'Editar Curso: ' + response.data.name + '.';
-                        if (cond == 'add') {
-                            this.formData.ico = 'plus';
-                            this.formData.title = 'Curso: ' + response.data.code + '.';
-                        }
+                        this.formData.title = 'Editar Curso: ' + response.data.code + '.';
                         this.formData.data = response.data;
+
+                        let days = response.data.days;
+                        let arr = [];
+                        for(let i in days) {
+                            arr.push({
+                                id: days[i].day_id,
+                                name: days[i].name
+                            });
+                        }
+                        this.$children[1].days_selected = arr;
                         this.formData.ready = true;
                     });
                 }
-                if (cond == 'add') {this.show = 3;
-                } else {this.show = 2; }
+                this.show = 2;
             }
         }
     }

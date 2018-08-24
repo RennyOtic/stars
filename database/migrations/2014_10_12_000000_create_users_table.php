@@ -13,6 +13,19 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        Schema::create('companies', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+            $table->string('rut', 20)->unique();
+            $table->string('email', 50)->unique();
+            $table->string('phone', 50)->unique();
+            $table->string('name_c', 50);
+            $table->string('email_c', 80)->nullable()->unique();
+            $table->string('phone_c', 50)->nullable()->unique();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('nationalities', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
@@ -35,7 +48,8 @@ class CreateUsersTable extends Migration
             $table->string('last_name', 35);
             $table->date('birthday_date');
             $table->unsignedInteger('nationality_id');
-            $table->unsignedInteger('how_finds_id')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
+            $table->string('how_find', 50)->nullable();
             $table->string('occupation', 30);
             $table->string('phone_movil', 20);
             $table->string('phone_home', 20);
@@ -46,8 +60,8 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('nationality_id')->references('id')->on('nationalities')->onDelete('cascade');
-            $table->foreign('how_finds_id')->references('id')->on('how_finds')->onDelete('cascade');
         });
     }
 
@@ -58,6 +72,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('companies');
         Schema::dropIfExists('nationalities');
         Schema::dropIfExists('how_finds');
         Schema::dropIfExists('users');

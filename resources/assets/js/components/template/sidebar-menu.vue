@@ -1,12 +1,12 @@
 <template>
     <ul class="list-unstyled full-box dashboard-sideBar-Menu"> <!-- SideBar Menu -->
         <li class="header text-center">Menú de Navegación</li>
-        <li>
+        <!-- <li>
             <router-link :to="{ name: 'dashboard' }">
                 <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Dashboard
             </router-link>
-        </li>
-        <li v-show="can(['user.index','rol.index','permission.index'])">
+        </li> -->
+        <li v-show="can(['user.index','rol.index','permission.index','company.index'])">
             <a href="#!" class="btn-sideBar-SubMenu">
                 <i class="fa fa-laptop zmdi zmdi-hc-fw"></i> Administración <i class="zmdi zmdi-caret-down pull-right"></i>
             </a>
@@ -26,6 +26,11 @@
                         <i class="zmdi-hc-fw glyphicon glyphicon-th"></i> Permisos
                     </router-link>
                 </li>
+                <li v-if="can('company.index')">
+                    <router-link :to="{ name: 'company.index' }">
+                        <i class="zmdi-hc-fw glyphicon glyphicon-home"></i> Empresas
+                    </router-link>
+                </li>
             </ul>
         </li>
         <li v-if="can('courseManagement.index')">
@@ -33,11 +38,11 @@
                 <i class="glyphicon glyphicon-blackboard zmdi-hc-fw"></i> Gestión de Cursos
             </router-link>
         </li>
-        <!-- <li v-if="can('assistanceControl.index')">
+        <li v-if="can('assistanceControl.index')">
             <router-link :to="{ name: 'assistanceControl.index' }">
                 <i class="glyphicon glyphicon-list zmdi-hc-fw"></i> Control de Asistencia
             </router-link>
-        </li> -->
+        </li>
     </ul>
 </template>
 

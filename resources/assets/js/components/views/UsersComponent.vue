@@ -29,6 +29,7 @@
             @click="deleted('/admin/users/'+id, $children[1].get, 'fullName')"
             v-show="id && show == 1"
             v-if="can('user.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
+<!-- <a :href="'/logging/'+id" v-show="id && show == 1" type="button" class="btn btn-danger btn-raised btn-xs" style="z-index: 100">logging</a> -->
         </div>
         <div class="box-body">
             <rs-form :formData="formData"
@@ -68,7 +69,7 @@
                 tabla: {
                     columns: [
                     { title: 'Nombre y Apellido', field: 'fullName', sort: 'name', sortable: true },
-                    { title: 'RUT', field: 'num_id', sortable: true },
+                    { title: 'RUT / Pasaporte', field: 'num_id', sortable: true },
                     { title: 'Correo', field: 'email', sortable: true },
                     { title: 'Perfil', field: 'rol' },
                     ]
@@ -96,6 +97,7 @@
                         occupation: '',
                         phone_home: '',
                         phone_movil: '',
+                        company_id: '',
                     };
                     this.formData.ready = true;
                 } else if (cond == 'edit') {

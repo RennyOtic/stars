@@ -39,12 +39,14 @@ trait PermissionTrait
     public function isHourToAccess()
     {
         $now = Carbon::now();
+        $alls = false;
         foreach (Auth::user()->roles as $rol) {
+            if ($rol->from_at == '' && $rol->to_at == '') $alls = true;
             $t_init = Carbon::parse($rol->from_at);
             $t_stop = Carbon::parse($rol->to_at);
             if ($now >= $t_init && $now <= $t_stop) return true;
         }
-        return false;
+        return $alls;
     }
 
     /**

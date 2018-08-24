@@ -45,27 +45,39 @@
                 </template>
 
                 <div class="form-group rs-select">
-                  <label for="how_finds_id" class="control-label">
+                  <label for="how_find" class="control-label">
                     <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Cómo se enteró el estudiante de ST:
                   </label>
-                  <select id="how_finds_id" class="form-control" v-model="formData.data.how_finds_id">
+                  <select id="how_find" class="form-control" v-model="formData.data.how_find">
                     <option value="">Seleccione una opción</option>
-                    <option v-for="h in howfinds" :value="h.id" v-text="h.name"></option>
+                    <option v-for="h in howfinds" :value="h.name" v-text="h.name"></option>
                   </select>
-                  <small id="how_finds_idHelp" class="form-text text-muted">
-                    <span v-text="msg.how_finds_id"></span>
+                  <small id="how_findHelp" class="form-text text-muted">
+                    <span v-text="msg.how_find"></span>
                   </small>
                 </div>
               </div>
 
-              <div class="col-md-12" v-if="formData.data.how_finds_id == 1">
+              <div class="col-md-12" v-if="formData.data.how_find === 'Otro'">
                 <div class="form-group">
-                  <label for="how_find" class="control-label">
+                  <label for="how_find_other" class="control-label">
                     <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Indique como se enteró:
                   </label>
-                  <input type="text" id="how_find" class="form-control" v-model="formData.data.how_find">
-                  <small id="how_findHelp" class="form-text text-muted">
-                    <span v-text="msg.how_find"></span>
+                  <input type="text" id="how_find_other" class="form-control" v-model="formData.data.how_find_other">
+                  <small id="how_find_otherHelp" class="form-text text-muted">
+                    <span v-text="msg.how_find_other"></span>
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="company_id" class="control-label">
+                    <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Empresa donde trabaja:
+                  </label>
+                  <rs-select :options="companies" v-model="formData.data.company_id"></rs-select>
+                  <small id="company_idHelp" class="form-text text-muted">
+                    <span v-text="msg.company_id"></span>
                   </small>
                 </div>
               </div>
@@ -78,7 +90,7 @@
 
     <template slot="modal-btn">
       <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-close"></span> Cerrar</button>
-      <button type="button" class="btn btn-primary" @click="registrar"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
+      <button type="button" class="btn btn-primary btn-raised" @click="registrar"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
     </template>
 
   </modal>
@@ -87,18 +99,21 @@
 <script>
   import Modal from './../partials/modal.vue';
   import Input from './../partials/input.vue';
+  import Select2 from './../partials/select2.vue';
 
   export default {
     name: 'modal-form-inscription',
     components: {
       'modal': Modal,
       'rs-input': Input,
+      'rs-select': Select2,
     },
     props: ['formData', 'course'],
     data () {
       return {
         nationalities: [],
         howfinds: [],
+        companies: [],
         entries: {
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
@@ -114,6 +129,7 @@
           ],
         },
         msg: {
+          company_id: 'Empresa asociada al estudiante.',
           name: 'Nombre del usuario.',
           last_name: 'Apellido del usuario.',
           num_id: 'Cedula de identidad.',
@@ -127,8 +143,8 @@
           phone_movil: 'Número personal.',
           birthday_date: 'Fecha de cumpleaños.',
           nationality_id: 'Nacionalidad natural.',
-          how_finds_id: 'Como se enteró de Smooth Talkers.',
-          how_find: 'Indique el medio con el que se enteró.'
+          how_find: 'Como se enteró de Smooth Talkers.',
+          how_find_other: 'Medio por el que se enteró de SM.'
         }
       }
     },
@@ -141,6 +157,7 @@
         .then(response => {
           this.nationalities = response.data.nationalities;
           this.howfinds = response.data.howfinds;
+          this.companies = response.data.companies;
         });
       },
       registrar: function () {
@@ -159,7 +176,9 @@
           occupation: this.formData.data.occupation,
           phone_home: this.formData.data.phone_home,
           phone_movil: this.formData.data.phone_movil,
-          how_find:  this.formData.data.how_find
+          how_find:  this.formData.data.how_find,
+          how_find_other:  this.formData.data.how_find_other,
+          company_id:  this.formData.data.company_id
         })
         .then(response => {
           toastr.success('Alumno Registrado');

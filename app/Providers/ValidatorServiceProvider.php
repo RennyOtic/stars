@@ -27,6 +27,12 @@ class ValidatorServiceProvider extends ServiceProvider
         Validator::extend('exr_ced', function($attribute, $value)
         {
             if ($value[0] == '0') return false;
+            if (1) {
+            // xx.xxx.xxx-x (la ultima es letra k o número)
+            }
+            if (1) {
+            // pasaporte 10 digitos numéricos
+            }
             return preg_match('/^([0-9]{6,8})$/', $value);
         }, 'El campo :attribute es incorrecto');
 
@@ -67,7 +73,7 @@ class ValidatorServiceProvider extends ServiceProvider
                     if ($sections[1] >= 0 && $sections[1] <= 59) return true;
                         // if ($sections[2] >= 0 && $sections[2] <= 59)
             return false;
-        }, 'El formato debe poseer un formato "00:00".');
+        }, 'El formato debe poseer un formato "00:00" - "23:59".');
 
         /**
          * Verifiva el campo solo tenga letras y espacios.
@@ -104,6 +110,27 @@ class ValidatorServiceProvider extends ServiceProvider
             }
             return false;
         }, 'El usuario agregado no es un alumno.');
+
+        /**
+         * Verifiva que los horarios del curso sean correctos
+         */
+        Validator::extend('is_hour_correct_array', function($attribute, $value, $parameters)
+        {
+            $test = true;
+            foreach ($value as $v) {
+                $hour_start = explode(':', $v['hour_start']);
+                if (count($hour_start) == 2) {
+                    if (!($hour_start[0] >= 0 && $hour_start[0] <= 23)) $test = false;
+                    if (!($hour_start[1] >= 0 && $hour_start[1] <= 59)) $test = false;
+                } else {$test = false;}
+                $hour_end = explode(':', $v['hour_end']);
+                if (count($hour_end) == 2) {
+                    if (!($hour_end[0] >= 0 && $hour_end[0] <= 23)) $test = false;
+                    if (!($hour_end[1] >= 0 && $hour_end[1] <= 59)) $test = false;
+                } else {$test = false;}
+            }
+            return $test;
+        }, 'Las horas asignadas no son correctas.');
 
     }
 

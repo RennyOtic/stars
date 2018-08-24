@@ -61,7 +61,7 @@ body, html {
 .dashboard-sideBar {
 	left: 0;
 	z-index: 2;
-	background-image: url(/images/sideBar-font.jpg?8e76942363989d707f7355d01d04b447);
+	background-image: url(/images/sideBar-font.jpg?81a75a25bf025f7b38c275baaefe995f);
 	border-right: 1px solid rgba(255, 255, 255, .4);
 	overflow: hidden;
 }
@@ -4673,7 +4673,8 @@ body, html {
   margin-top: 20px !important;
 }
 
-.box-header button {
+.box-header button,
+.box-header a {
   z-index: 3;
   margin: 0;
 }

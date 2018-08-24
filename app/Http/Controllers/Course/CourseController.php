@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ { Course, Idioma, Level, ClassType, Material, TypeStudents, Day };
+use App\Models\ { Course, Idioma, Level, ClassType, Material, TypeStudents, Day, Company, CourseDay };
 use App\Models\Permisologia\Role;
 use App\Http\Requests\ { CourseStoreRequest, CourseUpdateRequest };
 
@@ -26,13 +26,13 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::dataForPaginate(['id', 'code', 'name', 'teacher_id', 'idioma_id', 'level_id', 'max_students'], function ($c) {
+        $courses = Course::dataForPaginate(['id', 'code', 'teacher_id', 'idioma_id', 'level_id'], function ($c) {
             $c->teacher_id = $c->teacher->fullName();
             $c->idioma_id = $c->idioma->name;
             $c->level_id = $c->level->name;
             $c->cupos = $c->users()->count();
             unset($c->teacher, $c->idioma, $c->level, $c->users);
-        });
+        }, ['dir' => 'desc']);
         return $this->dataWithPagination($courses);
     }
 
@@ -46,10 +46,16 @@ class CourseController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = \Auth::user()->id;
-        $data['slug'] = str_replace(' ', '-', $data['name']) . '-' . $data['code'];
+        $data['slug'] = $data['code'] . '-' . $data['user_id'];
         $course = Course::create($data);
-        $course->materials()->attach($data['materials']);
-        $course->days()->attach($data['days']);
+        foreach ($data['days'] as $d) {
+            CourseDay::create([
+                'course_id' => $course->id,
+                'day_id' => $d['id'],
+                'hour_start' => $d['hour_start'],
+                'hour_end' => $d['hour_end'],
+            ]);
+        }
     }
 
     /**
@@ -61,17 +67,17 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::findOrFail($id);
-        $materials = $course->materials->pluck('id');
-        $days = $course->days->pluck('id');
+        $course->days->each(function ($d) {
+            $d->name = $d->day->name;
+            $d->day_id = $d->day->id;
+            unset($d->day);
+        });
         $teacher = $course->teacher->fullName() . ' - ' . $course->teacher->num_id;
         $idioma = $course->idioma->name;
-        $inscritos = $course->users()->count();
-        unset($course->materials, $course->teacher, $course->idioma, $course->days);
+        unset($course->teacher, $course->idioma, $course->coordinator);
         $course->teacher = $teacher;
-        $course->materials = $materials;
-        $course->days = $days;
         $course->idioma = $idioma;
-        $course->cupos = $course->max_students - $inscritos;
+        $course->user_class = 0;
         return response()->json($course);
     }
 
@@ -84,10 +90,17 @@ class CourseController extends Controller
      */
     public function update(CourseUpdateRequest $request, $id)
     {
+        $data = $request->validated();
         $course = Course::findOrFail($id);
-        $course->update_pivot($request->materials, 'materials');
-        $course->update_pivot($request->days, 'days');
-        $course->update($request->validated());
+        $course->update($data);
+        foreach ($data['days'] as $d) {
+            CourseDay::findOrFail($d['id_r'])->update([
+                'course_id' => $d['course_id'],
+                'day_id' => $d['day_id'],
+                'hour_start' => $d['hour_start'],
+                'hour_end' => $d['hour_end'],
+            ]);
+        }
     }
 
     /**
@@ -114,7 +127,14 @@ class CourseController extends Controller
         ->get(['id', 'name', 'last_name', 'num_id']);
         $teachers->each(function ($u) {
             $u->text = $u->fullName() . ' - ' . $u->num_id;
-            unset($u->pivot);
+            unset($u->pivot, $u->name, $u->last_name, $u->num_id);
+        });
+        $coordinators = Role::where('slug', '=', 'Coordinador')
+        ->findOrFail(4)->users()->orderBy('name', 'ASC')
+        ->get(['id', 'name', 'last_name', 'num_id']);
+        $coordinators->each(function ($u) {
+            $u->text = $u->fullName() . ' - ' . $u->num_id;
+            unset($u->pivot, $u->name, $u->last_name, $u->num_id);
         });
 
         $typestudents = TypeStudents::get(['id', 'name']);
@@ -123,8 +143,13 @@ class CourseController extends Controller
         $classtypes = ClassType::get(['id', 'name']);
         $materials = Material::get(['id', 'name']);
         $days = Day::get(['id', 'name']);
+        $companies = Company::get(['id', 'name', 'rut']);
+        $companies->each(function ($c) {
+            $c->text = $c->name . ' - ' . $c->rut;
+            unset($c->pivot, $c->name, $c->rut);
+        });
 
-        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials', 'days'));
+        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials', 'days', 'coordinators', 'companies'));
     }
 
 }

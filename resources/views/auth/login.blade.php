@@ -9,6 +9,14 @@
 
             {{-- <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i> --}}
             <p class="text-center text-muted"><img src="{{ asset('./img/logo.jpeg') }}" alt="logo" width="270"></p>
+            @if ($errors->has('email'))
+            <p class="alert alert-danger">
+                <strong>{{ $errors->first('email') }}</strong>
+                @if ($errors->has('password'))
+                <strong>{{ $errors->first('password') }}</strong>
+                @endif
+            </p>
+            @endif
             <p class="text-center text-muted text-uppercase">Inicia sesión con tu cuenta</p>
 
             {{ csrf_field() }}
@@ -16,26 +24,12 @@
                 <label for="email" class="control-label">Correo:</label>
                 <input id="email" type="email" class="form-control" name="email" value="root@smoothtalkers.com" required autofocus> 
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                @if ($errors->has('email'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-                @else
-                <p class="help-block">Escribe tu Correo</p>
-                @endif
             </div>
 
             <div class="form-group label-floating has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
                 <label for="password" class="control-label">Contraseña:</label>
                 <input id="password" type="password" class="form-control" name="password" value="secret" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                @if ($errors->has('email'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-                @else
-                <p class="help-block">Escribe tu contraseña</p>
-                @endif
             </div>
 
             <div class="row">

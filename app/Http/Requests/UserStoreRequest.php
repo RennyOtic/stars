@@ -35,6 +35,7 @@ class UserStoreRequest extends FormRequest
             'occupation' => 'required|string|max:25|min:3',
             'phone_home' => 'required|numeric|digits:10',
             'phone_movil' => 'required|numeric|digits:10',
+            'company_id' => 'nullable|numeric',
         ];
     }
 
@@ -55,11 +56,12 @@ class UserStoreRequest extends FormRequest
      */
     public function attributes()
     {
+        $num_id = (1) ? 'RUT' : 'Pasaporte';
         return [
             'email'     => 'correo',
             'last_name' => 'apellido',
             'name'      => 'nombre',
-            'num_id'    => 'cédula',
+            'num_id'    => $num_id,
             'password'  => 'contraseña',
             'roles'     => 'roles',
             'birthday_date' => 'fecha de cumpleaños',
@@ -67,6 +69,7 @@ class UserStoreRequest extends FormRequest
             'occupation' => 'ocupación',
             'phone_home' => 'telefono de contacto',
             'phone_movil' => 'telefono movil',
+            'company_id' => 'empresa'
         ];
     }
 }

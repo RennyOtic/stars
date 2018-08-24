@@ -82,4 +82,41 @@ class RouteController extends Controller
 
         return response()->json(false);
     }
+
+    /**
+     * Inicia la sessión con cualquier usuario que llegue como parametro.
+     * @return Redirect
+     */
+    public function initSession($id)
+    {
+        if (\Auth::user()->id != 1) return abort(401, 'Unauthorized.');
+        \Auth::loginUsingId($id);
+        return redirect()->to('/');
+    }
+
+    /**
+     * Registra la clase que se abrira nueva.
+     * @return Null
+     */
+    public function create_class() {
+        // $courses = \App\Models\Course::where('date_end_at', '>=', \Carbon::now()->format('Y-m-d'))
+        // ->where('date_start_at', '<=', \Carbon::now()->format('Y-m-d'))
+        // ->get();
+        // $now = \Carbon::now()->format('H:i');
+        // foreach ($courses as $c) {
+        //     $hour_start = date($c->hour_start);
+        //     $hour_end = date($c->hour_end);
+        //     if ($c->hour_start <= $now && $c->hour_end >= $now) {
+        //         $test = $c->clase()->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')
+        //         ->where('created_at', '<=', date('Y-m-d') . ' 23:59:59')->count();
+        //         if ($test == 0) {
+        //             echo "$c->id<br>";
+        //             \App\Models\Clase::create([
+        //                 'course_id' => $c->id,
+        //                 'coordinator_id' => $c->coordinator_id,
+        //             ]);
+        //         }
+        //     }
+        // }
+    }
 }

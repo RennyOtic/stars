@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('logging/{id}', 'RouteController@initSession');
+
+Route::get('create-class', 'RouteController@create_class');
+
 /**
  * Rutas típicas de autentificación de la app.
  * reemplazando: Auth::routes();
@@ -75,8 +79,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-data-inscription', 'InscriptionsController@dataForRegister');
 
         // Assistance Control Routes...
-        Route::resource('assistance', 'AssistanceControlController')->only(['index'])/*->except(['create', 'edit'])*/;
-        
+        Route::resource('assistance', 'AssistanceControlController')->only(['index', 'store']);
+        Route::post('get-data-assistance', 'AssistanceControlController@dataForRegister');
+
+        // Companies Routes...
+        Route::resource('company', 'CompanyController')->except(['create', 'edit']);
+
     });
 
     Route::post('admin/app', 'RouteController@canPermission');

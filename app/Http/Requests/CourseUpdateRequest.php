@@ -25,21 +25,14 @@ class CourseUpdateRequest extends FormRequest
     {
         return [
             'code' => 'required|numeric|digits:21|unique1:courses',
-            'date_end_at' => 'required|date',
-            'date_inscription_end_at' => 'required|date',
-            'date_inscription_start_at' => 'required|date',
-            'date_start_at' => 'required|date',
-            'hour_end' => 'required|hour_corret',
-            'hour_start' => 'required|hour_corret',
-            'max_students' => 'required|numeric|max:20|min:1',
-            'name' => 'required|string|max:50|min:5',
+            'coordinator_id' => 'required|numeric',
             'teacher_id' => 'required|numeric',
             'idioma_id' => 'required|numeric',
-            'max_class' => 'required|numeric|min:1|max:50',
             'type_student_id' => 'required',
+            'company_id' => 'required|numeric',
             'level_id' => 'required|numeric',
             'class_type_id' => 'required|numeric',
-            'materials' => 'nullable|array',
+            'material_id' => 'required|numeric',
             'days' => 'required|array'
         ];
     }
@@ -53,21 +46,15 @@ class CourseUpdateRequest extends FormRequest
     {
         return [
             'code' => 'código',
-            'date_end_at' => 'fecha final',
-            'date_inscription_end_at' => 'fecha final',
-            'date_inscription_start_at' => 'fecha inicial',
-            'date_start_at' => 'fecha inicial',
-            'hour_end' => 'hora final',
-            'hour_start' => 'hora inicial',
-            'max_students' => '',
-            'name' => 'nombre',
+            'coordinator_id' => 'coordinador',
+            'company_id' => 'empresa',
             'teacher_id' => 'profesor',
             'idioma_id' => 'idioma',
             'max_class' => 'número maximo de alumnos',
             'type_student_id' => 'tipo de estudiantes',
             'level_id' => 'nivel',
             'class_type_id' => 'tipo de clases',
-            'materials' => 'materiales',
+            'material_id' => 'material',
             'days' => 'días'
         ];
     }

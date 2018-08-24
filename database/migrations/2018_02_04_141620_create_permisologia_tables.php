@@ -19,8 +19,8 @@ class CreatePermisologiaTables extends Migration
             $table->string('name', 50);
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->time('from_at')->nullable();
-            $table->time('to_at')->nullable();
+            $table->text('from_at')->nullable();
+            $table->text('to_at')->nullable();
             $table->enum('special', ['all-access', 'no-access'])->nullable();
             $table->timestamps();
             $table->softDeletes();

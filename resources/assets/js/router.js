@@ -5,9 +5,11 @@ import Profile from './components/views/profileComponent.vue';
 import Users from './components/views/UsersComponent.vue';
 import Roles from './components/views/RolesComponent.vue';
 import Permission from './components/views/PermissionsComponent.vue';
-import courseManagement from './components/views/CourseManagementsComponent.vue';
+import course from './components/views/CourseComponent.vue';
 import AssistanceControl from './components/views/AssistanceControlComponent.vue';
-
+import AssistanceControlForm from './components/forms/Form-assistance.vue';
+import Company from './components/views/CompanyComponent.vue';
+import Inscription from './components/forms/Form-course-students.vue';
 import NotFound from './components/views/NotFoundComponent.vue';
 
 const router = new VueRouter({
@@ -44,6 +46,11 @@ const router = new VueRouter({
 			component: Permission,
 		},
 		{
+			path: 'empresas',
+			name: 'company.index',
+			component: Company,
+		},
+		{
 			path: '*',
 			component: NotFound,
 		}
@@ -52,14 +59,24 @@ const router = new VueRouter({
 	{
 		path: '/gestion-de-cursos',
 		name: 'courseManagement.index',
-		component: courseManagement,
+		component: course,
+	},
+	{
+		path: '/inscripcion-a-cursos/:id',
+		name: 'inscription.index',
+		component: Inscription,
 	},
 	{
 		path: '/control-de-asistencias',
 		name: 'assistanceControl.index',
 		component: AssistanceControl,
 	},
-	{ 
+	{
+		path: '/control-de-asistencias/:id',
+		name: 'assistanceControl.store',
+		component: AssistanceControlForm,
+	},
+	{
 		path: '*', 
 		name: 'error',
 		component: NotFound
@@ -69,7 +86,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 	let permission = to.name;
-	if (to.path == '/') {next(); return;}
+	if (to.path == '/') {next('/gestion-de-cursos'); return;}
 	if (location.href.indexOf('/login') > 0) return;
 	if (location.href.indexOf('/registro') > 0) return;
 	if (permission == undefined) {next('error'); return;}

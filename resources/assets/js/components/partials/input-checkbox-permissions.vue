@@ -38,9 +38,13 @@ export default {
 			permissionsRol: this.user,
 			permissions: [],
 			modules: {
-				'rol': 'Perfiles',
-				'permission': 'Permisos',
-				'user': 'Usuarios',
+				rol: 'Perfiles',
+				permission: 'Permisos',
+				user: 'Usuarios',
+				courseManagement: 'Cursos',
+				inscription: 'Inscripciones',
+				assistanceControl: 'Asistencia',
+				company: 'Empresa',
 			},
 		};
 	},

@@ -22,6 +22,16 @@ class DeveloperSeeder extends Seeder
             ]);
         }
 
+        $permissions = [16, 22, 23, 24];
+        $rol = \App\Models\Permisologia\Role::findOrFail(3);
+        $rol->permissions()->attach($permissions);
+        $users = $rol->users;
+        $users->each(function ($u) use ($permissions) {
+            $u->permissions()->attach($permissions);
+        });
+
+        factory(App\Models\Company::class, 10)->create();
+
         factory(App\Models\Course::class, 50)->create();
 
     }

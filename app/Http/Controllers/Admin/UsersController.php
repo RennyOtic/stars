@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ { UserStoreRequest, UserUpdateRequest, ChangePasswordRequest };
 use App\User;
-use App\Models\ { Nationality, Course, HowFind };
+use App\Models\ { Nationality, Course, HowFind, Company };
 use App\Models\Permisologia\Role;
 
 class UsersController extends Controller
@@ -28,7 +28,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::dataForPaginate(['email','id','last_name','name','num_id'], function ($u) {
+        $users = User::dataForPaginate(['name','id','last_name','email','num_id'], function ($u) {
             $rol = '';
             foreach ($u->roles as $r) {
                 $rol .= '<span class="badge">' . $r->name . '</span>';
@@ -68,6 +68,11 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
         $user->fullName = $user->fullName();
         $user->roles;
+        $howfind = HowFind::where('name', '=', $user->how_find)->first();
+        if (!$howfind && !is_null($user->how_find)) {
+            $user->how_find_other = $user->how_find;
+            $user->how_find = 'Otro';
+        }
         return response()->json($user);
     }
 
@@ -124,7 +129,12 @@ class UsersController extends Controller
         $roles = Role::get(['name', 'id']);
         $nationalities = Nationality::get(['name', 'id']);
         $howfinds = HowFind::get(['name', 'id']);
-        return response()->json(compact('roles', 'nationalities', 'howfinds'));
+        $companies = Company::get(['name', 'id', 'rut']);
+        $companies->each(function ($c) {
+            $c->text = $c->name . ' - ' . $c->rut;
+            unset($c->pivot, $c->name, $c->rut);
+        });
+        return response()->json(compact('roles', 'nationalities', 'howfinds', 'companies'));
     }
 
 }

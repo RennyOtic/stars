@@ -52,9 +52,21 @@
             </div>
           </div>
 
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="company_id" class="control-label">
+                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Empresa donde trabaja:
+              </label>
+              <rs-select :options="companies" v-model="formData.user.company_id"></rs-select>
+              <small id="company_idHelp" class="form-text text-muted">
+                <span v-text="msg.company_id"></span>
+              </small>
+            </div>
+          </div>
+
           <div class="col-md-12 text-center">
             <button type="button" class="btn btn-danger" @click="$parent.show = 1"><span class="fa fa-close"></span> Cancelar</button>
-            <button type="button" class="btn btn-primary" @click="registrar"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
+            <button type="button" class="btn btn-primary btn-raised" @click="registrar"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
           </div>
 
         </div>
@@ -66,11 +78,13 @@
 
 <script>
   import Input from './../partials/input.vue';
+  import Select2 from './../partials/select2.vue';
 
   export default {
     name: 'form-user',
     components: {
       'rs-input': Input,
+      'rs-select': Select2,
     },
     props: ['formData'],
     data () {
@@ -93,6 +107,7 @@
         },
         roles: [],
         nationalities: [],
+        companies: [],
         msg: {
           name: 'Nombre del usuario.',
           last_name: 'Apellido del usuario.',
@@ -106,7 +121,8 @@
           phone_home: 'Telefono de habitación o trabajo.',
           phone_movil: 'Número personal.',
           birthday_date: 'Fecha de cumpleaños.',
-          nationality_id: 'Nacionalidad natural.'
+          nationality_id: 'Nacionalidad natural.',
+          company_id: 'Empresa afiliada el usario,'
         }
       };
     },
@@ -115,11 +131,11 @@
       .then(response => {
         this.roles = response.data.roles;
         this.nationalities = response.data.nationalities;
+        this.companies = response.data.companies;
       });
     },
     methods: {
       registrar: function (el) {
-        $(el.target).attr('disabled', 'disabled');
         this.restoreMsg(this.msg);
         if (this.formData.cond === 'create') {
           axios.post(this.formData.url, this.formData.user)

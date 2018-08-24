@@ -48,31 +48,42 @@ $factory->define(App\Models\Permisologia\Role::class, function (Faker $faker) {
 });
 
 $factory->define(App\Models\Course::class, function (Faker $faker) {
-	$course = $faker->numerify('Curso #######');
-	$classType = rand(1, 2);
-	$max_students = ($classType > 1) ? 1 : rand(10, 20);
-	$hour_start = \Carbon::parse(20 . ':' . rand(0, 59));
-	$total_teachers = \App\Models\Permisologia\Role::where('slug', '=', 'Profesor')
-	->findOrFail(2)->users()->count();
 	$teachers = \App\Models\Permisologia\Role::where('slug', '=', 'Profesor')
 	->findOrFail(2)->users()->pluck('id');
+	$total_teachers = $teachers->count();
+	$coordinators = \App\Models\Permisologia\Role::where('slug', '=', 'Coordinador')
+	->findOrFail(4)->users()->pluck('id');
+	$total_coordinators = $coordinators->count();
 	return [
-		'name' => $course,
-		'slug' => $course,
+		'coursestate_id' => rand(1, 2),
 		'code' => $faker->numerify('#####################'),
-		'hour_start' => $hour_start->format('H:i'),
-		'hour_end' => $hour_start->addHours(2)->format('H:i'),
+		'coordinator_id' => $coordinators[rand(0, $total_coordinators-1)],
 		'idioma_id' => rand(1, 4),
 		'teacher_id' => $teachers[rand(0, $total_teachers-1)],
 		'user_id' => 1,
-		'max_students' => $max_students,
-		'max_class' => rand(10, 20),
 		'type_student_id' => rand(1, 5),
 		'level_id' => rand(1, 6),
-		'class_type_id' => $classType,
-		'date_inscription_start_at' => \Carbon::now()->subWeeks(rand(0, 3))->subDays(rand(1, 5))->format('Y-m-d'),
-		'date_inscription_end_at' => \Carbon::now()->addWeeks(1)->addDays(rand(1, 5))->format('Y-m-d'),
-		'date_start_at' => \Carbon::now()->subWeeks(rand(0, 2))->subDays(1)->format('Y-m-d'),
-		'date_end_at' => \Carbon::now()->addWeeks(rand(1, 3))->addDays(rand(1, 5))->format('Y-m-d'),
+		'class_type_id' => rand(1, 2),
+        'material_id' => rand(1, 6),
+        'company_id' => rand(1, 10)
+	];
+});
+
+$factory->define(App\Models\Company::class, function (Faker $faker) {
+	$name = $faker->numerify('Empresa ####');
+	$emails = [
+		'@gmail.com', '@hotmail.com',
+		'@mail.com', '@outlook.com',
+		'@yahoo.com', '@smoothtalkers.com'
+	];
+	$name_c = $faker->firstName;
+	return [
+		'name' => $name,
+		'rut' => $faker->numerify('#########'),
+		'email' => $name . $emails[rand(0, 5)],
+		'phone' => $faker->numerify('#########'),
+		'name_c' => $name_c,
+		'email_c' => $name_c . $emails[rand(0, 5)],
+		'phone_c' => $faker->numerify('#########'),
 	];
 });

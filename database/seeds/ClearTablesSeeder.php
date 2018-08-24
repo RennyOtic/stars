@@ -26,8 +26,7 @@ class ClearTablesSeeder extends Seeder
         DB::table('class_types')->truncate();
         DB::table('materials')->truncate();
         DB::table('courses')->truncate();
-        DB::table('course_day')->truncate();
-        DB::table('course_material')->truncate();
+        DB::table('course_days')->truncate();
         DB::table('course_user')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }

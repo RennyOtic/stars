@@ -16,12 +16,11 @@
           </div>
 
           <div class="col-md-6">
-            <div class="form-group label-floating" :class="!formData.rol[input.id] ? 'is-empty' : ''" v-for="input in entries.der">
+            <div class="form-group label-floating clockpicker" :class="!formData.rol[input.id] ? 'is-empty' : ''" v-for="input in entries.der">
               <label for="special" class="control-label">
-                <span :class="'fa fa-'+input.icon"></span> {{ input.label }}:
+                <span :class="'fa fa-'+input.icon"></span> {{ input.label }}: aca {{ formData.rol[input.id] }}
               </label>
-              <!-- <date-picker id="" v-model="formData.rol[input.id]" :config="{format: 'HH:mm:ss', useCurrent: false} " required="required"></date-picker> -->
-              <input type="text" class="form-control" v-model="formData.rol[input.id]" required="required">
+              <input type="text" class="form-control" :class="input.id" v-model="formData.rol[input.id]" required="required">
               <small :id="input.id+'Help'" class="form-text text-muted">
                 <span v-text="msg[input.id]"></span>
               </small>
@@ -45,13 +44,12 @@
           <div class="col-xs-12 text-center">
             <v-checkbox-p v-if="!formData.rol.special"
             :user="formData.rol.permissions"
-            @check="formData.rol.permissions = arguments[0]"
-            ></v-checkbox-p>
+            @check="formData.rol.permissions = arguments[0]"></v-checkbox-p>
           </div>
 
           <div class="col-md-12 text-center">
             <button type="button" class="btn btn-danger" @click="$parent.show = 1"><span class="fa fa-close"></span> Cancelar</button>
-            <button type="button" class="btn btn-primary" @click="registrar"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
+            <button type="button" class="btn btn-primary btn-raised" @click="registrar"><span class="glyphicon glyphicon-saved"></span> Guardar</button>
           </div>
 
         </div>
@@ -65,8 +63,6 @@
   import Modal from './../partials/modal.vue';
   import Input from './../partials/input.vue';
   import Checkbox from './../partials/input-checkbox-permissions.vue';
-  // import datePicker from 'vue-bootstrap-datetimepicker';
-  // import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
   
   export default {
     name: 'form-rol',
@@ -74,7 +70,6 @@
       'modal': Modal,
       'v-input': Input,
       'v-checkbox-p': Checkbox,
-      // datePicker
     },
     props: ['formData'],
     data () {
@@ -100,6 +95,17 @@
           permission: 'Permisos del rol'
         }
       };
+    },
+    updated() {
+      let vm = this;
+      $('.clockpicker').clockpicker({
+        autoclose: true,
+        default: 'now'
+      })
+      .find('input').change(function() {
+        if ($(this).hasClass('from_at')) {vm.formData.rol.from_at = this.value; }
+        else if ($(this).hasClass('to_at')) {vm.formData.rol.to_at = this.value; }
+      });
     },
     methods: {
       registrar: function () {

@@ -18,8 +18,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'birthday_date',
+        'company_id',
         'email',
-        'how_finds_id',
+        'how_find',
         'last_name',
         'name',
         'nationality_id',
@@ -29,6 +30,7 @@ class User extends Authenticatable
         'phone_home',
         'phone_movil',
     ];
+
 
     /**
      * Los atributos que deberían estar ocultos para las matrices.

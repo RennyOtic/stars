@@ -105,9 +105,9 @@ trait ModelsTrait
 	 * @model All
 	 * @return Object
 	 */
-	public static function dataForPaginate($select = ['*'], $changes = null)
+	public static function dataForPaginate($select = ['*'], $changes = null, $arr = ['dir' => 'ASC'])
 	{
-		$data = Self::orderBy(request()->order?:$select[0], request()->dir?:'ASC')
+		$data = Self::orderBy(request()->order?:$select[0], request()->dir?:$arr['dir'])
 		->search(request()->search)
 		->select($select)
 		->paginate(request()->num?:10);

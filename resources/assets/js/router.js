@@ -10,6 +10,8 @@ import AssistanceControl from './components/views/AssistanceControlComponent.vue
 import AssistanceControlForm from './components/forms/Form-assistance.vue';
 import Company from './components/views/CompanyComponent.vue';
 import Inscription from './components/forms/Form-course-students.vue';
+import Notify from './components/views/NotificationComponent.vue';
+import PayTeacher from './components/forms/Form-PayTeacher.vue';
 import NotFound from './components/views/NotFoundComponent.vue';
 
 const router = new VueRouter({
@@ -57,6 +59,17 @@ const router = new VueRouter({
 		]
 	},
 	{
+		path: '/reportes/',
+		component: {template: `<router-view></router-view>`},
+		children: [
+		{
+			path: 'pago-de-profesores',
+			name: 'report.pay_teacher',
+			component: PayTeacher,
+		}
+		]
+	},
+	{
 		path: '/gestion-de-cursos',
 		name: 'courseManagement.index',
 		component: course,
@@ -77,6 +90,11 @@ const router = new VueRouter({
 		component: AssistanceControlForm,
 	},
 	{
+		path: '/notificaciones',
+		name: 'notify_s.index',
+		component: Notify,
+	},
+	{
 		path: '*', 
 		name: 'error',
 		component: NotFound
@@ -86,13 +104,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 	let permission = to.name;
-	if (to.path == '/') {next('/gestion-de-cursos'); return;}
 	if (location.href.indexOf('/login') > 0) return;
 	if (location.href.indexOf('/registro') > 0) return;
 	if (permission == undefined) {next('error'); return;}
 	if (to.path.split('/')[1] == 'js' || to.path.split('/')[1] == 'css') {next('/'); return;}
 
 	setTimeout(() => {
+		if (to.path == '/') {
+			if (this.a.app.can('courseManagement.index')) {
+				next('/gestion-de-cursos');
+			} else {
+				next('/control-de-asistencias');
+			}
+			return;
+		}
 		if (this.a.app.can(permission)) {
 			next(); return;
 		} else if (permission.indexOf('-') != -1) {

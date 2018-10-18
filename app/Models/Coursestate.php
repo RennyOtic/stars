@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ModelsTrait;
 
-class Coursestate extends Model
+class CourseState extends Model
 {
 
 	use SoftDeletes, ModelsTrait;

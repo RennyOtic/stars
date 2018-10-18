@@ -12,7 +12,6 @@ class PermissionsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('onlyAjax');
         $this->middleware('can:permission,index')->only(['index']);
         $this->middleware('can:permission,show')->only(['show']);
     }

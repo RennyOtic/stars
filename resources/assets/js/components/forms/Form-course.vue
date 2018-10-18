@@ -111,6 +111,33 @@
             </div>
           </div>
 
+          <div class="col-md-6">
+            <div class="form-group label-floating" :class="!formData.data.coursestate_id ? 'is-empty' : ''">
+              <label for="coursestate_id" class="control-label">
+                <span class="fa fa-users"></span> Estado del curso:
+              </label>
+              <select class="form-control" v-model="formData.data.coursestate_id">
+                <option value="" selected="" disabled=""></option>
+                <option v-for="c in coursestates" :value="c.id" v-text="c.name"></option>
+              </select>
+              <small id="coursestate_idHelp" class="form-text text-muted">
+                <span v-text="msg.coursestate_id"></span>
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group label-floating">
+              <label for="date_init" class="control-label">
+                <span class="fa fa-users"></span> Fecha de inicio:
+              </label>
+              <input type="date" class="form-control" v-model="formData.data.date_init">
+              <small id="date_initHelp" class="form-text text-muted">
+                <span v-text="msg.date_init"></span>
+              </small>
+            </div>
+          </div>
+
           <div class="col-md-12">
             <div class="form-group label-floatng">
               <label for="material_id" class="control-label">
@@ -135,7 +162,7 @@
               </label>
               <div class="row">
                 <div class="col-md-3" v-for="(d, i) in days">
-                  <input type="checkbox" :id="d.name + i" class="" :value="d" v-model="days_selected">
+                  <input type="checkbox" :id="d.name + i" class="" :value="d.id" v-model="days_selected">
                   <label :for="d.name + i" v-text="d.name"></label>
                 </div>
               </div>
@@ -147,7 +174,7 @@
 
           <div class="col-md-12" v-for="d in formData.data.days">
             <p>
-              <span class="fa fa-icon"></span> Horario del día {{ days[d.id - 1].name }}:
+              <span class="fa fa-icon"></span> Horario del día {{ days[d.day_id - 1].name }}:
             </p>
             <div class="row">
               <div class="col-md-6">
@@ -196,31 +223,41 @@
     props: ['formData'],
     watch: {
       days_selected: function (val) {
-        let arr = [];
         let days = this.formData.data.days;
+        let test = false;
         let old = {};
+        let arr = [];
         for(let i in val) {
           for(let a in days) {
-            if (days[a].id == val[i].id || days[a].day_id == val[i].id) {
+            if (days[a].day_id == val[i]) {
               old = {
-                id_r: days[a].id,
+                id: (days[a].id) ? days[a].id : null,
                 hour_start: days[a].hour_start,
                 hour_end: days[a].hour_end,
-                course_id: days[a].course_id,
-                day_id: days[a].day_id,
+                day_id: val[i],
               };
             }
           }
-          arr.push({
-            name: val[i].name,
-            id: val[i].id,
-            id_r: ((old.id_r) ? old.id_r : ''),
-            hour_start: ((old.hour_start) ? old.hour_start : ''),
-            hour_end: ((old.hour_end) ? old.hour_end : ''),
-            course_id: ((old.course_id) ? old.course_id : ''),
-            day_id: ((old.day_id) ? old.day_id : ''),
-          });
+          if (old.day_id) {
+            arr.push(old);
+          } else {
+            arr.push({
+              hour_start: '',
+              hour_end: '',
+              day_id: val[i],
+            });
+          }
           old = {};
+        }
+        for(let i in days) {
+          test = false;
+          for(let a in arr) {
+            if (days[i].day_id == arr.day_id) {
+              test = true;
+            }
+          }
+          if (!test) {continue;}
+          arr.push(days[i]);
         }
         this.formData.data.days = arr;
       },
@@ -237,6 +274,7 @@
       return {
         coordinators: [],
         companies: [],
+        coursestates: [],
         teachers: [],
         typestudents: [],
         idiomas: [],
@@ -254,6 +292,7 @@
         msg: {
           class_type_id: 'Tipo de asistencia a las clases.',
           code: 'Código único usado para los cursos.',
+          date_init: 'Fecha de inicio del curso',
           coordinator_id: 'Coordinador asignado al curso.',
           company_id: 'Empresa que contrató el servicio.',
           idioma_id: 'Idioma a impartir en clase.',
@@ -277,6 +316,7 @@
         this.days = response.data.days;
         this.coordinators = response.data.coordinators;
         this.companies = response.data.companies;
+        this.coursestates = response.data.coursestates;
       });
     },
     methods: {

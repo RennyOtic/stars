@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ { Course, Idioma, Level, ClassType, Material, TypeStudents, Day, Company, CourseDay };
+use App\Models\ { Course, Idioma, Level, ClassType, Material, TypeStudents, Day, Company, CourseDay, CourseState };
 use App\Models\Permisologia\Role;
 use App\Http\Requests\ { CourseStoreRequest, CourseUpdateRequest };
 
@@ -13,7 +13,6 @@ class CourseController extends Controller
 
     public function __construct()
     {
-        $this->middleware('onlyAjax');
         $this->middleware('can:courseManagement,index')->only(['index', 'dataForRegister']);
         $this->middleware('can:courseManagement,show')->only(['show']);
         $this->middleware('can:courseManagement,destroy')->only(['destroy']);
@@ -26,12 +25,14 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::dataForPaginate(['id', 'code', 'teacher_id', 'idioma_id', 'level_id'], function ($c) {
+        $select = ['id', 'code', 'teacher_id', 'idioma_id', 'level_id', 'coursestate_id'];
+        $courses = Course::dataForPaginate($select, function ($c) {
             $c->teacher_id = $c->teacher->fullName();
             $c->idioma_id = $c->idioma->name;
             $c->level_id = $c->level->name;
             $c->cupos = $c->users()->count();
-            unset($c->teacher, $c->idioma, $c->level, $c->users);
+            $c->coursestate_id = $c->coursestate->name;
+            unset($c->teacher, $c->idioma, $c->level, $c->users, $c->coursestate);
         }, ['dir' => 'desc']);
         return $this->dataWithPagination($courses);
     }
@@ -51,7 +52,7 @@ class CourseController extends Controller
         foreach ($data['days'] as $d) {
             CourseDay::create([
                 'course_id' => $course->id,
-                'day_id' => $d['id'],
+                'day_id' => $d['day_id'],
                 'hour_start' => $d['hour_start'],
                 'hour_end' => $d['hour_end'],
             ]);
@@ -92,14 +93,27 @@ class CourseController extends Controller
     {
         $data = $request->validated();
         $course = Course::findOrFail($id);
+        $data['slug'] = $data['code'] . '-' . \Auth::user()->id;
         $course->update($data);
+        $courseday = CourseDay::where('course_id', '=', $course->id)->pluck('id')->toArray();
         foreach ($data['days'] as $d) {
-            CourseDay::findOrFail($d['id_r'])->update([
-                'course_id' => $d['course_id'],
-                'day_id' => $d['day_id'],
-                'hour_start' => $d['hour_start'],
-                'hour_end' => $d['hour_end'],
-            ]);
+            if (isset($d['id'])) {
+                CourseDay::findOrFail($d['id'])->update([
+                    'hour_start' => $d['hour_start'],
+                    'hour_end' => $d['hour_end'],
+                ]);
+                $courseday = array_diff($courseday, [$d['id']]);
+            } else {
+                CourseDay::create([
+                    'course_id' => $course->id,
+                    'day_id' => $d['day_id'],
+                    'hour_start' => $d['hour_start'],
+                    'hour_end' => $d['hour_end'],
+                ]);
+            }
+        }
+        foreach ($courseday as $c) {
+            CourseDay::findOrFail($c)->delete();
         }
     }
 
@@ -137,6 +151,7 @@ class CourseController extends Controller
             unset($u->pivot, $u->name, $u->last_name, $u->num_id);
         });
 
+        $coursestates = CourseState::get(['id', 'name']);
         $typestudents = TypeStudents::get(['id', 'name']);
         $idiomas = Idioma::get(['id', 'name']);
         $levels = Level::get(['id', 'name']);
@@ -149,7 +164,7 @@ class CourseController extends Controller
             unset($c->pivot, $c->name, $c->rut);
         });
 
-        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials', 'days', 'coordinators', 'companies'));
+        return response()->json(compact('teachers', 'typestudents', 'idiomas', 'levels', 'classtypes', 'materials', 'days', 'coordinators', 'companies', 'coursestates'));
     }
 
 }

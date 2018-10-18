@@ -22,13 +22,21 @@
             {{ csrf_field() }}
             <div class="form-group label-floating has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
                 <label for="email" class="control-label">Correo:</label>
+                @if(env('APP_ENV') == 'local')
                 <input id="email" type="email" class="form-control" name="email" value="root@smoothtalkers.com" required autofocus> 
+                @else
+                <input id="email" type="email" class="form-control" name="email" value="" required autofocus> 
+                @endif
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
 
             <div class="form-group label-floating has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
                 <label for="password" class="control-label">Contraseña:</label>
+                @if(env('APP_ENV') == 'local')
                 <input id="password" type="password" class="form-control" name="password" value="secret" required>
+                @else
+                <input id="password" type="password" class="form-control" name="password" value="" required>
+                @endif
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
 

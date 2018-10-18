@@ -45,7 +45,9 @@ export default {
 				inscription: 'Inscripciones',
 				assistanceControl: 'Asistencia',
 				company: 'Empresa',
-			},
+				notify_s: 'Notificaciones',
+				report: 'Reportes',
+			}
 		};
 	},
 	updated: function () {

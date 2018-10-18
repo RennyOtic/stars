@@ -1,11 +1,6 @@
 <template>
     <ul class="list-unstyled full-box dashboard-sideBar-Menu"> <!-- SideBar Menu -->
         <li class="header text-center">Menú de Navegación</li>
-        <!-- <li>
-            <router-link :to="{ name: 'dashboard' }">
-                <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> Dashboard
-            </router-link>
-        </li> -->
         <li v-show="can(['user.index','rol.index','permission.index','company.index'])">
             <a href="#!" class="btn-sideBar-SubMenu">
                 <i class="fa fa-laptop zmdi zmdi-hc-fw"></i> Administración <i class="zmdi zmdi-caret-down pull-right"></i>
@@ -42,6 +37,23 @@
             <router-link :to="{ name: 'assistanceControl.index' }">
                 <i class="glyphicon glyphicon-list zmdi-hc-fw"></i> Control de Asistencia
             </router-link>
+        </li>
+        <li v-if="can('notify_s.index')">
+            <router-link :to="{ name: 'notify_s.index' }">
+                <i class="glyphicon glyphicon-exclamation-sign zmdi-hc-fw"></i> Solicitudes de Suspención
+            </router-link>
+        </li>
+        <li v-show="can(['report.pay_teacher'])">
+            <a href="#!" class="btn-sideBar-SubMenu">
+                <i class="fa fa-laptop zmdi zmdi-hc-fw"></i> Reportes <i class="zmdi zmdi-caret-down pull-right"></i>
+            </a>
+            <ul class="list-unstyled full-box">
+                <li v-if="can('report.pay_teacher')">
+                    <router-link :to="{ name: 'report.pay_teacher' }">
+                        <i class="fa fa-users zmdi zmdi-hc-fw"></i> Pago de profesor
+                    </router-link>
+                </li>
+            </ul>
         </li>
     </ul>
 </template>

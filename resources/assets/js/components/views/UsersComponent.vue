@@ -29,7 +29,23 @@
             @click="deleted('/admin/users/'+id, $children[1].get, 'fullName')"
             v-show="id && show == 1"
             v-if="can('user.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
-<!-- <a :href="'/logging/'+id" v-show="id && show == 1" type="button" class="btn btn-danger btn-raised btn-xs" style="z-index: 100">logging</a> -->
+            <a :href="'/pdf-course-inscription/' + id"
+            class="btn btn-default btn-raised btn-xs"
+            data-tooltip="tooltip"
+            title="Cursos Inscritos"
+            v-show="show == 1 && id && is(id, 'Alumno')"
+            v-if="can('report.course_inscription')"><span class="glyphicon glyphicon-save"></span></a>
+            <a :href="'/pdf-course-teacher/' + id"
+            class="btn btn-default btn-raised btn-xs"
+            data-tooltip="tooltip"
+            title="Cursos por Profesor"
+            v-show="show == 1 && id && is(id, 'Profesor')"
+            v-if="can('report.course_teacher')"><span class="glyphicon glyphicon-save"></span></a>
+            <!-- <a :href="'/logging/'+id"
+            v-show="id && show == 1"
+            type="button"
+            class="btn btn-danger btn-raised btn-xs"
+            style="z-index: 100">logging</a> -->
         </div>
         <div class="box-body">
             <rs-form :formData="formData"
@@ -77,6 +93,18 @@
             };
         },
         methods: {
+            is(id, rol) {
+                let d = this.$children[1].rows;
+                for(let i in d) {
+                    if (d[i].id == id) {
+                        if (d[i].rol.indexOf(rol) != -1) {
+                            return true;
+                        }
+                        continue;
+                    }
+                }
+                return false;
+            },
             openform: function (cond) {
                 this.formData.ready = false;
                 if (cond == 'create') {

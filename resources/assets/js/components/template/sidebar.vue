@@ -18,7 +18,7 @@
 						</router-link>
 					</li>
 					<li>
-						<a href="#" :to="{ path: '/'}" data-tooltip="tooltip" title="Salir" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+						<a id="salir" href="#" data-tooltip="tooltip" title="Salir" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 							<i class="zmdi zmdi-power"></i>
 							<form id="logout-form" action="/logout" method="POST" style="display:none;">
 								<input type="hidden" name="_token" :value="token">

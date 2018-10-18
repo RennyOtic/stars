@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DaySeeder::class);
         $this->call(HowFindSeeder::class);
         $this->call(EventsAssistanceSeeder::class);
-        $this->call(DeveloperSeeder::class);
+        if (env('APP_ENV') == 'local') {$this->call(DeveloperSeeder::class);}
     }
 }

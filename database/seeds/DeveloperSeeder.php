@@ -34,5 +34,9 @@ class DeveloperSeeder extends Seeder
 
         factory(App\Models\Course::class, 50)->create();
 
+        DB::table('course_user')->insert([
+            'user_id' => 1,
+            'course_id' => 1
+        ]);
     }
 }

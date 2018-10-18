@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div class="col-md-12">
-			<header-table :n="n" :c="nc" @changeN="num = arguments[0]" @changeS="search = arguments[0]"></header-table>
+			<header-table :n="n" :c="nc" :sh_s="sh_s" @changeN="num = arguments[0]" @changeS="search = arguments[0]"></header-table>
 			<div class="table-responsive">
 				<table :id="id" class="table table-bordered table-hover table-condensed">
 					<thead>
@@ -47,6 +47,9 @@ th span, tbody tr {
 			data: {},
 			columns: {},
 			id: {},
+			sh_s: {
+				default: true
+			},
 			n: {
 				default: function () {
 					return [10,20,30];

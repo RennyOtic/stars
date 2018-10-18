@@ -20,7 +20,7 @@
                 <li v-for="page in pagesNumber" :class="isActive(page)" class="page-item">
                     <a href="#" class="page-link" @click.prevent="updateValue(page)"><span>{{ page }}</span></a>
                 </li>
-                <li v-if="data.current_page < data.last_page-3" class="page-item">
+                <li v-if="data.current_page < data.last_page-4" class="page-item">
                     <a href="#" class="page-link" @click.prevent=""><span>...</span></a>
                 </li>
                 <li v-if="data.current_page < data.last_page-4" class="page-item">

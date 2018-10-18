@@ -16,7 +16,7 @@ class CreatePermisologiaTables extends Migration
 
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 50);
+            $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->text('from_at')->nullable();
@@ -37,9 +37,9 @@ class CreatePermisologiaTables extends Migration
 
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 25)->unique();
-            $table->string('module', 20); // users | roles ..
-            $table->string('action', 20); // index | show | store | update | destroy
+            $table->string('name')->unique();
+            $table->string('module'); // users | roles ..
+            $table->string('action'); // index | show | store | update | destroy
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

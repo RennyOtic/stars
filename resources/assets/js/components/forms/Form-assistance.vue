@@ -9,39 +9,104 @@
           <spinner v-if="!formData.ready"></spinner>
           <div class="row" v-else>
 
-            <h4><span class="glyphicon glyphicon-plus"></span> Asistencia al Curso: {{ formData.data.name }}.</h4>
+            <h4><span class="glyphicon glyphicon-plus"></span> Asistencia al Curso: {{ formData.data.code }}.</h4>
 
-            <!-- <div class="row">
-              <div class="col-xs-6"><p>Profesor: {{ formData.data.teacher }}</p></div>
-              <div class="col-xs-6"><p>Submission ID: {{ formData.data.code }}</p></div>
-              <div class="col-xs-6"><p>Idioma: {{ formData.data.idioma }}</p></div>
-              <div class="col-xs-6" :class="(formData.data.count_class <= 5)?'text-danger':''"><p><b>Clase: {{ formData.data.count_class }}</b></p></div>
-            </div> -->
+            <div class="row">
+              <div class="col-xs-4"><p><b>Profesor:</b> {{ formData.data.teacher }}</p></div>
+              <div class="col-xs-5"><p><b>Submission ID:</b> {{ formData.data.code }}</p></div>
+              <div class="col-xs-3"><p><b>Idioma:</b> {{ formData.data.idioma }}</p></div>
+            </div>
 
-            <!-- <div class="row" v-if="!state.hour">
-            <div class="row" v-else>
-              <h3 class="text-center">Comienza la clase.</h3>
-              <div class="col-md-6">
-                <button type="button"
-                class="btn btn-success btn-lg"
-                :class="{'btn-raised': !cron.start}"
-                :disabled="cron.start"
-                @click="start">Iniciar Clase</button>
-                <button type="button"
-                class="btn btn-danger btn-lg"
-                :class="{'btn-raised': cron.start}"
-                :disabled="!cron.start"
-                @click="stop">Finalizar Clase</button>
+            <div class="row">
+              <div class="col-md-6 col-md-offset-3">
+                <div class="form-group label-floating">
+                  <label for="event" class="control-label">
+                    <span class="fa fa-laptop"></span> Evento:
+                  </label>
+                  <select class="form-control" v-model="event" :disabled="cron.start">
+                    <option value="1">Comenzar clase</option>
+                    <option value="2">Perdir Suspensión / Cancelación</option>
+                  </select>
+                  <small id="eventHelp" class="form-text text-muted">
+                    Selecciona 
+                  </small>
+                </div>
               </div>
-              <div class="col-md-6">
-                <div class="reloj" id="Horas">00</div>
-                <div class="reloj" id="Minutos">:00</div>
-                <div class="reloj" id="Segundos">:00</div>
-                <div class="reloj" id="Centesimas">:00</div>
-              </div>
-            </div> -->
+            </div>
 
-            <div class="row"><pre>{{ formData.data }}</pre></div>
+            <template v-if="event == 1">
+              <div class="row" v-if="formData.data.coursestate_id == 1">
+                <h3 class="text-center">Aún no ha comenzado el Curso.</h3>
+              </div>
+              <div class="row" v-else-if="formData.data.coursestate_id == 2">
+                <h3 class="text-center">Comienza la clase.</h3>
+                <div class="col-md-6">
+                  <button type="button"
+                  class="btn btn-success btn-lg"
+                  :class="{'btn-raised': !cron.start}"
+                  :disabled="cron.start === true"
+                  @click="start_stop">Iniciar Clase</button>
+                  <button type="button"
+                  class="btn btn-danger btn-lg"
+                  :class="{'btn-raised': cron.start}"
+                  :disabled="!cron.start"
+                  @click="start_stop">Finalizar Clase</button>
+                </div>
+                <div class="col-md-6">
+                  <h2 id='crono' class="reloj">00:00:00:00</h2>
+                </div>
+              </div>
+              <div class="row" v-else>
+                <h3 class="text-center">El Curso Ya ha Culminado.</h3>
+              </div>
+            </template>
+            <template v-else>
+              <form class="row" @submit.prevent="notify">
+                <div class="col-md-6">
+                  <div class="form-group label-floating">
+                    <label for="coordinator" class="control-label">
+                      <span class="fa fa-user"></span> coordinador:
+                    </label>
+                    <select class="form-control" v-model="formData.data.coordinator_id">
+                      <option value="">Seleccione un coordinador</option>
+                      <option v-for="c in coordinators" :value="c.id" v-text="c.fullName"></option>
+                    </select>
+                    <small id="coordinatorHelp" class="form-text text-muted">
+                      Selecciona el coordinador para notificarle.
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group label-floating">
+                    <label for="motivo" class="control-label">
+                      <span class="fa fa-laptop"></span> motivo:
+                    </label>
+                    <select class="form-control" v-model="formData.data.motivo">
+                      <option :value="e.id" v-for="e in event_" v-text="e.name"></option>
+                    </select>
+                    <small id="motivoHelp" class="form-text text-muted">
+                      Seleccione el motivo de Cancelación / Suspensión
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group label-floating">
+                    <label for="observation" class="control-label">
+                      <span class="fa fa-laptop"></span> observación:
+                    </label>
+                    <textarea id="observation" class="form-control" v-model="formData.data.observation" cols="15" rows="5" style="resize: noen"></textarea>
+                    <small id="observationHelp" class="form-text text-muted">
+                      Escribe la causa para Cancelación / Suspensión
+                    </small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-5 col-xs-offset-5">
+                    <button type="submit" class="btn btn-raised btn-danger">Notificar</button>
+                  </div>
+                </div>
+              </form>
+            </template>
 
           </div>
         </div>
@@ -66,17 +131,18 @@
     data () {
       return {
         state: {},
+        coordinators: [],
+        event_: [],
+        event: 1,
+        assistance: '',
         formData: {
           ready: true,
           data: {}
-        }, 
+        },
         cron: {
           start: false,
-          control: null,
-          centesimas: 0,
-          segundos: 0,
-          minutos: 0,
-          horas: 0,
+          inicio: 0,
+          timeout: 0
         },
       };
     },
@@ -84,80 +150,119 @@
       this.get();
     },
     methods: {
-      get() {
-        this.formData.ready = false;
-        axios.post('/get-data-assistance', { id: this.$route.params.id })
+      notify() {
+        axios.post('/notify', this.formData.data)
         .then(response => {
-          this.formData.data = response.data.course;
-          this.formData.ready = true;
-          this.state.hour=true
-          // let day_now = moment().day() + 1;
-          // if (this.formData.data.days.indexOf(day_now) != -1) {
-          //   this.state.text = 'Hoy es la clase.';
-          //   this.state.class = 'success';
-          //   let now_hour = ((moment().hour() < 10) ? '0' + moment().hour() : moment().hour()) + ':' + ((moment().minutes() < 10) ? '0' + moment().minutes() : moment().minutes());
-          //   if (now_hour >= this.formData.data.hour_start && now_hour <= this.formData.data.hour_end) {
-          //     if (response.data.course.user_class == null) {
-          //       this.state.hour = false;
-          //       this.state.text2 = 'En breve Comenzamos...';
-          //       setTimeout(() => {this.get();}, 5000);
-          //     } else {
-          //       this.state.hour = true;
-          //       this.state.text2 = '';
-          //     }
-          //   } else if (now_hour >= this.formData.data.hour_end) {
-          //     this.state.text = 'Clase Finalizada.';
-          //     this.state.text2 = '';
-          //     this.state.class = 'info';
-          //   } else {}
-          // } else {
-          //   this.state.text = 'La clase aún no esta abierta.';
-          //   this.state.class = 'danger';
-          // }
+          toastr.success('Su Solicitud fue procesada con exito. Espere la pronta respuesta de un Coordinador.');
+          this.$router.push({name: 'notify_s.index'});
         });
       },
-      stop() {
-        // if (!this.cron.start) return;
-        // clearInterval(this.cron.control);
-        // this.cron.start = false;
+      get() {
+        this.formData.ready = false;
+        axios.post('/get-data-assistance', {
+          id: this.$route.params.id,
+          assistance_id: localStorage.getItem('assistance')
+        })
+        .then(response => {
+          if (response.data == '') {
+            return this.$router.push({name: 'assistanceControl.index'});
+          }
+          this.formData.data = response.data.course;
+          this.formData.data.motivo = '';
+          this.formData.data.observation = '';
+
+          this.coordinators = response.data.coordinators;
+          this.event_ = response.data.eventassistance;
+
+          this.formData.ready = true;
+          console.log(response.data.state)
+          this.test_cron();
+        });
       },
-      start() {
-        if (this.cron.start) return toastr.info('asodjaso');
-        // axios.post('/assistance')
-        // .then(response => {
-          this.cronometro();
+      hide_show() {
+        var body=$('.dashboard-contentPage');
+        var sidebar=$('.dashboard-sideBar');
+        if(sidebar.css('pointer-events')=='none'){
+          $('.btn-menu-dashboard').show();
+          body.removeClass('no-paddin-left');
+          sidebar.removeClass('hide-sidebar').addClass('show-sidebar');
+        } else {
+          $('.btn-menu-dashboard').hide();
+          body.addClass('no-paddin-left');
+          sidebar.addClass('hide-sidebar').removeClass('show-sidebar');
+        }
+      },
+      test_cron() {
+        if(localStorage.getItem("inicio") != null) {
+          // Si al iniciar el navegador, la variable inicio que se guarda
+          // en la base de datos del navegador tiene valor, cargamos el valor
+          // y iniciamos el proceso.
+          this.cron.inicio = localStorage.getItem("inicio");
+          this.assistance = localStorage.getItem('assistance');
+          this.funcionando();
           this.cron.start = true;
-            // console.log(response.data)
-        // });
+          toastr.success('La clase aún sigue activa');
+          this.hide_show();
+        }
       },
-      cronometro() {
-        this.cron.control = setInterval(() => {
-          if (this.cron.centesimas < 99) {
-            this.cron.centesimas++;
-            if (this.cron.centesimas < 10) { this.cron.centesimas = '0' + this.cron.centesimas }
-              document.getElementById('Centesimas').innerHTML = ':' + this.cron.centesimas;
-          }
-          if (this.cron.centesimas == 99) { this.cron.centesimas = -1; }
-          if (this.cron.centesimas == 0) {
-            this.cron.segundos++;
-            if (this.cron.segundos < 10) { this.cron.segundos = '0' + this.cron.segundos }
-              document.getElementById('Segundos').innerHTML = ':' + this.cron.segundos;
-            if (this.cron.segundos%5 == 0) {console.clear(); };
-          }
-          if (this.cron.segundos == 59) { this.cron.segundos = -1; }
-          if ((this.cron.centesimas == 0) && (this.cron.segundos == 0)) {
-            this.cron.minutos++;
-            if (this.cron.minutos < 10) { this.cron.minutos = '0' + this.cron.minutos }
-              document.getElementById('Minutos').innerHTML = ':' + this.cron.minutos;
-          }
-          if (this.cron.minutos == 59) { this.cron.minutos = -1; }
-          if ( (this.cron.centesimas == 0) && (this.cron.segundos == 0) && (this.cron.minutos == 0) ) {
-            this.cron.horas++;
-            if (this.cron.horas < 10) { this.cron.horas = '0' + this.cron.horas }
-              document.getElementById('Horas').innerHTML = this.cron.horas;
-          }
-        }, 10);
-      }
+      start_stop() {
+        if(this.cron.timeout == 0 && !this.cron.start) {
+          axios.post('/assistance', {
+            course_id: this.formData.data.id,
+            event_id: 1,
+          })
+          .then(response => {
+            localStorage.setItem('assistance', response.data);
+            this.assistance = response.data;
+            // empezar el cronometro
+            // Obtenemos el valor actual
+            this.cron.inicio = new Date().getTime();
+            // Guardamos el valor inicial en la base de datos del navegador
+            localStorage.setItem("inicio", this.cron.inicio);
+            // iniciamos el proceso
+            this.funcionando();
+            this.hide_show();
+            toastr.success('Haz Iniciado tu Clase');
+            this.cron.start = true;
+          });
+        } else if(this.cron.timeout != 0 && this.cron.start) {
+          axios.put('/assistance/' + this.assistance, {
+            course_id: this.formData.data.id,
+            event_id: 3,
+          })
+          .then(response => {
+            // detemer el cronometro
+            clearTimeout(this.cron.timeout);
+            // Eliminamos el valor inicial guardado
+            localStorage.removeItem("inicio");
+            localStorage.removeItem("assistance");
+            this.hide_show();
+            this.cron.timeout = 0;
+            this.cron.start = false;
+            toastr.success('Haz Finalizado tu Clase');
+          });
+        }
+      },
+      funcionando() {
+        let interval  = 10;
+        // obteneos la fecha actual
+        let actual = new Date().getTime();
+        // obtenemos la diferencia entre la fecha actual y la de inicio
+        let diff = new Date(actual - this.cron.inicio);
+        // mostramos la diferencia entre la fecha actual y la inicial
+        let result = this.LeadingZero(diff.getUTCHours()) + ':' + this.LeadingZero(diff.getUTCMinutes()) + ':' + this.LeadingZero(diff.getUTCSeconds()) + ':' + this.LeadingZero(diff.getMilliseconds());
+        if (diff.getUTCSeconds()%10 == 0 && diff.getMilliseconds() >= 0 && diff.getMilliseconds() <= interval) {
+          axios.post('/assistance', {assistance_id: this.assistance, event_id: 2});
+          console.clear();
+        }
+        if (document.getElementById('crono') !== null) {
+          document.getElementById('crono').innerHTML = result.substr(0,11);
+        }
+        // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
+        this.cron.timeout = setTimeout(() => { this.funcionando(); }, interval);
+      },
+      /* Funcion que pone un 0 delante de un valor si es necesario */
+      LeadingZero(Time) { return (Time < 10) ? "0" + Time : + Time; }
     }
   }
 </script>

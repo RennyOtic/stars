@@ -27,6 +27,7 @@ class Course extends Model
         'type_student_id',
         'user_id',
         'coursestate_id',
+        'date_init'
     ];
 
     /**
@@ -37,6 +38,26 @@ class Course extends Model
     protected $hidden = [
         'slug', 'created_at' , 'updated_at', 'deleted_at'
     ];
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function type_student()
+    {
+        return $this->belongsTo(TypeStudents::class);
+    }
+
+    public function class_type()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
 
     public function teacher()
     {
@@ -61,6 +82,11 @@ class Course extends Model
     public function coordinator()
     {
         return $this->belongsTo(\App\User::class);
+    }
+
+    public function coursestate()
+    {
+        return $this->belongsTo(CourseState::class);
     }
 
     public function days()

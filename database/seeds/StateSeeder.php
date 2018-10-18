@@ -11,7 +11,8 @@ class StateSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Coursestate::create(['name' => 'En proceso']);
+        \App\Models\Coursestate::create(['name' => 'Por Iniciar']);
+        \App\Models\Coursestate::create(['name' => 'En Proceso']);
         \App\Models\Coursestate::create(['name' => 'Finalizado']);
     }
 }

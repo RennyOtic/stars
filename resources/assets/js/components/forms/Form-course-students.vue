@@ -40,7 +40,20 @@
           data-tooltip="tooltip"
           title="Borrar Alumno"
           @click="remove"
-          v-if="id"><i class="fa fa-minus"></i></button>
+          v-show="id"
+          v-if="can('inscription.destroy')"><i class="fa fa-minus"></i></button>
+          <a :href="'/pdf-inscription/' + all.id + '/' + id" 
+          class="btn btn-info btn-raised btn-xs"
+          data-tooltip="tooltip"
+          title="Inscripción del Curso"
+          v-show="id"
+          v-if="can('report.inscription')"><i class="glyphicon glyphicon-save"></i></a>
+          <a :href="'/pdf-assistance/' + all.id + '/' + id" 
+          class="btn btn-warning btn-raised btn-xs"
+          data-tooltip="tooltip"
+          title="Asistencia al Curso"
+          v-show="id"
+          v-if="can('report.assistance')"><i class="glyphicon glyphicon-save"></i></a>
         </div>
         <rs-table id="course_students"
         :columns="tabla.columns"

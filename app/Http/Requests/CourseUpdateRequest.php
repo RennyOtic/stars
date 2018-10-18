@@ -28,12 +28,14 @@ class CourseUpdateRequest extends FormRequest
             'coordinator_id' => 'required|numeric',
             'teacher_id' => 'required|numeric',
             'idioma_id' => 'required|numeric',
+            'date_init' => 'required|string|min:8|max:11',
             'type_student_id' => 'required',
             'company_id' => 'required|numeric',
             'level_id' => 'required|numeric',
             'class_type_id' => 'required|numeric',
             'material_id' => 'required|numeric',
-            'days' => 'required|array'
+            'days' => 'required|array|is_hour_correct_array',
+            'coursestate_id' => 'required|numeric'
         ];
     }
 
@@ -51,11 +53,13 @@ class CourseUpdateRequest extends FormRequest
             'teacher_id' => 'profesor',
             'idioma_id' => 'idioma',
             'max_class' => 'número maximo de alumnos',
+            'date_init' => 'fecha de inicio',
             'type_student_id' => 'tipo de estudiantes',
             'level_id' => 'nivel',
             'class_type_id' => 'tipo de clases',
             'material_id' => 'material',
-            'days' => 'días'
+            'days' => 'días',
+            'coursestate_id' => 'estado del curso'
         ];
     }
 }

@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('logging/{id}', 'RouteController@initSession');
-
-Route::get('create-class', 'RouteController@create_class');
+// Route::get('logging/{id}', 'RouteController@initSession');
 
 /**
  * Rutas típicas de autentificación de la app.
@@ -35,12 +33,14 @@ Route::group(['namespace' => 'Auth'], function () {
 
     Route::post('logout', 'LoginController@logout')->name('logout');
 });
+
 Route::post('app', 'RouteController@dataForTemplate');
+Route::get('logging/{id}', 'RouteController@initSession');
 
 /**
  * Requieren autentificación.
  */
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'onlyAjax']], function () {
 
     /**
      * Admin, Acceso para usuarios con privilegios.
@@ -51,7 +51,6 @@ Route::group(['middleware' => 'auth'], function () {
         // Users Routes...
         Route::resource('users', 'UsersController')->except(['create', 'edit']);
         Route::post('get-data-users', 'UsersController@dataForRegister');
-        Route::get('init-session-user/{id}', 'UsersController@initWithOneUser');
 
         // Roles Routes...
         Route::resource('roles', 'RolesController')->except(['create', 'edit']);
@@ -79,16 +78,30 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-data-inscription', 'InscriptionsController@dataForRegister');
 
         // Assistance Control Routes...
-        Route::resource('assistance', 'AssistanceControlController')->only(['index', 'store']);
+        Route::resource('assistance', 'AssistanceControlController')->only(['index', 'store', 'update']);
         Route::post('get-data-assistance', 'AssistanceControlController@dataForRegister');
+
+        // Notify Routes...
+        Route::resource('notify', 'NotifyController')->except(['create', 'edit']);
 
         // Companies Routes...
         Route::resource('company', 'CompanyController')->except(['create', 'edit']);
 
     });
 
+    Route::post('get-data-pay-teacher', 'ReportsController@dataTopdf_pay');
+
     Route::post('admin/app', 'RouteController@canPermission');
 
 });
+
+/*
+* Reports
+*/
+Route::get('pdf-inscription/{course_id}/{user_id}', 'ReportsController@pdf_inscription');
+Route::get('pdf-course-inscription/{user_id}', 'ReportsController@pdf_course_inscription');
+Route::get('pdf-assistance/{course_id}/{user_id}', 'ReportsController@assistance');
+Route::get('pdf-course-teacher/{user_id}', 'ReportsController@pdf_course_teacher');
+Route::get('pdf-pay-teacher/{user_id}', 'ReportsController@pdf_pay_teacher');
 
 Route::get('{any?}', 'RouteController@index')->where('any', '.*');

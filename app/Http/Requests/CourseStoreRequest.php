@@ -32,8 +32,10 @@ class CourseStoreRequest extends FormRequest
             'type_student_id' => 'required',
             'level_id' => 'required|numeric',
             'class_type_id' => 'required|numeric',
+            'date_init' => 'required|string|min:8|max:11',
             'material_id' => 'required|numeric',
-            'days' => 'required|array|is_hour_correct_array'
+            'days' => 'required|array|is_hour_correct_array',
+            'coursestate_id' => 'required|numeric'
         ];
     }
 
@@ -53,9 +55,11 @@ class CourseStoreRequest extends FormRequest
             'max_class' => 'número maximo de alumnos',
             'type_student_id' => 'tipo de estudiantes',
             'level_id' => 'nivel',
+            'date_init' => 'fecha de inicio',
             'class_type_id' => 'tipo de clases',
             'material_id' => 'materiales',
-            'days' => 'días'
+            'days' => 'días',
+            'coursestate_id' => 'estado del curso'
         ];
     }
 }

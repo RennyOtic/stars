@@ -118,6 +118,9 @@ class ValidatorServiceProvider extends ServiceProvider
         {
             $test = true;
             foreach ($value as $v) {
+                if (date($v['hour_start']) > date($v['hour_end'])) {
+                    return false;
+                }
                 $hour_start = explode(':', $v['hour_start']);
                 if (count($hour_start) == 2) {
                     if (!($hour_start[0] >= 0 && $hour_start[0] <= 23)) $test = false;

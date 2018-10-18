@@ -14,7 +14,6 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('onlyAjax')->except(['initWithOneUser']);
         $this->middleware('can:user,index')->only(['index', 'dataForRegister']);
         $this->middleware('can:user,show')->only(['show']);
         $this->middleware('can:user,destroy')->only(['destroy']);

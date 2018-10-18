@@ -7,7 +7,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-xs-4 col-sm-2 pull-right">
+        <div class="col-xs-4 col-sm-2 pull-right" v-if="sh_s">
             <div class="form-group label-floating">
                 <input type="text" class="form-control" placeholder="Busqueda" v-model="search">
             </div>
@@ -30,7 +30,7 @@ select {
 
     export default {
         name: 'header-table',
-        props: ['n', 'c'],
+        props: ['n', 'c', 'sh_s'],
         data () {
             return {
                 num: this.c,

@@ -12,7 +12,6 @@ class RolesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('onlyAjax');
         $this->middleware('can:rol,index')->only(['index']);
         $this->middleware('can:rol,show')->only(['show']);
         $this->middleware('can:rol,destroy')->only(['destroy']);

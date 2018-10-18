@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ModelsTrait;
 
-class CourseDay extends Model
+class AssistancesControl extends Model
 {
-    use SoftDeletes, ModelsTrait;
+	use SoftDeletes, ModelsTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -16,10 +16,7 @@ class CourseDay extends Model
      * @var array
      */
     protected $fillable = [
-    	'course_id',
-    	'day_id',
-    	'hour_start',
-    	'hour_end',
+    	'assistance_id', 'user_id'
     ];
 
     /**
@@ -30,9 +27,4 @@ class CourseDay extends Model
     protected $hidden = [
         'created_at' , 'updated_at', 'deleted_at'
     ];
-
-    public function day()
-    {
-        return $this->belongsTo(Day::class);
-    }
 }

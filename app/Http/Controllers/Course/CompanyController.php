@@ -11,7 +11,6 @@ class CompanyController extends Controller
 
     public function __construct()
     {
-        $this->middleware('onlyAjax');
         $this->middleware('can:company,index')->only(['index', 'dataForRegister']);
         $this->middleware('can:company,store')->only(['store']);
         $this->middleware('can:company,show')->only(['show']);

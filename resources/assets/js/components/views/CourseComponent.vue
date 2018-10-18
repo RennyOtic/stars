@@ -34,8 +34,8 @@
             class="btn btn-success btn-raised btn-xs"
             data-tooltip="tooltip"
             title="Lista de Alumnos Inscritos"
-            v-show="show == 1"
-            v-if="can('inscription.index') && id"><span class="glyphicon glyphicon-plus"></span></router-link>
+            v-show="show == 1 && id"
+            v-if="can('inscription.index')"><span class="glyphicon glyphicon-list"></span></router-link>
         </div>
         <div class="box-body">
             <rs-table :columns="tabla.columns"
@@ -43,7 +43,7 @@
             @output="id = arguments[0]"
             v-show="show == 1"></rs-table>
             <rs-form :formData="formData"
-            @input="$children[0].get()"
+            @input="$children[1].get()"
             v-if="can(['courseManagement.store','courseManagement.update'])"
             v-show="show == 2"></rs-form>
         </div>
@@ -66,7 +66,7 @@
         data() {
             return {
                 show: 1,
-                id: null,
+                id: 0,
                 formData: {
                     ready: true,
                     title: '',
@@ -82,6 +82,7 @@
                     { title: 'Nivel', field: 'level_id', sortable: true },
                     { title: 'Profesor', field: 'teacher_id', sortable: true },
                     { title: 'Inscritos', field: 'cupos' },
+                    { title: 'Estado', field: 'coursestate_id' },
                     ]
                 }
             };
@@ -94,7 +95,7 @@
                     this.formData.title = ' Registrar Curso.';
                     this.formData.url = '/courses';
                     this.formData.ico = 'plus';
-                    this.$children[1].days_selected = [];
+                    this.$children[2].days_selected = [];
                     this.formData.data = {
                         name: '',
                         code: '',
@@ -109,6 +110,7 @@
                         level_id: '',
                         class_type_id: '',
                         date_start_at: '',
+                        coursestate_id: 1,
                         date_end_at: '',
                         date_inscription_start_at: '',
                         date_inscription_end_at: '',
@@ -123,16 +125,12 @@
                     .then(response => {
                         this.formData.title = 'Editar Curso: ' + response.data.code + '.';
                         this.formData.data = response.data;
-
                         let days = response.data.days;
                         let arr = [];
                         for(let i in days) {
-                            arr.push({
-                                id: days[i].day_id,
-                                name: days[i].name
-                            });
+                            arr.push(days[i].day_id);
                         }
-                        this.$children[1].days_selected = arr;
+                        this.$children[2].days_selected = arr;
                         this.formData.ready = true;
                     });
                 }

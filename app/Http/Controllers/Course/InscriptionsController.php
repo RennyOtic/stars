@@ -12,7 +12,6 @@ class InscriptionsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('onlyAjax');
         $this->middleware('can:inscription,index')->only(['index', 'dataForRegister']);
         $this->middleware('can:inscription,store')->only(['store']);
         $this->middleware('can:inscription,destroy')->only(['destroy']);

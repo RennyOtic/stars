@@ -175,14 +175,13 @@
           this.event_ = response.data.eventassistance;
 
           this.formData.ready = true;
-          console.log(response.data.state)
           this.test_cron();
         });
       },
       hide_show() {
         var body=$('.dashboard-contentPage');
         var sidebar=$('.dashboard-sideBar');
-        if(sidebar.css('pointer-events')=='none'){
+        if(sidebar.css('pointer-events') == 'none'){
           $('.btn-menu-dashboard').show();
           body.removeClass('no-paddin-left');
           sidebar.removeClass('hide-sidebar').addClass('show-sidebar');
@@ -224,6 +223,7 @@
             this.hide_show();
             toastr.success('Haz Iniciado tu Clase');
             this.cron.start = true;
+            setTimeout(() => {$('select').attr('disabled', 'disabled');},500);
           });
         } else if(this.cron.timeout != 0 && this.cron.start) {
           axios.put('/assistance/' + this.assistance, {
@@ -238,8 +238,9 @@
             localStorage.removeItem("assistance");
             this.hide_show();
             this.cron.timeout = 0;
-            this.cron.start = false;
+            $('select, input').removeAttr('disabled');
             toastr.success('Haz Finalizado tu Clase');
+            this.cron.start = false;
           });
         }
       },

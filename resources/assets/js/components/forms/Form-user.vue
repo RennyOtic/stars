@@ -111,7 +111,7 @@
         msg: {
           name: 'Nombre del usuario.',
           last_name: 'Apellido del usuario.',
-          num_id: 'Cedula de identidad.',
+          num_id: 'RUT/Pasaporte.',
           email: 'Correo electronico.',
           password: 'Contraseña.',
           password_confirmation: 'Confirmación de Contraseña.',
@@ -122,7 +122,7 @@
           phone_movil: 'Número personal.',
           birthday_date: 'Fecha de cumpleaños.',
           nationality_id: 'Nacionalidad natural.',
-          company_id: 'Empresa afiliada el usario,'
+          company_id: 'Empresa afiliada el usario.'
         }
       };
     },

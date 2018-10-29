@@ -30,7 +30,7 @@ class CourseUpdateRequest extends FormRequest
             'idioma_id' => 'required|numeric',
             'date_init' => 'required|string|min:8|max:11',
             'type_student_id' => 'required',
-            'company_id' => 'required|numeric',
+            'company_id' => 'nullable|numeric',
             'level_id' => 'required|numeric',
             'class_type_id' => 'required|numeric',
             'material_id' => 'required|numeric',

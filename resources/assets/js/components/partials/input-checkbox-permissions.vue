@@ -3,9 +3,9 @@
 		<template v-for="(module, keym, indexm) in modules">
 			<div class="col-md-4">
 				<div class="box box-primary">
-					<div class="box-header" style="height: 40px;"><b>{{ module }}.</b></div>
+					<div class="box-header" style="height: 50px;"><b>{{ module }}.</b></div>
 					<div class="box-body" style="font-size: 16px;">
-						<table style="margin-left: 75px;">
+						<table class="table table-condensed table-hover" style="margin-left: 75px;">
 							<tbody>
 								<tr class="form-inline"
 									v-for="(p, key, index) in permissions"

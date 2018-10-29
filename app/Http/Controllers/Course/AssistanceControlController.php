@@ -142,9 +142,9 @@ class AssistanceControlController extends Controller
             unset($u->pivot, $u->name, $u->last_name, $u->num_id);
         });
 
-        if (\Auth::user()->iCan('assistanceControl', 'mTeacher')) { // profesor
+        if (\Auth::user()->iCan('assistanceControl', 'showTeacher')) { // profesor
             $eventassistance = EventAssistance::where('id', '>', 3)->get();
-        } elseif (\Auth::user()->iCan('assistanceControl', 'mStudent')) { // alumno
+        } elseif (\Auth::user()->iCan('assistanceControl', 'showStudent')) { // alumno
             $eventassistance = EventAssistance::where('id', '>', 5)->get();
         }
 

@@ -28,7 +28,7 @@ class CourseStoreRequest extends FormRequest
             'teacher_id' => 'required|numeric',
             'coordinator_id' => 'required|numeric',
             'idioma_id' => 'required|numeric',
-            'company_id' => 'required|numeric',
+            'company_id' => 'nullable|numeric',
             'type_student_id' => 'required',
             'level_id' => 'required|numeric',
             'class_type_id' => 'required|numeric',

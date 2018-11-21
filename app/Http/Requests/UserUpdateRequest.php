@@ -27,13 +27,13 @@ class UserUpdateRequest extends FormRequest
             'email'     => 'required|email|min:8|max:35|unique1:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
-            'num_id'    => 'required|numeric|digits_between:6,8|exr_ced|unique1:users',
+            'num_id'    => 'required|string|digits_between:6,8|unique1:users', // exr_ced
             'password'  => 'nullable|string|min:6|max:20|confirmed',
             'roles'     => 'required',
             'birthday_date' => 'required|date',
             'nationality_id' => 'required|numeric',
             'occupation' => 'required|string|max:25|min:3',
-            'phone_home' => 'required|numeric|digits:10',
+            'phone_home' => 'nullable|numeric|digits:10',
             'phone_movil' => 'required|numeric|digits:10',
             'company_id' => 'nullable|numeric',
         ];
@@ -58,7 +58,7 @@ class UserUpdateRequest extends FormRequest
             'occupation' => 'ocupación',
             'phone_home' => 'telefono de contacto',
             'phone_movil' => 'telefono movil',
-            'roles'     => 'roles',
+            'roles'     => 'perfiles',
             'company_id' => 'empresa'
         ];
     }

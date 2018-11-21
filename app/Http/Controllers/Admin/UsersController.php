@@ -125,7 +125,7 @@ class UsersController extends Controller
      */
     public function dataForRegister()
     {
-        $roles = Role::get(['name', 'id']);
+        $roles = Role::where('id', '>=', \Auth::user()->roles->first()->id)->get(['name', 'id']);
         $nationalities = Nationality::get(['name', 'id']);
         $howfinds = HowFind::get(['name', 'id']);
         $companies = Company::get(['name', 'id', 'rut']);

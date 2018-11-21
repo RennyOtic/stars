@@ -73,7 +73,7 @@ class InscriptionsController extends Controller
             'name'      => 'nombre',
             'num_id'    => 'cédula',
             'password'  => 'contraseña',
-            'roles'     => 'roles',
+            'roles'     => 'perfiles',
             'birthday_date' => 'fecha de cumpleaños',
             'nationality_id' => 'nacionalidad',
             'occupation' => 'ocupación',

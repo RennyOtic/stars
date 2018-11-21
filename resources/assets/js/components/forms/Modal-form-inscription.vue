@@ -12,21 +12,21 @@
           <form class="" @submit.prevent="registrar">
             <div class="">
 
-              <div class="col-sm-6">
-                <template v-for="input in entries.izq">
+              <div class="col-sm-6" v-for="input in entries.izq">
                   <rs-input :name="input" required="true"
                   :type="input.type"
                   v-model="formData.data[input.id]"
                   :msg="msg[input.id]"
                   @input="formData.data[input.id] = arguments[0]"></rs-input>
-                </template>
+              </div>
 
+              <div class="col-sm-6">
                 <div class="form-group rs-select">
                   <label for="nationality_id" class="control-label">
-                    <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Nacionalidad:
+                    <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Pais de Origen:
                   </label>
                   <select id="nationality_id" class="form-control" v-model="formData.data.nationality_id">
-                    <option value="">Seleccione una nacionalidad</option>
+                    <option value="">Seleccione el Pais de Origen</option>
                     <option v-for="n in nationalities" :value="n.id" v-text="n.name"></option>
                   </select>
                   <small id="nationality_idHelp" class="form-text text-muted">
@@ -36,13 +36,6 @@
               </div>
 
               <div class="col-sm-6">
-                <template v-for="input in entries.der">
-                  <rs-input :name="input" required="true"
-                  v-model="formData.data[input.id]"
-                  :type="input.type"
-                  :msg="msg[input.id]"
-                  @input="formData.data[input.id] = arguments[0]"></rs-input>
-                </template>
 
                 <div class="form-group rs-select">
                   <label for="how_find" class="control-label">
@@ -117,14 +110,12 @@
         entries: {
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
-          {label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o'},
-          {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
-          {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
-          ],
-          der: [
           {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
+          {label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o'},
           {label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date'},
+          {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
           {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
+          {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
           {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
           ],
         },
@@ -136,7 +127,7 @@
           email: 'Correo electronico.',
           password: 'Contraseña.',
           password_confirmation: 'Confirmación de Contraseña.',
-          roles: 'Rol a desempeñar.',
+          roles: 'Perfil a desempeñar.',
           position: 'Cargo que desempeña.',
           occupation: 'Ocupación actual del usuario.',
           phone_home: 'Telefono de habitación o trabajo.',

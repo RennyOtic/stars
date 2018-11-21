@@ -106,6 +106,9 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        Company::findOrFail($id)->delete();
+        $company = Company::findOrFail($id);
+        $users = $company->users->count();
+        if ($users) return response()->json(['message' => 'Esta empresa tiene ' . $users . ' usuarios Asignados.'], 401);
+        $company->delete();
     }
 }

@@ -6,62 +6,31 @@
         <spinner v-if="!formData.ready"></spinner>
         <div class="row" v-else>
           <h4><span :class="'glyphicon glyphicon-' + formData.ico"></span> {{ formData.title }}</h4>
-          <div class="col-sm-6">
-            <template v-for="input in entries.izq">
-              <rs-input :name="input" required="true"
-              :type="input.type"
-              v-model="formData.user[input.id]"
-              :msg="msg[input.id]"
-              @input="formData.user[input.id] = arguments[0]"></rs-input>
-            </template>
 
-            <div class="form-group rs-select">
-              <label for="nationality_id" class="control-label">
-                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Nacionalidad:
-              </label>
-              <select id="nationality_id" class="form-control" v-model="formData.user.nationality_id">
-                <option value="">Seleccione una nacionalidad</option>
-                <option v-for="(n, i) in nationalities" :value="n.id" v-text="n.name"></option>
-              </select>
-              <small id="nationality_idHelp" class="form-text text-muted">
-                <span v-text="msg.nationality_id"></span>
-              </small>
-            </div>
+          <div class="col-sm-6" v-for="input in entries.izq">
+            <rs-input :name="input" required="true"
+            :type="input.type"
+            v-model="formData.user[input.id]"
+            :msg="msg[input.id]"
+            @input="formData.user[input.id] = arguments[0]"></rs-input>
           </div>
 
           <div class="col-sm-6">
-            <template v-for="input in entries.der">
-              <rs-input :name="input" required="true"
-              v-model="formData.user[input.id]"
-              :type="input.type"
-              :msg="msg[input.id]"
-              @input="formData.user[input.id] = arguments[0]"></rs-input>
-            </template>
-
-            <div class="form-group rs-select">
-              <label for="roles" class="control-label">
-                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Perfil:
+            <div class="form-group label-floating">
+              <label for="birthday_date" class="control-label">
+                <span class="fa fa-user-o"></span> Fecha de cumpleaños:
               </label>
-              <select id="roles" class="form-control" v-model="formData.user.roles">
-                <option :value="[]">Seleccione un rol</option>
-                <option v-for="(r, i) in roles" :value="r.id" v-text="r.name"></option>
-              </select>
-              <small id="rolesHelp" class="form-text text-muted">
-                <span v-text="msg.roles"></span>
-              </small>
+              <input id="birthday_date" type="date" class="form-control">
+              <small id="birthday_dateHelp" class="form-text text-muted" v-text="msg.birthday_date"></small>
             </div>
           </div>
 
-          <div class="col-md-12">
-            <div class="form-group">
-              <label for="company_id" class="control-label">
-                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Empresa donde trabaja:
-              </label>
-              <rs-select :options="companies" v-model="formData.user.company_id"></rs-select>
-              <small id="company_idHelp" class="form-text text-muted">
-                <span v-text="msg.company_id"></span>
-              </small>
-            </div>
+          <div class="col-sm-6" v-for="input in entries.der">
+            <rs-input :name="input" required="true"
+            :type="input.type"
+            v-model="formData.user[input.id]"
+            :msg="msg[input.id]"
+            @input="formData.user[input.id] = arguments[0]"></rs-input>
           </div>
 
           <div class="col-md-12 text-center">
@@ -92,17 +61,16 @@
         entries: {
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
+          {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
           {label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o'},
+          {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
           {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
-          {label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password'},
-          {label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password'},
+          {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
+          {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
           ],
           der: [
-          {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
-          {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
-          {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
-          {label: 'Fecha de cumpleaños', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date'},
-          {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
+          {label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password'},
+          {label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password'},
           ],
         },
         roles: [],
@@ -115,7 +83,7 @@
           email: 'Correo electronico.',
           password: 'Contraseña.',
           password_confirmation: 'Confirmación de Contraseña.',
-          roles: 'Rol a desempeñar.',
+          roles: 'Perfil a desempeñar.',
           position: 'Cargo que desempeña.',
           occupation: 'Ocupación actual del usuario.',
           phone_home: 'Telefono de habitación o trabajo.',

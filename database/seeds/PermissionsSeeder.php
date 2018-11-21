@@ -50,41 +50,41 @@ class PermissionsSeeder extends Seeder
         ]);
 
         /**
-         * Permisos de Roles
+         * Permisos de Perfiles
          */
         App\Models\Permisologia\Permission::create([
-        	'name' => 'Ver Roles',
+        	'name' => 'Ver Perfiles',
         	'module' => 'rol',
         	'action' => 'index',
-        	'description' => 'Permiso para ver roles'
+        	'description' => 'Permiso para ver Perfiles'
         ]);
 
         App\Models\Permisologia\Permission::create([
-            'name' => 'Crear Roles',
+            'name' => 'Crear Perfil',
             'module' => 'rol',
             'action' => 'store',
-            'description' => 'Permiso para registrar roles'
+            'description' => 'Permiso para registrar Perfil'
         ]);
 
         App\Models\Permisologia\Permission::create([
-            'name' => 'Ver Rol',
+            'name' => 'Ver Perfiles',
             'module' => 'rol',
             'action' => 'show',
-            'description' => 'Permiso para ver un rol'
+            'description' => 'Permiso para ver un Perfiles'
         ]);
 
         App\Models\Permisologia\Permission::create([
-        	'name' => 'Actualizar Roles',
+        	'name' => 'Actualizar Perfiles',
         	'module' => 'rol',
         	'action' => 'update',
-        	'description' => 'Permiso para actualizar roles'
+        	'description' => 'Permiso para actualizar Perfiles'
         ]);
 
         App\Models\Permisologia\Permission::create([
-        	'name' => 'Eliminar Roles',
+        	'name' => 'Eliminar Perfiles',
         	'module' => 'rol',
         	'action' => 'destroy',
-        	'description' => 'Permiso para Eliminar roles'
+        	'description' => 'Permiso para Eliminar Perfiles'
         ]);
 
         /**

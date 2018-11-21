@@ -61648,6 +61648,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -62049,11 +62051,19 @@ var render = function() {
               "full-box text-uppercase text-center text-titles dashboard-sideBar-title"
           },
           [
-            _c("router-link", {
-              staticStyle: { "text-decoration": "none" },
-              attrs: { to: { path: "/" } },
-              domProps: { innerHTML: _vm._s(_vm.all.L.Lg) }
-            }),
+            _c(
+              "router-link",
+              {
+                staticStyle: { "text-decoration": "none" },
+                attrs: { to: { path: "/" } }
+              },
+              [
+                _c("img", {
+                  staticStyle: { "margin-top": "-45px", height: "140px" },
+                  attrs: { src: _vm.all.L.Lg, alt: "logo" }
+                })
+              ]
+            ),
             _vm._v(" "),
             _c("i", {
               staticClass: "zmdi zmdi-close btn-menu-dashboard visible-xs"
@@ -63458,37 +63468,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -63503,8 +63482,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       entries: {
-        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password' }, { label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password' }],
-        der: [{ label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }, { label: 'Fecha de cumpleaños', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }]
+        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }],
+        der: [{ label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password' }, { label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password' }]
       },
       roles: [],
       nationalities: [],
@@ -63516,7 +63495,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         email: 'Correo electronico.',
         password: 'Contraseña.',
         password_confirmation: 'Confirmación de Contraseña.',
-        roles: 'Rol a desempeñar.',
+        roles: 'Perfil a desempeñar.',
         position: 'Cargo que desempeña.',
         occupation: 'Ocupación actual del usuario.',
         phone_home: 'Telefono de habitación o trabajo.',
@@ -63809,319 +63788,140 @@ var render = function() {
         [
           !_vm.formData.ready
             ? _c("spinner")
-            : _c("div", { staticClass: "row" }, [
-                _c("h4", [
-                  _c("span", {
-                    class: "glyphicon glyphicon-" + _vm.formData.ico
+            : _c(
+                "div",
+                { staticClass: "row" },
+                [
+                  _c("h4", [
+                    _c("span", {
+                      class: "glyphicon glyphicon-" + _vm.formData.ico
+                    }),
+                    _vm._v(" " + _vm._s(_vm.formData.title))
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.entries.izq, function(input) {
+                    return _c(
+                      "div",
+                      { staticClass: "col-sm-6" },
+                      [
+                        _c("rs-input", {
+                          attrs: {
+                            name: input,
+                            required: "true",
+                            type: input.type,
+                            msg: _vm.msg[input.id]
+                          },
+                          on: {
+                            input: function($event) {
+                              _vm.formData.user[input.id] = arguments[0]
+                            }
+                          },
+                          model: {
+                            value: _vm.formData.user[input.id],
+                            callback: function($$v) {
+                              _vm.$set(_vm.formData.user, input.id, $$v)
+                            },
+                            expression: "formData.user[input.id]"
+                          }
+                        })
+                      ],
+                      1
+                    )
                   }),
-                  _vm._v(" " + _vm._s(_vm.formData.title))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-sm-6" },
-                  [
-                    _vm._l(_vm.entries.izq, function(input) {
-                      return [
-                        _c("rs-input", {
-                          attrs: {
-                            name: input,
-                            required: "true",
-                            type: input.type,
-                            msg: _vm.msg[input.id]
-                          },
-                          on: {
-                            input: function($event) {
-                              _vm.formData.user[input.id] = arguments[0]
-                            }
-                          },
-                          model: {
-                            value: _vm.formData.user[input.id],
-                            callback: function($$v) {
-                              _vm.$set(_vm.formData.user, input.id, $$v)
-                            },
-                            expression: "formData.user[input.id]"
-                          }
-                        })
-                      ]
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group rs-select" }, [
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group label-floating" }, [
                       _c(
                         "label",
                         {
                           staticClass: "control-label",
-                          attrs: { for: "nationality_id" }
+                          attrs: { for: "birthday_date" }
                         },
                         [
-                          _c("span", {
-                            staticClass: "zmdi zmdi-shield-security zmdi-hc-fw"
-                          }),
-                          _vm._v(" Nacionalidad:\n            ")
+                          _c("span", { staticClass: "fa fa-user-o" }),
+                          _vm._v(" Fecha de cumpleaños:\n            ")
                         ]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.formData.user.nationality_id,
-                              expression: "formData.user.nationality_id"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { id: "nationality_id" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.formData.user,
-                                "nationality_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Seleccione una nacionalidad")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.nationalities, function(n, i) {
-                            return _c("option", {
-                              domProps: {
-                                value: n.id,
-                                textContent: _vm._s(n.name)
-                              }
-                            })
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "small",
-                        {
-                          staticClass: "form-text text-muted",
-                          attrs: { id: "nationality_idHelp" }
-                        },
-                        [
-                          _c("span", {
-                            domProps: {
-                              textContent: _vm._s(_vm.msg.nationality_id)
-                            }
-                          })
-                        ]
-                      )
-                    ])
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-sm-6" },
-                  [
-                    _vm._l(_vm.entries.der, function(input) {
-                      return [
-                        _c("rs-input", {
-                          attrs: {
-                            name: input,
-                            required: "true",
-                            type: input.type,
-                            msg: _vm.msg[input.id]
-                          },
-                          on: {
-                            input: function($event) {
-                              _vm.formData.user[input.id] = arguments[0]
-                            }
-                          },
-                          model: {
-                            value: _vm.formData.user[input.id],
-                            callback: function($$v) {
-                              _vm.$set(_vm.formData.user, input.id, $$v)
-                            },
-                            expression: "formData.user[input.id]"
-                          }
-                        })
-                      ]
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group rs-select" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "control-label",
-                          attrs: { for: "roles" }
-                        },
-                        [
-                          _c("span", {
-                            staticClass: "zmdi zmdi-shield-security zmdi-hc-fw"
-                          }),
-                          _vm._v(" Perfil:\n            ")
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.formData.user.roles,
-                              expression: "formData.user.roles"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { id: "roles" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.formData.user,
-                                "roles",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { domProps: { value: [] } }, [
-                            _vm._v("Seleccione un rol")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.roles, function(r, i) {
-                            return _c("option", {
-                              domProps: {
-                                value: r.id,
-                                textContent: _vm._s(r.name)
-                              }
-                            })
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "small",
-                        {
-                          staticClass: "form-text text-muted",
-                          attrs: { id: "rolesHelp" }
-                        },
-                        [
-                          _c("span", {
-                            domProps: { textContent: _vm._s(_vm.msg.roles) }
-                          })
-                        ]
-                      )
-                    ])
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "control-label",
-                          attrs: { for: "company_id" }
-                        },
-                        [
-                          _c("span", {
-                            staticClass: "zmdi zmdi-shield-security zmdi-hc-fw"
-                          }),
-                          _vm._v(" Empresa donde trabaja:\n            ")
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("rs-select", {
-                        attrs: { options: _vm.companies },
-                        model: {
-                          value: _vm.formData.user.company_id,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData.user, "company_id", $$v)
-                          },
-                          expression: "formData.user.company_id"
-                        }
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: { id: "birthday_date", type: "date" }
                       }),
                       _vm._v(" "),
-                      _c(
-                        "small",
-                        {
-                          staticClass: "form-text text-muted",
-                          attrs: { id: "company_idHelp" }
-                        },
-                        [
-                          _c("span", {
-                            domProps: {
-                              textContent: _vm._s(_vm.msg.company_id)
-                            }
-                          })
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-12 text-center" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.$parent.show = 1
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { staticClass: "fa fa-close" }),
-                      _vm._v(" Cancelar")
-                    ]
-                  ),
+                      _c("small", {
+                        staticClass: "form-text text-muted",
+                        attrs: { id: "birthday_dateHelp" },
+                        domProps: { textContent: _vm._s(_vm.msg.birthday_date) }
+                      })
+                    ])
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary btn-raised",
-                      attrs: { type: "button" },
-                      on: { click: _vm.registrar }
-                    },
-                    [
-                      _c("span", { staticClass: "glyphicon glyphicon-saved" }),
-                      _vm._v(" Guardar")
-                    ]
-                  )
-                ])
-              ])
+                  _vm._l(_vm.entries.der, function(input) {
+                    return _c(
+                      "div",
+                      { staticClass: "col-sm-6" },
+                      [
+                        _c("rs-input", {
+                          attrs: {
+                            name: input,
+                            required: "true",
+                            type: input.type,
+                            msg: _vm.msg[input.id]
+                          },
+                          on: {
+                            input: function($event) {
+                              _vm.formData.user[input.id] = arguments[0]
+                            }
+                          },
+                          model: {
+                            value: _vm.formData.user[input.id],
+                            callback: function($$v) {
+                              _vm.$set(_vm.formData.user, input.id, $$v)
+                            },
+                            expression: "formData.user[input.id]"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12 text-center" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.$parent.show = 1
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { staticClass: "fa fa-close" }),
+                        _vm._v(" Cancelar")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary btn-raised",
+                        attrs: { type: "button" },
+                        on: { click: _vm.registrar }
+                      },
+                      [
+                        _c("span", {
+                          staticClass: "glyphicon glyphicon-saved"
+                        }),
+                        _vm._v(" Guardar")
+                      ]
+                    )
+                  ])
+                ],
+                2
+              )
         ],
         1
       )
@@ -66167,20 +65967,22 @@ var render = function() {
         [
           !_vm.formData.ready
             ? _c("spinner")
-            : _c("div", { staticClass: "row" }, [
-                _c("h4", [
-                  _c("span", {
-                    class: "glyphicon glyphicon-" + _vm.formData.ico
-                  }),
-                  _vm._v(" " + _vm._s(_vm.formData.title))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-6" },
-                  [
-                    _vm._l(_vm.entries.izq, function(input) {
-                      return [
+            : _c(
+                "div",
+                { staticClass: "row" },
+                [
+                  _c("h4", [
+                    _c("span", {
+                      class: "glyphicon glyphicon-" + _vm.formData.ico
+                    }),
+                    _vm._v(" " + _vm._s(_vm.formData.title))
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.entries.izq, function(input) {
+                    return _c(
+                      "div",
+                      { staticClass: "col-md-6" },
+                      [
                         _c("v-input", {
                           attrs: {
                             name: input,
@@ -66200,18 +66002,14 @@ var render = function() {
                             expression: "formData.rol[input.id]"
                           }
                         })
-                      ]
-                    })
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-6" },
-                  [
-                    _vm._l(_vm.entries.der, function(input) {
-                      return _c(
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _vm._l(_vm.entries.der, function(input) {
+                    return _c("div", { staticClass: "col-md-6" }, [
+                      _c(
                         "div",
                         {
                           staticClass: "form-group label-floating clockpicker",
@@ -66229,9 +66027,9 @@ var render = function() {
                               _vm._v(
                                 " " +
                                   _vm._s(input.label) +
-                                  ": aca " +
+                                  ": " +
                                   _vm._s(_vm.formData.rol[input.id]) +
-                                  "\n            "
+                                  "\n              "
                               )
                             ]
                           ),
@@ -66279,8 +66077,10 @@ var render = function() {
                           )
                         ]
                       )
-                    }),
-                    _vm._v(" "),
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
                     _c("div", { staticClass: "form-group rs-select" }, [
                       _c(
                         "label",
@@ -66357,60 +66157,62 @@ var render = function() {
                         ]
                       )
                     ])
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-xs-12 text-center" },
-                  [
-                    !_vm.formData.rol.special
-                      ? _c("v-checkbox-p", {
-                          attrs: { user: _vm.formData.rol.permissions },
-                          on: {
-                            check: function($event) {
-                              _vm.formData.rol.permissions = arguments[0]
-                            }
-                          }
-                        })
-                      : _vm._e()
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-12 text-center" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.$parent.show = 1
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { staticClass: "fa fa-close" }),
-                      _vm._v(" Cancelar")
-                    ]
-                  ),
+                  ]),
                   _vm._v(" "),
                   _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary btn-raised",
-                      attrs: { type: "button" },
-                      on: { click: _vm.registrar }
-                    },
+                    "div",
+                    { staticClass: "col-xs-12 text-center" },
                     [
-                      _c("span", { staticClass: "glyphicon glyphicon-saved" }),
-                      _vm._v(" Guardar")
-                    ]
-                  )
-                ])
-              ])
+                      !_vm.formData.rol.special
+                        ? _c("v-checkbox-p", {
+                            attrs: { user: _vm.formData.rol.permissions },
+                            on: {
+                              check: function($event) {
+                                _vm.formData.rol.permissions = arguments[0]
+                              }
+                            }
+                          })
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12 text-center" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.$parent.show = 1
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { staticClass: "fa fa-close" }),
+                        _vm._v(" Cancelar")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary btn-raised",
+                        attrs: { type: "button" },
+                        on: { click: _vm.registrar }
+                      },
+                      [
+                        _c("span", {
+                          staticClass: "glyphicon glyphicon-saved"
+                        }),
+                        _vm._v(" Guardar")
+                      ]
+                    )
+                  ])
+                ],
+                2
+              )
         ],
         1
       )
@@ -71038,13 +70840,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -71064,8 +70859,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       howfinds: [],
       companies: [],
       entries: {
-        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }],
-        der: [{ label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }]
+        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }]
       },
       msg: {
         company_id: 'Empresa asociada al estudiante.',
@@ -71075,7 +70869,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         email: 'Correo electronico.',
         password: 'Contraseña.',
         password_confirmation: 'Confirmación de Contraseña.',
-        roles: 'Rol a desempeñar.',
+        roles: 'Perfil a desempeñar.',
         position: 'Cargo que desempeña.',
         occupation: 'Ocupación actual del usuario.',
         phone_home: 'Telefono de habitación o trabajo.',
@@ -71166,13 +70960,15 @@ var render = function() {
                 }
               },
               [
-                _c("div", {}, [
-                  _c(
-                    "div",
-                    { staticClass: "col-sm-6" },
-                    [
-                      _vm._l(_vm.entries.izq, function(input) {
-                        return [
+                _c(
+                  "div",
+                  {},
+                  [
+                    _vm._l(_vm.entries.izq, function(input) {
+                      return _c(
+                        "div",
+                        { staticClass: "col-sm-6" },
+                        [
                           _c("rs-input", {
                             attrs: {
                               name: input,
@@ -71193,9 +70989,12 @@ var render = function() {
                               expression: "formData.data[input.id]"
                             }
                           })
-                        ]
-                      }),
-                      _vm._v(" "),
+                        ],
+                        1
+                      )
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
                       _c("div", { staticClass: "form-group rs-select" }, [
                         _c(
                           "label",
@@ -71208,7 +71007,7 @@ var render = function() {
                               staticClass:
                                 "zmdi zmdi-shield-security zmdi-hc-fw"
                             }),
-                            _vm._v(" Nacionalidad:\n                ")
+                            _vm._v(" Pais de Origen:\n                ")
                           ]
                         ),
                         _vm._v(" "),
@@ -71247,7 +71046,7 @@ var render = function() {
                           },
                           [
                             _c("option", { attrs: { value: "" } }, [
-                              _vm._v("Seleccione una nacionalidad")
+                              _vm._v("Seleccione el Pais de Origen")
                             ]),
                             _vm._v(" "),
                             _vm._l(_vm.nationalities, function(n) {
@@ -71277,39 +71076,9 @@ var render = function() {
                           ]
                         )
                       ])
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col-sm-6" },
-                    [
-                      _vm._l(_vm.entries.der, function(input) {
-                        return [
-                          _c("rs-input", {
-                            attrs: {
-                              name: input,
-                              required: "true",
-                              type: input.type,
-                              msg: _vm.msg[input.id]
-                            },
-                            on: {
-                              input: function($event) {
-                                _vm.formData.data[input.id] = arguments[0]
-                              }
-                            },
-                            model: {
-                              value: _vm.formData.data[input.id],
-                              callback: function($$v) {
-                                _vm.$set(_vm.formData.data, input.id, $$v)
-                              },
-                              expression: "formData.data[input.id]"
-                            }
-                          })
-                        ]
-                      }),
-                      _vm._v(" "),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
                       _c("div", { staticClass: "form-group rs-select" }, [
                         _c(
                           "label",
@@ -71393,18 +71162,84 @@ var render = function() {
                           ]
                         )
                       ])
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _vm.formData.data.how_find === "Otro"
-                    ? _c("div", { staticClass: "col-md-12" }, [
-                        _c("div", { staticClass: "form-group" }, [
+                    ]),
+                    _vm._v(" "),
+                    _vm.formData.data.how_find === "Otro"
+                      ? _c("div", { staticClass: "col-md-12" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "control-label",
+                                attrs: { for: "how_find_other" }
+                              },
+                              [
+                                _c("span", {
+                                  staticClass:
+                                    "zmdi zmdi-shield-security zmdi-hc-fw"
+                                }),
+                                _vm._v(
+                                  " Indique como se enteró:\n                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formData.data.how_find_other,
+                                  expression: "formData.data.how_find_other"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", id: "how_find_other" },
+                              domProps: {
+                                value: _vm.formData.data.how_find_other
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formData.data,
+                                    "how_find_other",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "small",
+                              {
+                                staticClass: "form-text text-muted",
+                                attrs: { id: "how_find_otherHelp" }
+                              },
+                              [
+                                _c("span", {
+                                  domProps: {
+                                    textContent: _vm._s(_vm.msg.how_find_other)
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
                           _c(
                             "label",
                             {
                               staticClass: "control-label",
-                              attrs: { for: "how_find_other" }
+                              attrs: { for: "company_id" }
                             },
                             [
                               _c("span", {
@@ -71412,36 +71247,19 @@ var render = function() {
                                   "zmdi zmdi-shield-security zmdi-hc-fw"
                               }),
                               _vm._v(
-                                " Indique como se enteró:\n                "
+                                " Empresa donde trabaja:\n                "
                               )
                             ]
                           ),
                           _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formData.data.how_find_other,
-                                expression: "formData.data.how_find_other"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", id: "how_find_other" },
-                            domProps: {
-                              value: _vm.formData.data.how_find_other
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formData.data,
-                                  "how_find_other",
-                                  $event.target.value
-                                )
-                              }
+                          _c("rs-select", {
+                            attrs: { options: _vm.companies },
+                            model: {
+                              value: _vm.formData.data.company_id,
+                              callback: function($$v) {
+                                _vm.$set(_vm.formData.data, "company_id", $$v)
+                              },
+                              expression: "formData.data.company_id"
                             }
                           }),
                           _vm._v(" "),
@@ -71449,70 +71267,23 @@ var render = function() {
                             "small",
                             {
                               staticClass: "form-text text-muted",
-                              attrs: { id: "how_find_otherHelp" }
+                              attrs: { id: "company_idHelp" }
                             },
                             [
                               _c("span", {
                                 domProps: {
-                                  textContent: _vm._s(_vm.msg.how_find_other)
+                                  textContent: _vm._s(_vm.msg.company_id)
                                 }
                               })
                             ]
                           )
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "control-label",
-                            attrs: { for: "company_id" }
-                          },
-                          [
-                            _c("span", {
-                              staticClass:
-                                "zmdi zmdi-shield-security zmdi-hc-fw"
-                            }),
-                            _vm._v(" Empresa donde trabaja:\n                ")
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("rs-select", {
-                          attrs: { options: _vm.companies },
-                          model: {
-                            value: _vm.formData.data.company_id,
-                            callback: function($$v) {
-                              _vm.$set(_vm.formData.data, "company_id", $$v)
-                            },
-                            expression: "formData.data.company_id"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "small",
-                          {
-                            staticClass: "form-text text-muted",
-                            attrs: { id: "company_idHelp" }
-                          },
-                          [
-                            _c("span", {
-                              domProps: {
-                                textContent: _vm._s(_vm.msg.company_id)
-                              }
-                            })
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                ])
+                        ],
+                        1
+                      )
+                    ])
+                  ],
+                  2
+                )
               ]
             )
           ])

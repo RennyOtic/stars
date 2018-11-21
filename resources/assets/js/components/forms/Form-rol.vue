@@ -6,26 +6,26 @@
         <spinner v-if="!formData.ready"></spinner>
         <div class="row" v-else>
           <h4><span :class="'glyphicon glyphicon-' + formData.ico"></span> {{ formData.title }}</h4>
-          <div class="col-md-6">
-            <template v-for="input in entries.izq">
-              <v-input :name="input" required="true"
-              v-model="formData.rol[input.id]"
-              :msg="msg[input.id]"
-              @input="formData.rol[input.id] = arguments[0]"></v-input>
-            </template>
+          <div class="col-md-6" v-for="input in entries.izq">
+            <v-input :name="input" required="true"
+            v-model="formData.rol[input.id]"
+            :msg="msg[input.id]"
+            @input="formData.rol[input.id] = arguments[0]"></v-input>
           </div>
 
-          <div class="col-md-6">
-            <div class="form-group label-floating clockpicker" :class="!formData.rol[input.id] ? 'is-empty' : ''" v-for="input in entries.der">
-              <label for="special" class="control-label">
-                <span :class="'fa fa-'+input.icon"></span> {{ input.label }}: aca {{ formData.rol[input.id] }}
-              </label>
-              <input type="text" class="form-control" :class="input.id" v-model="formData.rol[input.id]" required="required">
-              <small :id="input.id+'Help'" class="form-text text-muted">
-                <span v-text="msg[input.id]"></span>
-              </small>
+            <div class="col-md-6" v-for="input in entries.der">
+              <div class="form-group label-floating clockpicker" :class="!formData.rol[input.id] ? 'is-empty' : ''">
+                <label for="special" class="control-label">
+                  <span :class="'fa fa-'+input.icon"></span> {{ input.label }}: {{ formData.rol[input.id] }}
+                </label>
+                <input type="text" class="form-control" :class="input.id" v-model="formData.rol[input.id]" required="required">
+                <small :id="input.id+'Help'" class="form-text text-muted">
+                  <span v-text="msg[input.id]"></span>
+                </small>
+              </div>
             </div>
 
+          <div class="col-md-6">
             <div class="form-group rs-select">
               <label for="special" class="control-label">
                 <span class="glyphicon glyphicon-calendar"></span> Caracteristica especial:
@@ -63,7 +63,7 @@
   import Modal from './../partials/modal.vue';
   import Input from './../partials/input.vue';
   import Checkbox from './../partials/input-checkbox-permissions.vue';
-  
+
   export default {
     name: 'form-rol',
     components: {

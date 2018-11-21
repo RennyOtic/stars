@@ -34,7 +34,7 @@ class RouteController extends Controller
             $user = \Auth::user();
             $all = [
                 'L' => [
-                    'Lg' => config('frontend.logo_lg'),
+                    'Lg' => '/img/starslogo.png',
                     'Lm' => config('frontend.logo_mini')
                 ],
                 'user' => [

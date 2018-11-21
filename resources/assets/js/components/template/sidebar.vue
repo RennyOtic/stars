@@ -3,7 +3,9 @@
 		<div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
 		<div class="full-box dashboard-sideBar-ct">
 			<div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title"> <!--SideBar Title -->
-				<router-link :to="{ path: '/'}" style="text-decoration: none" v-html="all.L.Lg"></router-link>
+				<router-link :to="{ path: '/'}" style="text-decoration: none">
+					<img :src="all.L.Lg" alt="logo" style="margin-top:-45px;height:140px;">
+				</router-link>
 				<i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
 			</div>
 			<div class="full-box dashboard-sideBar-UserInfo"> <!-- SideBar User info -->

@@ -14,19 +14,19 @@ class RolesSeeder extends Seeder
         App\Models\Permisologia\Role::create([
             'name'          => 'Profesor',
             'slug'          => 'Profesor',
-            'description'   => 'Rol para Profesores de la empresa.',
+            'description'   => 'Perfil para Profesores de la empresa.',
         ]);
 
         App\Models\Permisologia\Role::create([
             'name'          => 'Alumno',
             'slug'          => 'Alumno',
-            'description'   => 'Rol para Alumnos de la empresa.',
+            'description'   => 'Perfil para Alumnos de la empresa.',
         ]);
 
         App\Models\Permisologia\Role::create([
             'name'          => 'Coordinador',
             'slug'          => 'Coordinador',
-            'description'   => 'Rol para Coordinadores de la empresa.',
+            'description'   => 'Perfil para Coordinadores de la empresa.',
         ]);
     }
 }

@@ -29,7 +29,7 @@ class UserRootSeeder extends Seeder
         $rol = App\Models\Permisologia\Role::create([
             'name'          => 'Administrador',
             'slug'          => 'SuperAdmin',
-            'description'   => 'Rol con acceso total a los Módulos.',
+            'description'   => 'Perfil con acceso total a los Módulos.',
             'special'       => 'all-access'
         ]);
 

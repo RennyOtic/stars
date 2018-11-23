@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" :id="id" tabindex="-1" role="dialog"> <!--  data-backdrop="static" -->
+  <div class="modal fade" :id="id" data-backdrop="static" role="dialog">
     <div class="modal-dialog" :class="'modal-'+w" role="document">
       <div class="modal-content">
         <div class="modal-header">

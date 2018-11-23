@@ -136,15 +136,13 @@ class CourseController extends Controller
      */
     public function dataForRegister()
     {
-        $teachers = Role::where('slug', '=', 'Profesor')
-        ->findOrFail(2)->users()->orderBy('name', 'ASC')
+        $teachers = Role::where('slug', '=', 'profesor')->first()->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
         $teachers->each(function ($u) {
             $u->text = $u->fullName() . ' - ' . $u->num_id;
             unset($u->pivot, $u->name, $u->last_name, $u->num_id);
         });
-        $coordinators = Role::where('slug', '=', 'Coordinador')
-        ->findOrFail(4)->users()->orderBy('name', 'ASC')
+        $coordinators = Role::where('slug', '=', 'Coordinador')->first()->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
         $coordinators->each(function ($u) {
             $u->text = $u->fullName() . ' - ' . $u->num_id;

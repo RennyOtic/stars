@@ -134,8 +134,7 @@ class AssistanceControlController extends Controller
         $course->teacher = $teacher;
         $course->idioma = $idioma;
 
-        $coordinators = Role::where('slug', '=', 'Coordinador')
-        ->findOrFail(4)->users()->orderBy('name', 'ASC')
+        $coordinators = Role::where('slug', '=', 'Coordinador')->first()->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
         $coordinators->each(function ($u) {
             $u->fullName = $u->fullName() . ' - ' . $u->num_id;

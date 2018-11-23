@@ -7,25 +7,55 @@
         <div class="row" v-else>
           <h4><span :class="'glyphicon glyphicon-' + formData.ico"></span> {{ formData.title }}</h4>
 
-          <div class="col-sm-6" v-for="input in entries.izq">
-            <rs-input :name="input" required="true"
+          <div class="col-md-6" v-for="input in entries.izq">
+            <rs-input :name="input"
             :type="input.type"
             v-model="formData.user[input.id]"
             :msg="msg[input.id]"
             @input="formData.user[input.id] = arguments[0]"></rs-input>
           </div>
 
-          <div class="col-sm-6">
+          <!-- <div class="col-sm-6">
             <div class="form-group label-floating">
               <label for="birthday_date" class="control-label">
                 <span class="fa fa-user-o"></span> Fecha de cumpleaños:
               </label>
-              <input id="birthday_date" type="date" class="form-control">
+              <input id="birthday_date" type="date" class="form-control" v-model="formData.user.birthday_date">
               <small id="birthday_dateHelp" class="form-text text-muted" v-text="msg.birthday_date"></small>
+            </div>
+          </div> -->
+
+          <div class="col-md-6">
+            <div class="form-group rs-select">
+              <label for="roles" class="control-label">
+                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Perfil:
+              </label>
+              <select id="roles" class="form-control" v-model="formData.user.roles">
+                <option :value="[]">Seleccione un rol</option>
+                <option v-for="(r, i) in roles" :value="r.id" v-text="r.name"></option>
+              </select>
+              <small id="rolesHelp" class="form-text text-muted">
+                <span v-text="msg.roles"></span>
+              </small>
             </div>
           </div>
 
-          <div class="col-sm-6" v-for="input in entries.der">
+          <div class="col-md-6">
+            <div class="form-group rs-select">
+              <label for="nationality_id" class="control-label">
+                <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Pais de Origen:
+              </label>
+              <select id="nationality_id" class="form-control" v-model="formData.user.nationality_id">
+                <option value="">Seleccione un Pais</option>
+                <option v-for="(n, i) in nationalities" :value="n.id" v-text="n.name"></option>
+              </select>
+              <small id="nationality_idHelp" class="form-text text-muted">
+                <span v-text="msg.nationality_id"></span>
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6" v-for="input in entries.der">
             <rs-input :name="input" required="true"
             :type="input.type"
             v-model="formData.user[input.id]"
@@ -67,6 +97,7 @@
           {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
           {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
           {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
+          {label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date', empty: true},
           ],
           der: [
           {label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password'},

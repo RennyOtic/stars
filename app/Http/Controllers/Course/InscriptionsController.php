@@ -65,7 +65,7 @@ class InscriptionsController extends Controller
             'phone_movil' => 'required|numeric|digits:10',
             'how_find' => 'required|alpha_space',
             'how_find_other' => 'required_if:how_finds_id,1|string|max:30|min:3',
-            'company_id' => 'required|numeric'
+            'company_id' => 'nullable|numeric'
         ], [], [
             'company_id'     => 'empresa',
             'email'     => 'correo',
@@ -122,7 +122,7 @@ class InscriptionsController extends Controller
     public function dataForRegister()
     {
         $students = \App\Models\Permisologia\Role::where('slug', '=', 'Alumno')
-        ->findOrFail(3)->users()->orderBy('name', 'ASC')
+        ->first()->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
 
         $students->each(function ($u) {

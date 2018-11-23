@@ -103,8 +103,7 @@ class ValidatorServiceProvider extends ServiceProvider
         Validator::extend('is_student', function($attribute, $value, $parameters)
         {
             $count = \App\User::findOrFail($value)->roles()
-            ->where('slug', '=', 'Alumno')
-            ->where('id', '=', '3')->count();
+            ->where('slug', '=', 'alumno')->count();
             if ($count) {
                 return true;
             }

@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group label-floating" :class="(!value && empty) ? 'is-empty' : ''">
+    <div class="form-group label-floating" :class="(!value && !name.empty) ? 'is-empty' : ''">
         <label :for="name.id" class="control-label">
             <span :class="name.icon"></span> {{ name.label }}:
         </label>
@@ -19,9 +19,6 @@
 export default {
     name: 'input-form',
     props: {
-        empty: {
-            default: true
-        },
         name: {},
         msg: {},
         type: {

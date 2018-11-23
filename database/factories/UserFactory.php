@@ -48,11 +48,9 @@ $factory->define(App\Models\Permisologia\Role::class, function (Faker $faker) {
 });
 
 $factory->define(App\Models\Course::class, function (Faker $faker) {
-	$teachers = \App\Models\Permisologia\Role::where('slug', '=', 'Profesor')
-	->findOrFail(2)->users()->pluck('id');
+	$teachers = \App\Models\Permisologia\Role::where('slug', '=', 'profesor')->first()->users()->pluck('id');
 	$total_teachers = $teachers->count();
-	$coordinators = \App\Models\Permisologia\Role::where('slug', '=', 'Coordinador')
-	->findOrFail(4)->users()->pluck('id');
+	$coordinators = \App\Models\Permisologia\Role::where('slug', '=', 'coordinador')->first()->users()->pluck('id');
 	$total_coordinators = $coordinators->count();
 	return [
 		'coursestate_id' => rand(1, 2),

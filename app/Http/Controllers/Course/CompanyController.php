@@ -40,10 +40,10 @@ class CompanyController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|string|min:2|max:40',
             'rut' => 'required|numeric|digits_between:6,11|unique:companies',/*exr_ced*/
-            'email' => 'required|email|DomainValid|unique:companies,email',
+            'email' => 'required|email|unique:companies,email',
             'phone' => 'required|numeric|digits_between:6,10',
             'name_c' => 'required|string|min:2|max:40',
-            'email_c' => 'nullable|email|DomainValid|unique:companies,email_c',
+            'email_c' => 'nullable|email|unique:companies,email_c',
             'phone_c' => 'nullable|numeric|digits_between:6,10',
         ],[],[
             'name' => 'nombre',
@@ -81,10 +81,10 @@ class CompanyController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|string|min:2|max:40',
             'rut' => 'required|numeric|digits_between:6,11|unique1:companies',/*exr_ced*/
-            'email' => 'required|email|DomainValid|unique1:companies,email',
+            'email' => 'required|email|unique1:companies,email',
             'phone' => 'required|numeric|digits_between:6,10',
             'name_c' => 'required|string|min:2|max:40',
-            'email_c' => 'nullable|email|DomainValid|unique1:companies,email_c',
+            'email_c' => 'nullable|email|unique1:companies,email_c',
             'phone_c' => 'nullable|numeric|digits_between:6,10',
         ],[],[
             'name' => 'nombre',

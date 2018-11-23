@@ -27,14 +27,14 @@ class UserStoreRequest extends FormRequest
             'email'     => 'required|email|min:8|max:35|unique:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
-            'num_id'    => 'required|string|digits_between:6,8|unique:users',
+            'num_id'    => 'required|string|min:6|max:12|unique:users',
             'password'  => 'required|string|min:6|max:20|confirmed',
             'roles'     => 'required',
             'birthday_date' => 'required|date',
             'nationality_id' => 'required|numeric',
             'occupation' => 'required|string|max:25|min:3',
-            'phone_home' => 'nullable|numeric|digits:10',
-            'phone_movil' => 'required|numeric|digits:10',
+            'phone_home' => 'nullable|numeric|digits_between:8,11',
+            'phone_movil' => 'required|numeric|digits_between:8,11',
             'company_id' => 'nullable|numeric',
         ];
     }

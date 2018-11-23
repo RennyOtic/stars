@@ -24,8 +24,8 @@ class PermissionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required|alpha_space|min:5|max:50',
-            'name' => 'required|alpha_space|min:3|max:25'
+            'description' => 'required|alpha_space|min:5|max:100',
+            'name' => 'required|alpha_space|min:3|max:50'
         ];
     }
 

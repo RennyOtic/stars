@@ -124,6 +124,7 @@
                         nationality_id: '',
                         occupation: '',
                         phone_home: '',
+                        type: '',
                         phone_movil: '',
                         company_id: '',
                     };

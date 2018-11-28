@@ -24,7 +24,7 @@ class CourseStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|numeric|digits:21|unique:courses',
+            'code' => 'required|numeric|digits:19|unique:courses',
             'teacher_id' => 'required|numeric',
             'coordinator_id' => 'required|numeric',
             'idioma_id' => 'required|numeric',

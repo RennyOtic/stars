@@ -53,6 +53,7 @@ class CreateUsersTable extends Migration
             $table->string('occupation');
             $table->string('phone_movil')->nullable();
             $table->string('phone_home')->nullable();
+            $table->unsignedInteger('type')->default(1);
             $table->string('num_id')->unique();
             $table->string('email')->unique();
             $table->string('password')->nullable();

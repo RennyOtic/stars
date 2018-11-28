@@ -11,8 +11,6 @@
 |
 */
 
-// Route::get('logging/{id}', 'RouteController@initSession');
-
 /**
  * Rutas típicas de autentificación de la app.
  * reemplazando: Auth::routes();

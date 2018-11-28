@@ -67,8 +67,7 @@ class ReportsController extends Controller
 
 	public function dataTopdf_pay()
 	{
-		$teachers = Role::where('slug', '=', 'Profesor')
-        ->findOrFail(2)->users()->orderBy('name', 'ASC')
+		$teachers = Role::where('slug', '=', 'Profesor')->first()->users()->orderBy('name', 'ASC')
         ->get(['id', 'name', 'last_name', 'num_id']);
         $teachers->each(function ($u) {
             $u->text = $u->fullName() . ' - ' . $u->num_id;

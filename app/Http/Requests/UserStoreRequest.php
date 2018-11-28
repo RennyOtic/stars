@@ -23,19 +23,26 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
+        $num_id = '';
+        if (request()->type == 1) {
+            $num_id = 'id';
+        } elseif (request()->type == 2) {
+            $num_id = 'string|min:5|max:20'; /*pass*/
+        }
         return [
             'email'     => 'required|email|min:8|max:35|unique:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
-            'num_id'    => 'required|string|min:6|max:12|unique:users',
+            'num_id'    => 'required|' . $num_id . '|unique:users',
             'password'  => 'required|string|min:6|max:20|confirmed',
-            'roles'     => 'required',
+            'roles'     => 'required|min:1|max:1',
             'birthday_date' => 'required|date',
             'nationality_id' => 'required|numeric',
             'occupation' => 'required|string|max:25|min:3',
-            'phone_home' => 'nullable|numeric|digits_between:8,11',
-            'phone_movil' => 'required|numeric|digits_between:8,11',
+            'phone_home' => 'nullable|phone',
+            'phone_movil' => 'required|phone',
             'company_id' => 'nullable|numeric',
+            'type' => 'required|numeric'
         ];
     }
 
@@ -56,7 +63,12 @@ class UserStoreRequest extends FormRequest
      */
     public function attributes()
     {
-        $num_id = (1) ? 'RUT' : 'Pasaporte';
+        $num_id = '';
+        if (request()->type == 1) {
+            $num_id = 'RUT';
+        } elseif (request()->type == 2) {
+            $num_id = 'pasaporte';
+        }
         return [
             'email'     => 'correo',
             'last_name' => 'apellido',
@@ -69,7 +81,8 @@ class UserStoreRequest extends FormRequest
             'occupation' => 'ocupación',
             'phone_home' => 'telefono de contacto',
             'phone_movil' => 'telefono movil',
-            'company_id' => 'empresa'
+            'company_id' => 'empresa',
+            'type' => 'tipo'
         ];
     }
 }

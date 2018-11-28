@@ -23,19 +23,26 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $num_id = '';
+        if (request()->type == 1) {
+            $num_id = 'id';
+        } elseif (request()->type == 2) {
+            $num_id = 'string|min:5|max:20'; /*pass*/
+        }
         return [
             'email'     => 'required|email|min:8|max:35|unique1:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
-            'num_id'    => 'required|string|digits_between:6,12|unique1:users', // exr_ced
+            'num_id'    => 'required|' . $num_id,
             'password'  => 'nullable|string|min:6|max:20|confirmed',
-            'roles'     => 'required',
+            'roles'     => 'required|min:1|max:1',
             'birthday_date' => 'required|date',
             'nationality_id' => 'required|numeric',
             'occupation' => 'required|string|max:25|min:3',
-            'phone_home' => 'nullable|numeric|digits_between:8,11',
-            'phone_movil' => 'required|numeric|digits_between:8,11',
+            'phone_home' => 'nullable|phone',
+            'phone_movil' => 'required|phone',
             'company_id' => 'nullable|numeric',
+            'type' => 'required|numeric'
         ];
     }
 
@@ -46,7 +53,12 @@ class UserUpdateRequest extends FormRequest
      */
     public function attributes()
     {
-        $num_id = (1) ? 'RUT' : 'Pasaporte';
+        $num_id = '';
+        if (request()->type == 1) {
+            $num_id = 'RUT';
+        } elseif (request()->type == 2) {
+            $num_id = 'pasaporte';
+        }
         return [
             'email'     => 'correo',
             'last_name' => 'apellido',
@@ -59,7 +71,8 @@ class UserUpdateRequest extends FormRequest
             'phone_home' => 'telefono de contacto',
             'phone_movil' => 'telefono movil',
             'roles'     => 'perfiles',
-            'company_id' => 'empresa'
+            'company_id' => 'empresa',
+            'type' => 'tipo'
         ];
     }
 }

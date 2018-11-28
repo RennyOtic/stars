@@ -20,21 +20,29 @@ class ValidatorServiceProvider extends ServiceProvider
     {
 
         /**
-         * validacion por expresion regular de una cedula de identidad.
-         * de 6 a 8 caracteres
-         * y solo numeros del 0 al 9
+         * validacion por expresion regular de un RUT.
          */
-        Validator::extend('exr_ced', function($attribute, $value)
+        Validator::extend('id', function($attribute, $value)
         {
-            if ($value[0] == '0') return false;
-            if (1) {
-            // xx.xxx.xxx-x (la ultima es letra k o número)
-            }
-            if (1) {
-            // pasaporte 10 digitos numéricos
-            }
-            return preg_match('/^([0-9]{6,8})$/', $value);
-        }, 'El campo :attribute es incorrecto');
+            return preg_match('/[0-9]{8}[-]{1}[0-9K]{1}/', $value);
+        }, 'El formato debe ser xxxxxxxx-K');
+
+        /**
+         * validacion por expresion regular de un Pasaporte.
+         */
+        Validator::extend('pass', function($attribute, $value)
+        {
+            return true;
+            return preg_match('/[0-9]{8}[-]{1}[0-9K]{1}/', $value);
+        }, 'El formato debe ser xxxxxxxx-K');
+
+        /**
+         * validacion por expresion regular de un Telefono.
+         */
+        Validator::extend('phone', function($attribute, $value)
+        {
+            return preg_match('/[+]{1}[0-9]{2}[[:space:]]{1}[0-9]{4}[[:space:]]{1}[0-9]{4}/', $value);
+        }, 'El formato debe ser +xx xxxx xxxx');
 
         /**
          * Comprueba que sea la contraseña actual del usuario autentificado.
@@ -72,8 +80,8 @@ class ValidatorServiceProvider extends ServiceProvider
                 if ($sections[0] >= 0 && $sections[0] <= 23)
                     if ($sections[1] >= 0 && $sections[1] <= 59) return true;
                         // if ($sections[2] >= 0 && $sections[2] <= 59)
-            return false;
-        }, 'El formato debe poseer un formato "00:00" - "23:59".');
+                return false;
+            }, 'El formato debe poseer un formato "00:00" - "23:59".');
 
         /**
          * Verifiva el campo solo tenga letras y espacios.

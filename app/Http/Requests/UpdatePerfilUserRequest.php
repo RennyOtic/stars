@@ -24,7 +24,7 @@ class UpdatePerfilUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|DomainValid|unique1:users,email',
+            'email' => 'required|email|unique1:users,email',
             'last_name' => 'required|alpha_space|min:3|max:20',
             'name' => 'required|alpha_space|min:3|max:20',
             'num_id' => 'required|numeric|exr_ced|unique1:users,num_id'

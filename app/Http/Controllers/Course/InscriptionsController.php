@@ -57,12 +57,12 @@ class InscriptionsController extends Controller
             'email'     => 'required|email|min:8|max:35|unique1:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
-            'num_id'    => 'required|numeric|digits_between:6,8|exr_ced|unique1:users',
+            'num_id'    => 'required|numeric|digits_between:6,8|unique1:users',
             'birthday_date' => 'required|date',
             'nationality_id' => 'required|numeric',
             'occupation' => 'required|string|max:25|min:3',
-            'phone_home' => 'required|numeric|digits:10',
-            'phone_movil' => 'required|numeric|digits:10',
+            'phone_home' => 'nullable|phone',
+            'phone_movil' => 'required|phone',
             'how_find' => 'required|alpha_space',
             'how_find_other' => 'required_if:how_finds_id,1|string|max:30|min:3',
             'company_id' => 'nullable|numeric'
@@ -103,15 +103,9 @@ class InscriptionsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $data = $this->validate($request, [
-            'id' => 'required|numeric|is_student'
-        ], [], [
-            'id' => 'estudiante'
-        ]);
+        $data = $this->validate($request, ['id' => 'required|numeric|is_student'],[],['id' => 'estudiante']);
         $alumn = Course::findOrFail($id)->users()->where('user_id', '=', $data['id'])->count();
-        if ($alumn) {
-            return Course::findOrFail($id)->users()->detach($data['id']);
-        }
+        if ($alumn) return Course::findOrFail($id)->users()->detach($data['id']);
     }
 
     /**

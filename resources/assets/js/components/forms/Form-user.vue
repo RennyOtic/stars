@@ -15,15 +15,41 @@
             @input="formData.user[input.id] = arguments[0]"></rs-input>
           </div>
 
-          <!-- <div class="col-sm-6">
-            <div class="form-group label-floating">
-              <label for="birthday_date" class="control-label">
-                <span class="fa fa-user-o"></span> Fecha de cumpleaños:
-              </label>
-              <input id="birthday_date" type="date" class="form-control" v-model="formData.user.birthday_date">
-              <small id="birthday_dateHelp" class="form-text text-muted" v-text="msg.birthday_date"></small>
+          <div class="col-md-6" style="max-height: 100px;">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group" style="margin-top: 0">
+                  <label for="type" class="control-label">Tipo: </label>
+                  <select id="type"class="form-control" v-model="formData.user.type">
+                    <option value="1">RUT</option>
+                    <option value="2">Pasaporte</option>
+                  </select>
+                  <small id="typeHelp" class="form-text text-muted">
+                    <span v-text="msg.type"></span>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="form-group" style="margin-top: 0">
+                  <label for="num_id" class="control-label">
+                    <span class="fa fa-id-card-o zmdi-hc-fw"></span> RUT:
+                  </label>
+                  <input type="text"id="num_id" class="form-control" v-model="formData.user.num_id">
+                  <small id="num_idHelp" class="form-text text-muted">
+                    <span v-text="msg.num_id"></span>
+                  </small>
+                </div>
+              </div>
             </div>
-          </div> -->
+          </div>
+
+          <div class="col-md-6" v-for="input in entries.izq2">
+            <rs-input :name="input"
+            :type="input.type"
+            v-model="formData.user[input.id]"
+            :msg="msg[input.id]"
+            @input="formData.user[input.id] = arguments[0]"></rs-input>
+          </div>
 
           <div class="col-md-6">
             <div class="form-group rs-select">
@@ -92,7 +118,8 @@
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
           {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
-          {label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o'},
+          ],
+          izq2: [
           {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
           {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
           {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
@@ -121,6 +148,7 @@
           phone_movil: 'Número personal.',
           birthday_date: 'Fecha de cumpleaños.',
           nationality_id: 'Nacionalidad natural.',
+          type: 'tipo',
           company_id: 'Empresa afiliada el usario.'
         }
       };

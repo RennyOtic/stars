@@ -130,7 +130,7 @@
       },
       remove: function () {
         if (this.id == '') return toastr.info('Seleccione un estudiante.');
-        axios.delete('/inscriptions/' + this.formData.data.id + '?id=' + this.id)
+        axios.delete('/inscriptions/' + this.$route.params.id + '?id=' + this.id)
         .then(response => {
           toastr.success('Alumno Borrado');
           this.$children[2].get();

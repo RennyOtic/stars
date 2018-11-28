@@ -63344,6 +63344,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     nationality_id: '',
                     occupation: '',
                     phone_home: '',
+                    type: '',
                     phone_movil: '',
                     company_id: ''
                 };
@@ -63498,6 +63499,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -63512,7 +63539,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       entries: {
-        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date', empty: true }],
+        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }],
+        izq2: [{ label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date', empty: true }],
         der: [{ label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password' }, { label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password' }]
       },
       roles: [],
@@ -63532,6 +63560,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         phone_movil: 'Número personal.',
         birthday_date: 'Fecha de cumpleaños.',
         nationality_id: 'Nacionalidad natural.',
+        type: 'tipo',
         company_id: 'Empresa afiliada el usario.'
       }
     };
@@ -63827,6 +63856,194 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _vm._l(_vm.entries.izq, function(input) {
+                    return _c(
+                      "div",
+                      { staticClass: "col-md-6" },
+                      [
+                        _c("rs-input", {
+                          attrs: {
+                            name: input,
+                            type: input.type,
+                            msg: _vm.msg[input.id]
+                          },
+                          on: {
+                            input: function($event) {
+                              _vm.formData.user[input.id] = arguments[0]
+                            }
+                          },
+                          model: {
+                            value: _vm.formData.user[input.id],
+                            callback: function($$v) {
+                              _vm.$set(_vm.formData.user, input.id, $$v)
+                            },
+                            expression: "formData.user[input.id]"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-6",
+                      staticStyle: { "max-height": "100px" }
+                    },
+                    [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-3" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "form-group",
+                              staticStyle: { "margin-top": "0" }
+                            },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label",
+                                  attrs: { for: "type" }
+                                },
+                                [_vm._v("Tipo: ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formData.user.type,
+                                      expression: "formData.user.type"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { id: "type" },
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.formData.user,
+                                        "type",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("option", { attrs: { value: "1" } }, [
+                                    _vm._v("RUT")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "2" } }, [
+                                    _vm._v("Pasaporte")
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "small",
+                                {
+                                  staticClass: "form-text text-muted",
+                                  attrs: { id: "typeHelp" }
+                                },
+                                [
+                                  _c("span", {
+                                    domProps: {
+                                      textContent: _vm._s(_vm.msg.type)
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-9" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "form-group",
+                              staticStyle: { "margin-top": "0" }
+                            },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "control-label",
+                                  attrs: { for: "num_id" }
+                                },
+                                [
+                                  _c("span", {
+                                    staticClass: "fa fa-id-card-o zmdi-hc-fw"
+                                  }),
+                                  _vm._v(" RUT:\n                ")
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.formData.user.num_id,
+                                    expression: "formData.user.num_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text", id: "num_id" },
+                                domProps: { value: _vm.formData.user.num_id },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.formData.user,
+                                      "num_id",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "small",
+                                {
+                                  staticClass: "form-text text-muted",
+                                  attrs: { id: "num_idHelp" }
+                                },
+                                [
+                                  _c("span", {
+                                    domProps: {
+                                      textContent: _vm._s(_vm.msg.num_id)
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.entries.izq2, function(input) {
                     return _c(
                       "div",
                       { staticClass: "col-md-6" },
@@ -70845,7 +71062,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this3 = this;
 
       if (this.id == '') return toastr.info('Seleccione un estudiante.');
-      axios.delete('/inscriptions/' + this.formData.data.id + '?id=' + this.id).then(function (response) {
+      axios.delete('/inscriptions/' + this.$route.params.id + '?id=' + this.id).then(function (response) {
         toastr.success('Alumno Borrado');
         _this3.$children[2].get();
       });
@@ -72331,8 +72548,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -72362,6 +72577,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    generar: function generar() {
+      if (this.data.teacher_id == '' || this.data.date_init == '' || this.data.date_end == '') return;
+      window.location.href = '/pdf-pay-teacher/' + this.data.teacher_id + '?date_init=' + this.data.date_init + '&date_end=' + this.data.date_end;
+    },
     get: function get() {
       var _this = this;
 
@@ -72445,16 +72664,8 @@ var render = function() {
                   "a",
                   {
                     staticClass: "btn btn-success btn-lg btn-raised btn-block",
-                    attrs: {
-                      href:
-                        "/pdf-pay-teacher/" +
-                        _vm.data.teacher_id +
-                        "?date_init=" +
-                        _vm.data.date_init +
-                        "&date_end=" +
-                        _vm.data.date_end,
-                      target: "_blanck"
-                    }
+                    attrs: { href: "#" },
+                    on: { click: _vm.generar }
                   },
                   [_vm._v("Generar")]
                 )

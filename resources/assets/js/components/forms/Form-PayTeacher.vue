@@ -21,9 +21,7 @@
               </div>
             </div>
             <div class="col-md-3 col-md-offset-4">
-              <a :href="'/pdf-pay-teacher/' + data.teacher_id + '?date_init=' + data.date_init + '&date_end=' + data.date_end"
-              target="_blanck" 
-              class="btn btn-success btn-lg btn-raised btn-block">Generar</a>
+              <a href="#" class="btn btn-success btn-lg btn-raised btn-block" @click="generar">Generar</a>
             </div>
           </div>
 
@@ -64,6 +62,10 @@
       this.get();
     },
     methods: {
+      generar() {
+        if (this.data.teacher_id == '' || this.data.date_init == '' || this.data.date_end == '') return;
+        window.location.href = '/pdf-pay-teacher/' + this.data.teacher_id + '?date_init=' + this.data.date_init + '&date_end=' + this.data.date_end;
+      },
       get() {
         axios.post('/get-data-pay-teacher')
         .then(response => {

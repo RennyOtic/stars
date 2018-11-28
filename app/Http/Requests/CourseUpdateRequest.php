@@ -24,7 +24,7 @@ class CourseUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|numeric|digits:21|unique1:courses',
+            'code' => 'required|numeric|digits:19|unique1:courses',
             'coordinator_id' => 'required|numeric',
             'teacher_id' => 'required|numeric',
             'idioma_id' => 'required|numeric',

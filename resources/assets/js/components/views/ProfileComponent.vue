@@ -49,16 +49,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="num_id" class="col-sm-2 control-label">Cédula:</label>
+                                <label for="num_id" class="col-sm-2 control-label">RUT/Pasaporte:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="num_id" placeholder="Cédula" v-model="user.num_id">
+                                    <input type="text" class="form-control" id="num_id" placeholder="RUT/Pasaporte" v-model="user.num_id">
                                     <small id="num_idHelp" class="form-text"></small>
-                                </div>
-                            </div>
-                            <div class="form-group" v-if="user.module">
-                                <label for="module" class="col-sm-2 control-label">Módulo:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="module" placeholder="Módulo" v-model="user.module.module" readonly>
                                 </div>
                             </div>
                             <div class="form-group is-empty is-fileinput">

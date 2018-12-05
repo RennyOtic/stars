@@ -79,9 +79,9 @@
                     columns: [
                     { title: 'Submission ID', field: 'code', sortable: true },
                     { title: 'Idioma', field: 'idioma_id', sortable: true },
-                    { title: 'Nivel', field: 'level_id', sortable: true },
                     { title: 'Profesor', field: 'teacher_id', sortable: true },
-                    { title: 'Inscritos', field: 'cupos' },
+                    { title: 'Alumno/s', field: 'students' },
+                    { title: 'Inscritos', field: 'cupos', class: 'text-right' },
                     { title: 'Estado', field: 'coursestate_id' },
                     ]
                 }

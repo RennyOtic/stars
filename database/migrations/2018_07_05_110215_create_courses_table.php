@@ -73,6 +73,7 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->string('date_init')->nullable();
+            $table->text('alumns')->nullable();
             $table->unsignedInteger('idioma_id');
             $table->unsignedInteger('teacher_id')->nullable();
             $table->unsignedInteger('user_id');

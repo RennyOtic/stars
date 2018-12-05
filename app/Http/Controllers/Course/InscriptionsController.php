@@ -52,12 +52,23 @@ class InscriptionsController extends Controller
             'student_id' => 'required|numeric|is_student',
         ], [], ['student_id' => 'Alumno']);
 
+        $user = User::findOrFail($data['student_id']);
+
+        $num_id = '';
+        if ($user->type == 1) {
+            $num_id = 'id';
+            $num_t = 'RUT';
+        } elseif ($user->type == 2) {
+            $num_id = 'string|min:5|max:20'; /*pass*/
+            $num_t = 'pasaporte';
+        }
+
         $data2 = $this->validate($request, [
             'student_id' => 'required|numeric|is_student',
             'email'     => 'required|email|min:8|max:35|unique1:users',
             'last_name' => 'required|alpha_space|min:3|max:15',
             'name'      => 'required|alpha_space|min:3|max:15',
-            'num_id'    => 'required|numeric|digits_between:6,8|unique1:users',
+            'num_id'    => 'required|' . $num_id . '|unique1:users',
             'birthday_date' => 'required|date',
             'nationality_id' => 'required|numeric',
             'occupation' => 'required|string|max:25|min:3',
@@ -71,7 +82,7 @@ class InscriptionsController extends Controller
             'email'     => 'correo',
             'last_name' => 'apellido',
             'name'      => 'nombre',
-            'num_id'    => 'cédula',
+            'num_id'    => $num_t,
             'password'  => 'contraseña',
             'roles'     => 'perfiles',
             'birthday_date' => 'fecha de cumpleaños',
@@ -87,12 +98,12 @@ class InscriptionsController extends Controller
 
         $course = Course::findOrFail($data['id']);
         $is_in_course = $course->users()->where('user_id', '=', $data['student_id'])->count();
-        if ($is_in_course)
-            return response()->json(['message' => 'El alumno ya se encuentra inscrito.'], 401);
+        if ($is_in_course) return response()->json(['message' => 'El alumno ya se encuentra inscrito.'], 401);
 
         $now = \Carbon::now();
-        User::findOrFail($data['student_id'])->update($data2);
+        $user->update($data2);
         $course->users()->attach($data['student_id']);
+        $course->updateAlumns();
     }
 
     /**
@@ -104,8 +115,10 @@ class InscriptionsController extends Controller
     public function destroy(Request $request, $id)
     {
         $data = $this->validate($request, ['id' => 'required|numeric|is_student'],[],['id' => 'estudiante']);
-        $alumn = Course::findOrFail($id)->users()->where('user_id', '=', $data['id'])->count();
+        $course = Course::findOrFail($id);
+        $alumn = $course->users()->where('user_id', '=', $data['id'])->count();
         if ($alumn) return Course::findOrFail($id)->users()->detach($data['id']);
+        $course->updateAlumns();
     }
 
     /**

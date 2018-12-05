@@ -29,7 +29,9 @@ class CourseController extends Controller
         $courses = Course::dataForPaginate($select, function ($c) {
             $c->teacher_id = $c->teacher->fullName();
             $c->idioma_id = $c->idioma->name;
-            $c->level_id = $c->level->name;
+            $c->students = '<ul style="margin: 0">';
+            foreach ($c->users as $u) $c->students .= '<li>' . $u->fullName() . '</li>';
+            $c->students .= '</ul>';
             $c->cupos = $c->users()->count();
             $c->coursestate_id = $c->coursestate->name;
             unset($c->teacher, $c->idioma, $c->level, $c->users, $c->coursestate);
@@ -57,6 +59,7 @@ class CourseController extends Controller
                 'hour_end' => $d['hour_end'],
             ]);
         }
+        $course->updateAlumns();
     }
 
     /**
@@ -115,6 +118,7 @@ class CourseController extends Controller
         foreach ($courseday as $c) {
             CourseDay::findOrFail($c)->delete();
         }
+        $course->updateAlumns();
     }
 
     /**

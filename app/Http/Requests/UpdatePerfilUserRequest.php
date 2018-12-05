@@ -23,11 +23,18 @@ class UpdatePerfilUserRequest extends FormRequest
      */
     public function rules()
     {
+        $user = \App\User::where('email', request()->email)->first();
+        $num_id = '';
+        if ($user->type == 1) {
+            $num_id = 'id';
+        } elseif ($user->type == 2) {
+            $num_id = 'string|min:5|max:20'; /*pass*/
+        }
         return [
             'email' => 'required|email|unique1:users,email',
             'last_name' => 'required|alpha_space|min:3|max:20',
             'name' => 'required|alpha_space|min:3|max:20',
-            'num_id' => 'required|numeric|exr_ced|unique1:users,num_id'
+            'num_id' => 'required|' . $num_id . '|unique1:users,num_id'
         ];
     }
 
@@ -42,7 +49,7 @@ class UpdatePerfilUserRequest extends FormRequest
             'email' => 'correo',
             'last_name' => 'apellido',
             'name' => 'nombre',
-            'num_id' => 'RUT'
+            'num_id' => 'RUT/Pasaporte'
         ];
     }
 }

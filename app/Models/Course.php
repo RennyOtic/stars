@@ -27,7 +27,8 @@ class Course extends Model
         'type_student_id',
         'user_id',
         'coursestate_id',
-        'date_init'
+        'date_init',
+        'alumns'
     ];
 
     /**
@@ -97,5 +98,12 @@ class Course extends Model
     public function clase()
     {
         return $this->hasMany(Clase::class);
+    }
+
+    public function updateAlumns()
+    {
+        $names = '';
+        foreach ($this->users as $u) $names .= strtolower($u->fullName()) . ' - ';
+        $this->update(['alumns' => $names]);
     }
 }

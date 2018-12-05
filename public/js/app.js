@@ -62510,12 +62510,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -62778,7 +62772,7 @@ var render = function() {
                           staticClass: "col-sm-2 control-label",
                           attrs: { for: "num_id" }
                         },
-                        [_vm._v("Cédula:")]
+                        [_vm._v("RUT/Pasaporte:")]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-sm-10" }, [
@@ -62795,7 +62789,7 @@ var render = function() {
                           attrs: {
                             type: "text",
                             id: "num_id",
-                            placeholder: "Cédula"
+                            placeholder: "RUT/Pasaporte"
                           },
                           domProps: { value: _vm.user.num_id },
                           on: {
@@ -62814,52 +62808,6 @@ var render = function() {
                         })
                       ])
                     ]),
-                    _vm._v(" "),
-                    _vm.user.module
-                      ? _c("div", { staticClass: "form-group" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "col-sm-2 control-label",
-                              attrs: { for: "module" }
-                            },
-                            [_vm._v("Módulo:")]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-sm-10" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.user.module.module,
-                                  expression: "user.module.module"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                id: "module",
-                                placeholder: "Módulo",
-                                readonly: ""
-                              },
-                              domProps: { value: _vm.user.module.module },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.user.module,
-                                    "module",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ])
-                        ])
-                      : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -67517,7 +67465,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 data: {}
             },
             tabla: {
-                columns: [{ title: 'Submission ID', field: 'code', sortable: true }, { title: 'Idioma', field: 'idioma_id', sortable: true }, { title: 'Nivel', field: 'level_id', sortable: true }, { title: 'Profesor', field: 'teacher_id', sortable: true }, { title: 'Inscritos', field: 'cupos' }, { title: 'Estado', field: 'coursestate_id' }]
+                columns: [{ title: 'Submission ID', field: 'code', sortable: true }, { title: 'Idioma', field: 'idioma_id', sortable: true }, { title: 'Profesor', field: 'teacher_id', sortable: true }, { title: 'Alumno/s', field: 'students' }, { title: 'Inscritos', field: 'cupos', class: 'text-right' }, { title: 'Estado', field: 'coursestate_id' }]
             }
         };
     },

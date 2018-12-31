@@ -55,7 +55,7 @@ class ProfileController extends Controller
         $user = \Auth::user()->update($data);
         if ($request->hasFile('image')) {
             $extension = $request->image->getClientOriginalExtension();
-            $url = $request->image->storeAs('users/image', \Auth::user()->id.'.'.$extension);
+            $url = $request->image->storeAs('users/image', \Auth::user()->id . '.' . $extension);
         }
         return response()->json($user);
     }

@@ -61,25 +61,37 @@ axios.interceptors.request.use(function (config) {
 		$('small').removeClass('text-danger').addClass('text-muted');
 	}
 	$('[role="tooltip"]').hide();
-	$('button, input, select, textarea').attr('disabled', 'disabled')
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).attr('disabled', 'disabled');
+	});
 	// $('small').parent().find('input, select').removeClass('is-invalid');
 	// $('.modal small').removeClass('text-danger').addClass('text-muted');
 	return config;
 }, function (error) {
 	// Hacer algo con un error de solicitud
-	$('button, input, select, textarea').removeAttr('disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).attr('disabled', 'disabled');
+	});
 	return Promise.reject(error);
 });
 
 // Añadir un interceptor de respuesta
 axios.interceptors.response.use(function (response) {
 	// Hacer algo con los datos de respuesta
-	$('button, input, select, textarea').removeAttr('disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).removeAttr('disabled');
+	});
 	return response;
 }, function (error) {
 	// Hacer algo con un error de respuesta
 	errors = error.response;
-	$('button, input, select, textarea').removeAttr('disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).removeAttr('disabled');
+	});
 	if (errors.status >= 500) {
 		// window.location.reload();
 		toastr.warning('Error en el servidor');

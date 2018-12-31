@@ -41,8 +41,8 @@ class ValidatorServiceProvider extends ServiceProvider
          */
         Validator::extend('phone', function($attribute, $value)
         {
-            return preg_match('/[+]{1}[0-9]{2}[[:space:]]{1}[0-9]{8}/', $value);
-        }, 'El formato debe ser +xx xxxxxxxx');
+            return preg_match('/[+]{1}[0-9]{10}/', $value);
+        }, 'El formato debe ser +xxxxxxxxxx');
 
         /**
          * Comprueba que sea la contraseña actual del usuario autentificado.

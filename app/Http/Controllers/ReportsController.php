@@ -58,7 +58,7 @@ class ReportsController extends Controller
 	{
 		$user = User::findOrFail($user_id);
 		$count = 0;
-		foreach ($user->courses as $c) {
+		foreach ($user->coursesTeacher as $c) {
 			$count += $c->users->count();
 		}
 		$pdf = \PDF::loadView('reports.course_teacher', compact('user', 'count'));

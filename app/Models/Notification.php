@@ -22,6 +22,7 @@ class Notification extends Model
         'student_id',
     	'state',
     	'observation',
+        'reschedule'
     ];
 
     /**

@@ -25,12 +25,10 @@ class RolUpdateRequest extends FormRequest
     {
         return [
             'description' => 'nullable|string',
-            'from_at' => 'nullable|required_with:to_at|hour_corret',
             'name' => 'required|string|min:3|max:25',
             'permissions' => 'nullable|array',
             'slug' => 'required|min:3|max:25|unique1:roles',
             'special' => 'required_without:permissions',
-            'to_at' => 'nullable|required_with:from_at|hour_corret'
         ];
     }
 
@@ -43,12 +41,10 @@ class RolUpdateRequest extends FormRequest
     {
         return [
             'description' => 'descripción',
-            'from_at' => 'desde',
             'name' => 'nombre',
             'permissions' => 'permisos',
             'slug' => 'alias',
             'special' => 'especial',
-            'to_at' => 'hasta'
         ];
     }
 }

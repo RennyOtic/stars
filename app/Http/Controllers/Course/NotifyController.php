@@ -132,8 +132,10 @@ class NotifyController extends Controller
     public function update(Request $request, $id)
     {
         $data = $this->validate($request, [
-            'state' => 'required|numeric'
-        ],[],['state' => 'estado']);
+            'state' => 'required|numeric',
+            'reschedule' => 'required_if:state,1|nullable|date'
+        ],[],['state' => 'estado', 'reschedule' => 'reprogramar']);
+        if ($data['state'] == 0) $data['reschedule'] = null;
         $notification = Notification::findOrFail($id);
         $notification->update($data);
     }

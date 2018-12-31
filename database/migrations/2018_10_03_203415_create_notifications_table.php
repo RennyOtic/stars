@@ -20,6 +20,7 @@ class CreateNotificationsTable extends Migration
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('state')->nullable(); // 0) No Aprobado 1) Aprobado 
             $table->text('observation');
+            $table->string('reschedule')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

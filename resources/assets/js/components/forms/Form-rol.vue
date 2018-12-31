@@ -13,18 +13,6 @@
             @input="formData.rol[input.id] = arguments[0]"></v-input>
           </div>
 
-            <div class="col-md-6" v-for="input in entries.der">
-              <div class="form-group label-floating clockpicker" :class="!formData.rol[input.id] ? 'is-empty' : ''">
-                <label for="special" class="control-label">
-                  <span :class="'fa fa-'+input.icon"></span> {{ input.label }}: {{ formData.rol[input.id] }}
-                </label>
-                <input type="text" class="form-control" :class="input.id" v-model="formData.rol[input.id]" required="required">
-                <small :id="input.id+'Help'" class="form-text text-muted">
-                  <span v-text="msg[input.id]"></span>
-                </small>
-              </div>
-            </div>
-
           <div class="col-md-6">
             <div class="form-group rs-select">
               <label for="special" class="control-label">
@@ -80,10 +68,6 @@
           {label: 'Alias', id: 'slug', icon: 'edit'},
           {label: 'Descripción', id: 'description', icon: 'edit'},
           ],
-          der: [
-          {label: 'Hora a comenzar la actividad', id: 'from_at', icon: 'calendar'},
-          {label: 'Hora a finalizar la actividad', id: 'to_at', icon: 'calendar'},
-          ]
         },
         msg: {
           name: 'Nombre del rol.',

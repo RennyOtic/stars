@@ -62,7 +62,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Models\Permisologia\Permission::class);
     }
 
-    public function courses()
+    public function coursesTeacher()
+    {
+        return $this->hasMany(\App\Models\Course::class, 'teacher_id');
+    }
+
+    public function coursesStudent()
     {
         return $this->belongsToMany(\App\Models\Course::class);
     }

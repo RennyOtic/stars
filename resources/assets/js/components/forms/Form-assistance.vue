@@ -23,7 +23,7 @@
                   <label for="event" class="control-label">
                     <span class="fa fa-laptop"></span> Evento:
                   </label>
-                  <select class="form-control" v-model="event" :disabled="cron.start">
+                  <select class="form-control no_ajax" :disabled="cron.start" v-model="event">
                     <option value="1">Comenzar clase</option>
                     <option value="2">Perdir Suspensión / Cancelación</option>
                   </select>
@@ -67,7 +67,7 @@
                     <label for="coordinator" class="control-label">
                       <span class="fa fa-user"></span> coordinador:
                     </label>
-                    <select class="form-control" v-model="formData.data.coordinator_id">
+                    <select class="form-control" v-model="formData.data.coordinator_id" disabled="">
                       <option value="">Seleccione un coordinador</option>
                       <option v-for="c in coordinators" :value="c.id" v-text="c.fullName"></option>
                     </select>

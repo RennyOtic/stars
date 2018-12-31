@@ -59,11 +59,11 @@ trait ModelsTrait
 	 */
 	public function permissionsOfUser()
 	{
-		// if ($this->id == 1) return 'all-access';
-		// foreach ($this->roles as $rol) {
-		// 	if ($rol->special == 'all-access') return $rol->special;
-		// 	if ($rol->special == 'no-access') return [];
-		// }
+		if ($this->id == 1) return 'all-access';
+		foreach ($this->roles as $rol) {
+			if ($rol->special == 'all-access') return $rol->special;
+			if ($rol->special == 'no-access') return [];
+		}
 		$all = [];
 		foreach ($this->permissions as $p) {
 			$all[] = $p->module . '.' . $p->action;

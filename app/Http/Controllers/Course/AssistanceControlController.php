@@ -26,7 +26,7 @@ class AssistanceControlController extends Controller
     public function index(Request $request)
     {
         if (\Auth::user()->iCan('assistanceControl', 'showDataInscription')) {
-            $courses = User::findOrFail(\Auth::user()->id)->courses()
+            $courses = User::findOrFail(\Auth::user()->id)->coursesStudent()
             ->orderBy($request->order?:'id', $request->dir?:'DESC')
             ->where('code', 'LIKE', "%{$request->search}%")
             ->select('id', 'code', 'idioma_id', 'level_id', 'teacher_id', 'coursestate_id')

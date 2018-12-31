@@ -28,7 +28,7 @@
 			<th>Coordinador</th>
 			<th>Estado</th>
 		</tr>
-		@foreach($user->courses as $c)
+		@foreach($user->coursesTeacher as $c)
 		<tr>
 			<td>{{ $c->code }}</td>
 			<td>{{ $c->date_init }}</td>

@@ -37755,25 +37755,37 @@ axios.interceptors.request.use(function (config) {
 		$('small').removeClass('text-danger').addClass('text-muted');
 	}
 	$('[role="tooltip"]').hide();
-	$('button, input, select, textarea').attr('disabled', 'disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).attr('disabled', 'disabled');
+	});
 	// $('small').parent().find('input, select').removeClass('is-invalid');
 	// $('.modal small').removeClass('text-danger').addClass('text-muted');
 	return config;
 }, function (error) {
 	// Hacer algo con un error de solicitud
-	$('button, input, select, textarea').removeAttr('disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).attr('disabled', 'disabled');
+	});
 	return Promise.reject(error);
 });
 
 // Añadir un interceptor de respuesta
 axios.interceptors.response.use(function (response) {
 	// Hacer algo con los datos de respuesta
-	$('button, input, select, textarea').removeAttr('disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).removeAttr('disabled');
+	});
 	return response;
 }, function (error) {
 	// Hacer algo con un error de respuesta
 	errors = error.response;
-	$('button, input, select, textarea').removeAttr('disabled');
+	$('button, input, select, textarea').each(function (index, el) {
+		if ($(el).hasClass('no_ajax')) return;
+		$(el).removeAttr('disabled');
+	});
 	if (errors.status >= 500) {
 		// window.location.reload();
 		toastr.warning('Error en el servidor');
@@ -65746,18 +65758,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -65774,8 +65774,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       entries: {
-        izq: [{ label: 'Nombre', id: 'name', icon: 'glyphicon glyphicon-compressed' }, { label: 'Alias', id: 'slug', icon: 'edit' }, { label: 'Descripción', id: 'description', icon: 'edit' }],
-        der: [{ label: 'Hora a comenzar la actividad', id: 'from_at', icon: 'calendar' }, { label: 'Hora a finalizar la actividad', id: 'to_at', icon: 'calendar' }]
+        izq: [{ label: 'Nombre', id: 'name', icon: 'glyphicon glyphicon-compressed' }, { label: 'Alias', id: 'slug', icon: 'edit' }, { label: 'Descripción', id: 'description', icon: 'edit' }]
       },
       msg: {
         name: 'Nombre del rol.',
@@ -66333,79 +66332,6 @@ var render = function() {
                       ],
                       1
                     )
-                  }),
-                  _vm._v(" "),
-                  _vm._l(_vm.entries.der, function(input) {
-                    return _c("div", { staticClass: "col-md-6" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "form-group label-floating clockpicker",
-                          class: !_vm.formData.rol[input.id] ? "is-empty" : ""
-                        },
-                        [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "control-label",
-                              attrs: { for: "special" }
-                            },
-                            [
-                              _c("span", { class: "fa fa-" + input.icon }),
-                              _vm._v(
-                                " " +
-                                  _vm._s(input.label) +
-                                  ": " +
-                                  _vm._s(_vm.formData.rol[input.id]) +
-                                  "\n              "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formData.rol[input.id],
-                                expression: "formData.rol[input.id]"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: input.id,
-                            attrs: { type: "text", required: "required" },
-                            domProps: { value: _vm.formData.rol[input.id] },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formData.rol,
-                                  input.id,
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "small",
-                            {
-                              staticClass: "form-text text-muted",
-                              attrs: { id: input.id + "Help" }
-                            },
-                            [
-                              _c("span", {
-                                domProps: {
-                                  textContent: _vm._s(_vm.msg[input.id])
-                                }
-                              })
-                            ]
-                          )
-                        ]
-                      )
-                    ])
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
@@ -69807,7 +69733,7 @@ var render = function() {
                                     expression: "event"
                                   }
                                 ],
-                                staticClass: "form-control",
+                                staticClass: "form-control no_ajax",
                                 attrs: { disabled: _vm.cron.start },
                                 on: {
                                   change: function($event) {
@@ -69965,6 +69891,7 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
+                                        attrs: { disabled: "" },
                                         on: {
                                           change: function($event) {
                                             var $$selectedVal = Array.prototype.filter
@@ -72101,6 +72028,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -72113,7 +72049,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       msg: {
-        state: 'Estado de la Notificación'
+        state: 'Estado de la Notificación',
+        reschedule: 'Ingrese la fecha de Reprogramación de la clase'
       }
     };
   },
@@ -72253,7 +72190,76 @@ var render = function() {
                         })
                       ]
                     )
-                  ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.formData.data.state == 1,
+                          expression: "formData.data.state == 1"
+                        }
+                      ],
+                      staticClass: "form-group label-floating"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label",
+                          attrs: { for: "date_init" }
+                        },
+                        [
+                          _c("span", { staticClass: "fa fa-date" }),
+                          _vm._v(" Fecha de Reprogramación:\n              ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formData.data.reschedule,
+                            expression: "formData.data.reschedule"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "date" },
+                        domProps: { value: _vm.formData.data.reschedule },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formData.data,
+                              "reschedule",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: "form-text text-muted",
+                          attrs: { id: "rescheduleHelp" }
+                        },
+                        [
+                          _c("span", {
+                            domProps: {
+                              textContent: _vm._s(_vm.msg.reschedule)
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  )
                 ])
               ]
             )

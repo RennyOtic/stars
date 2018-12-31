@@ -27,6 +27,15 @@
                   <span v-text="msg.state"></span>
                 </small>
               </div>
+              <div class="form-group label-floating" v-show="formData.data.state == 1">
+                <label for="date_init" class="control-label">
+                  <span class="fa fa-date"></span> Fecha de Reprogramación:
+                </label>
+                <input type="date" class="form-control" v-model="formData.data.reschedule">
+                <small id="rescheduleHelp" class="form-text text-muted">
+                  <span v-text="msg.reschedule"></span>
+                </small>
+              </div>
             </div>
           </form>
         </div>
@@ -54,6 +63,7 @@
       return {
         msg: {
           state: 'Estado de la Notificación',
+          reschedule: 'Ingrese la fecha de Reprogramación de la clase'
         }
       }
     },

@@ -37681,6 +37681,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 		if (location.href.indexOf('/login') > 0) return;
 		if (location.href.indexOf('/registro') > 0) return;
+		if (location.href.indexOf('/password') > 0) return;
 
 		axios.post('/app', { rs: 'p' }).then(function (response) {
 			_this.permissions = response.data;
@@ -61237,6 +61238,7 @@ router.beforeEach(function (to, from, next) {
 	var permission = to.name;
 	if (location.href.indexOf('/login') > 0) return;
 	if (location.href.indexOf('/registro') > 0) return;
+	if (location.href.indexOf('/password') > 0) return;
 	if (permission == undefined) {
 		next('error');return;
 	}
@@ -61955,7 +61957,7 @@ var render = function() {
                 _c("i", {
                   staticClass: "glyphicon glyphicon-exclamation-sign zmdi-hc-fw"
                 }),
-                _vm._v(" Solicitudes de Suspención\n        ")
+                _vm._v(" Solicitudes de Suspensión\n        ")
               ])
             ],
             1
@@ -63485,6 +63487,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -63500,12 +63517,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       entries: {
         izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }],
-        izq2: [{ label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date', empty: true }],
+        izq2: [{ label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' },
+        // {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
+        { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date', empty: true }],
         der: [{ label: 'Contraseña', id: 'password', icon: 'fa fa-lock', type: 'password' }, { label: 'Confirmación de Contraseña', id: 'password_confirmation', icon: 'fa fa-lock', type: 'password' }]
       },
       roles: [],
       nationalities: [],
       companies: [],
+      activities: [],
       msg: {
         name: 'Nombre del usuario.',
         last_name: 'Apellido del usuario.',
@@ -63533,6 +63553,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       _this.roles = response.data.roles;
       _this.nationalities = response.data.nationalities;
       _this.companies = response.data.companies;
+      _this.activities = response.data.activities;
     });
   },
   methods: {
@@ -64031,6 +64052,91 @@ var render = function() {
                       1
                     )
                   }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-6",
+                      staticStyle: { height: "102px" }
+                    },
+                    [
+                      _c("div", { staticClass: "form-group rs-select" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "control-label",
+                            attrs: { for: "occupation" }
+                          },
+                          [
+                            _c("span", { staticClass: "zmdi fa fa-id-card-o" }),
+                            _vm._v(" Ocupación:\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formData.user.occupation,
+                                expression: "formData.user.occupation"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { id: "occupation" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.formData.user,
+                                  "occupation",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("Ocupación")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.activities, function(a) {
+                              return _c("option", {
+                                domProps: { textContent: _vm._s(a) }
+                              })
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "small",
+                          {
+                            staticClass: "form-text text-muted",
+                            attrs: { id: "occupationHelp" }
+                          },
+                          [
+                            _c("span", {
+                              domProps: {
+                                textContent: _vm._s(_vm.msg.occupation)
+                              }
+                            })
+                          ]
+                        )
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
                     _c("div", { staticClass: "form-group rs-select" }, [
@@ -65413,7 +65519,25 @@ var render = function() {
             },
             [_c("span", { staticClass: "glyphicon glyphicon-save" })]
           )
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.id && _vm.show == 1,
+              expression: "id && show == 1"
+            }
+          ],
+          staticClass: "btn btn-danger btn-raised btn-xs",
+          staticStyle: { "z-index": "100" },
+          attrs: { href: "/logging/" + _vm.id, type: "button" }
+        },
+        [_vm._v("logging")]
+      )
     ]),
     _vm._v(" "),
     _c(
@@ -65709,6 +65833,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__partials_input_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__partials_input_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__partials_input_checkbox_permissions_vue__ = __webpack_require__(228);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__partials_input_checkbox_permissions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__partials_input_checkbox_permissions_vue__);
+//
 //
 //
 //
@@ -66314,6 +66439,7 @@ var render = function() {
                           attrs: {
                             name: input,
                             required: "true",
+                            readonly: _vm.formData.cond != "create",
                             msg: _vm.msg[input.id]
                           },
                           on: {
@@ -69194,6 +69320,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 columns: [{ title: 'Submission ID', field: 'code', sortable: true }, { title: 'Idioma', field: 'idioma_id', sortable: true }, { title: 'Nivel', field: 'level_id', sortable: true }, { title: 'Profesor', field: 'teacher_id', sortable: true }, { title: 'Estado', field: 'coursestate_id', sortable: true }]
             }
         };
+    },
+
+    watch: {
+        id: function id(val) {
+            if (this.can('assistanceControl.store')) {
+                if (val) this.$router.push({ name: 'assistanceControl.store', params: { id: val } });
+            }
+        }
     }
 });
 
@@ -69206,43 +69340,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "box" }, [
-    _c(
-      "div",
-      { staticClass: "box-header text-center" },
-      [
-        _vm.can("assistanceControl.store")
-          ? _c(
-              "router-link",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.id,
-                    expression: "id"
-                  }
-                ],
-                staticClass: "btn btn-success btn-raised btn-xs",
-                attrs: {
-                  to: {
-                    name: "assistanceControl.store",
-                    params: { id: _vm.id }
-                  },
-                  "data-tooltip": "tooltip",
-                  title: "Marcar Asistencia"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.openform("create")
-                  }
-                }
-              },
-              [_c("span", { staticClass: "glyphicon glyphicon-plus" })]
-            )
-          : _vm._e()
-      ],
-      1
-    ),
+    _c("div", { staticClass: "box-header text-center" }),
     _vm._v(" "),
     _c(
       "div",
@@ -69674,11 +69772,7 @@ var render = function() {
                   [
                     _c("h4", [
                       _c("span", { staticClass: "glyphicon glyphicon-plus" }),
-                      _vm._v(
-                        " Asistencia al Curso: " +
-                          _vm._s(_vm.formData.data.code) +
-                          "."
-                      )
+                      _vm._v(" Asistencia al Curso:")
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
@@ -69798,7 +69892,8 @@ var render = function() {
                                     _c(
                                       "button",
                                       {
-                                        staticClass: "btn btn-success btn-lg",
+                                        staticClass:
+                                          "btn btn-success btn-lg no_ajax",
                                         class: {
                                           "btn-raised": !_vm.cron.start
                                         },
@@ -69814,7 +69909,8 @@ var render = function() {
                                     _c(
                                       "button",
                                       {
-                                        staticClass: "btn btn-danger btn-lg",
+                                        staticClass:
+                                          "btn btn-danger btn-lg no_ajax",
                                         class: { "btn-raised": _vm.cron.start },
                                         attrs: {
                                           type: "button",
@@ -71095,6 +71191,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -71113,8 +71223,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       nationalities: [],
       howfinds: [],
       companies: [],
+      activities: [],
       entries: {
-        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date' }, { label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o' }, { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }]
+        izq: [{ label: 'Nombre', id: 'name', icon: 'fa fa-user' }, { label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o' }, { label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o' }, { label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date' },
+        // {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
+        { label: 'E-Mail', id: 'email', icon: 'fa fa-envelope' }, { label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o' }, { label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o' }]
       },
       msg: {
         company_id: 'Empresa asociada al estudiante.',
@@ -71148,6 +71261,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.nationalities = response.data.nationalities;
         _this.howfinds = response.data.howfinds;
         _this.companies = response.data.companies;
+        _this.activities = response.data.activities;
       });
     },
 
@@ -71248,6 +71362,94 @@ var render = function() {
                         1
                       )
                     }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-md-6",
+                        staticStyle: { height: "102px" }
+                      },
+                      [
+                        _c("div", { staticClass: "form-group rs-select" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "control-label",
+                              attrs: { for: "occupation" }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "zmdi fa fa-id-card-o"
+                              }),
+                              _vm._v(" Ocupación:\n                ")
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formData.data.occupation,
+                                  expression: "formData.data.occupation"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "occupation" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formData.data,
+                                    "occupation",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "" } }, [
+                                _vm._v("Ocupación")
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.activities, function(a) {
+                                return _c("option", {
+                                  domProps: { textContent: _vm._s(a) }
+                                })
+                              })
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "small",
+                            {
+                              staticClass: "form-text text-muted",
+                              attrs: { id: "occupationHelp" }
+                            },
+                            [
+                              _c("span", {
+                                domProps: {
+                                  textContent: _vm._s(_vm.msg.occupation)
+                                }
+                              })
+                            ]
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-6" }, [
                       _c("div", { staticClass: "form-group rs-select" }, [
@@ -72125,7 +72327,7 @@ var render = function() {
                           staticClass: "zmdi zmdi-shield-security zmdi-hc-fw"
                         }),
                         _vm._v(
-                          " Cómo se enteró el estudiante de ST:\n              "
+                          " Seleccione un estado para la notificación:\n              "
                         )
                       ]
                     ),

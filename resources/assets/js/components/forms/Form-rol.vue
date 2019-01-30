@@ -8,6 +8,7 @@
           <h4><span :class="'glyphicon glyphicon-' + formData.ico"></span> {{ formData.title }}</h4>
           <div class="col-md-6" v-for="input in entries.izq">
             <v-input :name="input" required="true"
+            :readonly="formData.cond != 'create'"
             v-model="formData.rol[input.id]"
             :msg="msg[input.id]"
             @input="formData.rol[input.id] = arguments[0]"></v-input>

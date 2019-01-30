@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ { Course, EventAssistance, Assistance, AssistancesControl };
+use App\Models\ { Course, EventAssistance, Assistance, AssistancesControl, Notification };
 use App\User;
 use App\Models\Permisologia\Role;
 
@@ -62,6 +62,42 @@ class AssistanceControlController extends Controller
                 'course_id' => 'required|numeric',
                 'event_id' => 'required|numeric'
             ],[],['course_id' => 'curso', 'event_id' => 'evento']);
+
+            $rol = \Auth::user()->roles->first()->slug;
+            if ($rol == 'profesor') {
+                $students = Course::findOrFail($data['course_id'])->users;
+                if ($students->count() == 0) {
+                    return response()->json(['message' => 'Aún no Hay Alumnos Inscritos.'], 401);
+                } elseif ($students->count() == 1) {
+                    $notification = Notification::where('student_id', $students->first()->id)
+                    ->where('state', null)
+                    ->where('created_at', '<', \Carbon::now()->subHours(2))
+                    ->first();
+                    if ($notification) return response()->json(['message' => 'El Alumno ha suspendido la clase.'], 401);
+                } elseif ($students->count() > 1) {
+                    $count_suspension = 0;
+                    foreach ($students as $s) {
+                        $notification = Notification::where('student_id', $s->id)
+                        ->where('state', null)
+                        ->where('created_at', '>', \Carbon::now()->subHours(2))
+                        ->get();
+                        if ($notification) {
+                            $count_suspension++;
+                        }
+                    }
+                    if ($count_suspension == $students->count()) {
+                        return response()->json(['message' => 'Todos los alumnos suspendieron la clase.'], 401);
+                    }
+                }
+                
+            } elseif ($rol == 'alumno') {
+                $teacher = Course::findOrFail($data['course_id'])->teacher;
+                $notification = Notification::where('student_id', $teacher->id)
+                ->where('state', null)
+                ->where('created_at', '>', \Carbon::now()->subHours(2))
+                ->first();
+                if ($notification) return response()->json(['message' => 'El profesor ha suspendido la clase.'], 401);
+            }
             $assistance = Assistance::create([
                 'course_id' => $data['course_id'],
                 'event_id' => $data['event_id'],

@@ -41,11 +41,11 @@
             title="Cursos por Profesor"
             v-show="show == 1 && id && is(id, 'Profesor')"
             v-if="can('report.course_teacher')"><span class="glyphicon glyphicon-save"></span></a>
-            <!-- <a :href="'/logging/'+id"
+            <a :href="'/logging/'+id"
             v-show="id && show == 1"
             type="button"
             class="btn btn-danger btn-raised btn-xs"
-            style="z-index: 100">logging</a> -->
+            style="z-index: 100">logging</a>
         </div>
         <div class="box-body">
             <rs-form :formData="formData"

@@ -106,6 +106,7 @@ router.beforeEach((to, from, next) => {
 	let permission = to.name;
 	if (location.href.indexOf('/login') > 0) return;
 	if (location.href.indexOf('/registro') > 0) return;
+	if (location.href.indexOf('/password') > 0) return;
 	if (permission == undefined) {next('error'); return;}
 	if (to.path.split('/')[1] == 'js' || to.path.split('/')[1] == 'css') {next('/'); return;}
 

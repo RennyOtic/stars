@@ -1,55 +1,54 @@
-@extends('layouts.frontend')
+@extends('layouts.app')
 
-{{-- Page Title --}}
-@section('page-title', 'Forgot Password')
+@section('title', 'Se te olvidó tu contraseña | ')
 
-{{-- Page Subtitle --}}
-@section('page-subtitle', '')
+@section('end')
+<body class="cover" style="background-image: url(/img/loginFont.jpg);">
+    <div id="app">
+        <form action="{{ route('password.email') }}" method="POST" class="full-box logInForm" autocomplete="off">
 
-{{-- Breadcrumbs --}}
-@section('breadcrumbs')
-@endsection
+            <p class="text-center text-muted"><img src="{{ asset('./img/logo.jpeg') }}" alt="logo" width="270"></p>
+            @if ($errors->has('email'))
+            <p class="alert alert-danger">
+                <strong>{{ $errors->first('email') }}</strong>
+                @if ($errors->has('password'))
+                <strong>{{ $errors->first('password') }}</strong>
+                @endif
+            </p>
+            @endif
+            <p class="text-center text-muted text-uppercase">¿Se te olvidó tu contraseña?</p>
 
-@section('content')
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">Forgot Password</div>
+            @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+            @endif
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+            {{ csrf_field() }}
 
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
+            <div class="form-group label-floating has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
+                <label for="email" class="control-label">Correo:</label>
+                <input id="email" type="email" class="form-control" name="email" value="" required autofocus> 
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                @if ($errors->has('email'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
+                @endif
+            </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            <div class="row">
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary btn-raised">
+                        Enviar Enlace para Restablecer
+                    </button>
                 </div>
             </div>
-        </div>
+
+            <a href="{{ url('/') }}">Inicia Sesión.</a>
+
+        </form>
     </div>
+</body>
 @endsection

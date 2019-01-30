@@ -1,13 +1,13 @@
 <template>
     <div class="box">
         <div class="box-header text-center">
-            <router-link :to="{ name: 'assistanceControl.store', params: { id: id } }"
-            class="btn btn-success btn-raised btn-xs"
+            <!-- <router-link class="btn btn-success btn-raised btn-xs"
+            :to="{ name: 'assistanceControl.store', params: { id: id } }"
             data-tooltip="tooltip"
             title="Marcar Asistencia"
             v-if="can('assistanceControl.store')"
             v-show="id"
-            @click="openform('create')"><span class="glyphicon glyphicon-plus"></span></router-link>
+            ><span class="glyphicon glyphicon-plus"></span></router-link> -->
         </div>
         <div class="box-body">
             <rs-table :columns="tabla.columns"
@@ -38,6 +38,14 @@
                     ]
                 }
             };
+        },
+        watch: {
+            id: function (val) {
+                if (this.can('assistanceControl.store')) {
+                    if (val)
+                        this.$router.push({ name: 'assistanceControl.store', params: { id: val } });
+                }
+            }
         }
     }
 </script>

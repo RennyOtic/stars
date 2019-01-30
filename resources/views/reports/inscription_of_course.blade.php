@@ -49,7 +49,7 @@
 		</tr>
 		<tr>
 			<th>Empresa</th>
-			<td>{{ $course->company->name }}</td>
+			<td>{{ optional($course->company)->name }}</td>
 		</tr>
 		<tr>
 			<th>Estado del Curso</th>

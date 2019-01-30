@@ -40,7 +40,7 @@
         </li>
         <li v-if="can('notify_s.index')">
             <router-link :to="{ name: 'notify_s.index' }">
-                <i class="glyphicon glyphicon-exclamation-sign zmdi-hc-fw"></i> Solicitudes de Suspención
+                <i class="glyphicon glyphicon-exclamation-sign zmdi-hc-fw"></i> Solicitudes de Suspensión
             </router-link>
         </li>
         <li v-show="can(['report.pay_teacher'])">

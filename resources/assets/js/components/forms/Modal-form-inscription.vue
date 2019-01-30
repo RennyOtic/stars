@@ -13,11 +13,26 @@
             <div class="">
 
               <div class="col-sm-6" v-for="input in entries.izq">
-                  <rs-input :name="input" required="true"
-                  :type="input.type"
-                  v-model="formData.data[input.id]"
-                  :msg="msg[input.id]"
-                  @input="formData.data[input.id] = arguments[0]"></rs-input>
+                <rs-input :name="input" required="true"
+                :type="input.type"
+                v-model="formData.data[input.id]"
+                :msg="msg[input.id]"
+                @input="formData.data[input.id] = arguments[0]"></rs-input>
+              </div>
+
+              <div class="col-md-6" style="height: 102px;">
+                <div class="form-group rs-select">
+                  <label for="occupation" class="control-label">
+                    <span class="zmdi fa fa-id-card-o"></span> Ocupación:
+                  </label>
+                  <select id="occupation" class="form-control" v-model="formData.data.occupation">
+                    <option value="">Ocupación</option>
+                    <option v-for="a in activities" v-text="a"></option>
+                  </select>
+                  <small id="occupationHelp" class="form-text text-muted">
+                    <span v-text="msg.occupation"></span>
+                  </small>
+                </div>
               </div>
 
               <div class="col-sm-6">
@@ -36,7 +51,6 @@
               </div>
 
               <div class="col-sm-6">
-
                 <div class="form-group rs-select">
                   <label for="how_find" class="control-label">
                     <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Cómo se enteró el estudiante de ST:
@@ -107,13 +121,14 @@
         nationalities: [],
         howfinds: [],
         companies: [],
+        activities: [],
         entries: {
           izq: [
           {label: 'Nombre', id: 'name', icon: 'fa fa-user'},
           {label: 'Apellido', id: 'last_name', icon: 'fa fa-user-o'},
           {label: 'RUT', id: 'num_id', icon: 'fa fa-id-card-o'},
           {label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date'},
-          {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
+          // {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
           {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
           {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
           {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
@@ -149,6 +164,7 @@
           this.nationalities = response.data.nationalities;
           this.howfinds = response.data.howfinds;
           this.companies = response.data.companies;
+          this.activities = response.data.activities;
         });
       },
       registrar: function () {

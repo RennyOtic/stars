@@ -79,6 +79,7 @@ const app = new Vue({
 	mounted: function () {
 		if (location.href.indexOf('/login') > 0) return;
 		if (location.href.indexOf('/registro') > 0) return;
+		if (location.href.indexOf('/password') > 0) return;
 
 		axios.post('/app', {rs: 'p'})
 		.then(response => {

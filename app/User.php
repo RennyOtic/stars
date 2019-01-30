@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\ { ModelsTrait, PermissionTrait };
+use App\Notifications\MyResetPassword;
 
 class User extends Authenticatable
 {
@@ -70,5 +71,10 @@ class User extends Authenticatable
     public function coursesStudent()
     {
         return $this->belongsToMany(\App\Models\Course::class);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new MyResetPassword($token));
     }
 }

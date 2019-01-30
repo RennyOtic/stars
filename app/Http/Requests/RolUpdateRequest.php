@@ -27,7 +27,6 @@ class RolUpdateRequest extends FormRequest
             'description' => 'nullable|string',
             'name' => 'required|string|min:3|max:25',
             'permissions' => 'nullable|array',
-            'slug' => 'required|min:3|max:25|unique1:roles',
             'special' => 'required_without:permissions',
         ];
     }
@@ -43,7 +42,6 @@ class RolUpdateRequest extends FormRequest
             'description' => 'descripción',
             'name' => 'nombre',
             'permissions' => 'permisos',
-            'slug' => 'alias',
             'special' => 'especial',
         ];
     }

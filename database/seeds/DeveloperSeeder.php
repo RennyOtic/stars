@@ -15,20 +15,14 @@ class DeveloperSeeder extends Seeder
 
         factory(App\User::class, 99)->create();
 
-        for ($i = 2; $i <= 100; $i++) { 
+        for ($i = 2; $i <= 100; $i++) {
+            $rol = rand(2, 4);
             DB::table('role_user')->insert([
                 'user_id' => $i,
-                'role_id' => rand(2, 4)
+                'role_id' => $rol
             ]);
+            \App\User::findOrFail($i)->assignPermissionsOneUser([$rol]);
         }
-
-        $permissions = [16, 22, 23, 24];
-        $rol = \App\Models\Permisologia\Role::findOrFail(3);
-        $rol->permissions()->attach($permissions);
-        $users = $rol->users;
-        $users->each(function ($u) use ($permissions) {
-            $u->permissions()->attach($permissions);
-        });
 
         factory(App\Models\Company::class, 10)->create();
 

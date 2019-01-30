@@ -51,6 +51,21 @@
             @input="formData.user[input.id] = arguments[0]"></rs-input>
           </div>
 
+          <div class="col-md-6" style="height: 102px;">
+            <div class="form-group rs-select">
+              <label for="occupation" class="control-label">
+                <span class="zmdi fa fa-id-card-o"></span> Ocupación:
+              </label>
+              <select id="occupation" class="form-control" v-model="formData.user.occupation">
+                <option value="">Ocupación</option>
+                <option v-for="a in activities" v-text="a"></option>
+              </select>
+              <small id="occupationHelp" class="form-text text-muted">
+                <span v-text="msg.occupation"></span>
+              </small>
+            </div>
+          </div>
+
           <div class="col-md-6">
             <div class="form-group rs-select">
               <label for="roles" class="control-label">
@@ -121,7 +136,7 @@
           ],
           izq2: [
           {label: 'Número de Telefono movil', id: 'phone_movil', icon: 'fa fa-user-o'},
-          {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
+          // {label: 'Ocupación', id: 'occupation', icon: 'fa fa-id-card-o'},
           {label: 'Número Telefonico', id: 'phone_home', icon: 'fa fa-user-o'},
           {label: 'E-Mail', id: 'email', icon: 'fa fa-envelope'},
           {label: 'Fecha de Nacimiento', id: 'birthday_date', icon: 'fa fa-user-o', type: 'date', empty: true},
@@ -134,6 +149,7 @@
         roles: [],
         nationalities: [],
         companies: [],
+        activities: [],
         msg: {
           name: 'Nombre del usuario.',
           last_name: 'Apellido del usuario.',
@@ -159,6 +175,7 @@
         this.roles = response.data.roles;
         this.nationalities = response.data.nationalities;
         this.companies = response.data.companies;
+        this.activities = response.data.activities;
       });
     },
     methods: {

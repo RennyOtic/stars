@@ -7,7 +7,6 @@
     <div id="app">
         <form action="{{ route('login') }}" method="POST" class="full-box logInForm" autocomplete="off">
 
-            {{-- <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i> --}}
             <p class="text-center text-muted"><img src="{{ asset('./img/logo.jpeg') }}" alt="logo" width="270"></p>
             @if ($errors->has('email'))
             <p class="alert alert-danger">
@@ -58,6 +57,7 @@
             @if(config('frontend.registration_open'))
             <a href="{{ route('register') }}">Registra nueva membresía.</a>
             @endif
+            <a href="{{ route('password.request') }}">Recuperar Contraseña.</a>
 
         </form>
     </div>

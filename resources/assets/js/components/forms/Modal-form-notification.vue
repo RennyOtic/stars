@@ -16,7 +16,7 @@
               <p><b>Observación:</b> {{ formData.data.observation }}</p>
               <div class="form-group rs-select">
                 <label for="state" class="control-label">
-                  <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Cómo se enteró el estudiante de ST:
+                  <span class="zmdi zmdi-shield-security zmdi-hc-fw"></span> Seleccione un estado para la notificación:
                 </label>
                 <select id="state" class="form-control" v-model="formData.data.state">
                   <option :value="null">Seleccione una opción</option>

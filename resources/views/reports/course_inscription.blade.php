@@ -35,7 +35,7 @@
 			<td>{{ $c->date_init }}</td>
 			<td>{{ $user->fullName() }}</td>
 			<td>{{ $c->coordinator->fullName() }}</td>
-			<td>{{ $c->teacher->fullName() }}</td>
+			<td>{{ optional($c->teacher)->fullName() }}</td>
 			<td>{{ $c->idioma->name }}</td>
 			<td>{{ $c->class_type->name }}</td>
 			<td>{{ $c->coursestate->name }}</td>

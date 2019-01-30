@@ -28,6 +28,11 @@ Route::group(['namespace' => 'Auth'], function () {
             Route::post('register', 'RegisterController@register');
         }
     });
+    // Password Reset Routes...
+    Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'ResetPasswordController@reset');
 
     Route::post('logout', 'LoginController@logout')->name('logout');
 });

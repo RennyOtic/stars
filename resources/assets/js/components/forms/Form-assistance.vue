@@ -9,7 +9,7 @@
           <spinner v-if="!formData.ready"></spinner>
           <div class="row" v-else>
 
-            <h4><span class="glyphicon glyphicon-plus"></span> Asistencia al Curso: {{ formData.data.code }}.</h4>
+            <h4><span class="glyphicon glyphicon-plus"></span> Asistencia al Curso:</h4>
 
             <div class="row">
               <div class="col-xs-4"><p><b>Profesor:</b> {{ formData.data.teacher }}</p></div>
@@ -42,12 +42,12 @@
                 <h3 class="text-center">Comienza la clase.</h3>
                 <div class="col-md-6">
                   <button type="button"
-                  class="btn btn-success btn-lg"
+                  class="btn btn-success btn-lg no_ajax"
                   :class="{'btn-raised': !cron.start}"
                   :disabled="cron.start === true"
                   @click="start_stop">Iniciar Clase</button>
                   <button type="button"
-                  class="btn btn-danger btn-lg"
+                  class="btn btn-danger btn-lg no_ajax"
                   :class="{'btn-raised': cron.start}"
                   :disabled="!cron.start"
                   @click="start_stop">Finalizar Clase</button>

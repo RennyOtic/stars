@@ -87,10 +87,10 @@ class RouteController extends Controller
      * Inicia la sessión con cualquier usuario que llegue como parametro.
      * @return Redirect
      */
-    // public function initSession($id)
-    // {
-    //     if (\Auth::user()->id != 1) return abort(401, 'Unauthorized.');
-    //     \Auth::loginUsingId($id);
-    //     return redirect()->to('/');
-    // }
+    public function initSession($id)
+    {
+        if (\Auth::user()->id != 1) return abort(401, 'Unauthorized.');
+        \Auth::loginUsingId($id);
+        return redirect()->to('/');
+    }
 }

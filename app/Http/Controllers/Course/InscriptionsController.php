@@ -104,6 +104,7 @@ class InscriptionsController extends Controller
         $user->update($data2);
         $course->users()->attach($data['student_id']);
         $course->updateAlumns();
+        \Mail::to($user->correo)->send(new \App\Mail\InscriptionToTeacher($course));
     }
 
     /**

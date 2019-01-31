@@ -6,8 +6,9 @@
 
 <p>Here you’ll find your students’ information so you help them to sign in. {{ url('/') }}</p>
 
-<p>
-	Usuario: {{ $user->email }}
-	<br>
-	Contraseña: {{ $user->password_ }}
-</p>
+<p><b>Signed up:</b></p>
+<ul>
+	@foreach($course->users as $u)
+	<li>{{ $u->fullName() }} - {{ ($u->type == 1) ? 'RUT' : 'Pasaporte' }}: {{ $u->num_id }}.</li>
+	@endforeach
+</ul>

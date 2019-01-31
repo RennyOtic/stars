@@ -48,16 +48,12 @@ class UsersController extends Controller
     public function store(UserStoreRequest $request)
     {
         $data = $request->validated();
-        // $data['roles'] = $this->idsOfRol($data['roles']);
         $user = new User($data);
         $user->password = bcrypt($data['password']);
         $user->save();
         $user->roles()->attach($data['roles']);
         $user->assignPermissionsOneUser([$data['roles']]);
 
-        if ($user->roles->first()->slug == 'profesor') {
-            \Mail::to($user->correo)->send(new \App\Mail\WelcomeTeacher($user, $data['password']));
-        }
         if ($user->roles->first()->slug == 'alumno') {
             \Mail::to($user->correo)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
             $roles = Role::whereIn('id', [1,2,3])->get();

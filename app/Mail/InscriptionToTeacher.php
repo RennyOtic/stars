@@ -7,21 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class WelcomeTeacher extends Mailable
+class InscriptionToTeacher extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $user;
+    private $course;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $password)
+    public function __construct($course)
     {
-        $this->user = $user;
-        $this->user->password_ = $password;
+        $this->course = $course;
     }
 
     /**
@@ -31,7 +30,7 @@ class WelcomeTeacher extends Mailable
      */
     public function build()
     {
-        $user = $this->user;
-        return $this->view('mails.welcome_teacher', compact('user'))->subject('Bienvenido a STARS');
+        $course = $this->course;
+        return $this->view('mails.inscription_to_teacher', compact('course'))->subject('Inscripción a STARS');
     }
 }

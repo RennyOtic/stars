@@ -54,12 +54,15 @@ class UsersController extends Controller
         $user->roles()->attach($data['roles']);
         $user->assignPermissionsOneUser([$data['roles']]);
 
+        if ($user->roles->first()->slug == 'profesor') {
+            \Mail::to($user->email)->send(new \App\Mail\WelcomeTeacher($user, $data['password']));
+        }
         if ($user->roles->first()->slug == 'alumno') {
-            \Mail::to($user->correo)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
+            \Mail::to($user->email)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
             $roles = Role::whereIn('id', [1,2,3])->get();
             $roles->each(function ($r) use ($user, $data) {
                 $r->users->each(function ($u) use ($user, $data) {
-                    \Mail::to($u->correo)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
+                    \Mail::to($u->email)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
                 });
             });
         }

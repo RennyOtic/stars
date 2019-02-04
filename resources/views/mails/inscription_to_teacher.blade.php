@@ -6,6 +6,11 @@
 
 <p>Here you’ll find your students’ information so you help them to sign in. {{ url('/') }}</p>
 
+<p><b>Language:</b> {{ $course->idioma->name }}.</p>
+<p><b>Coordinator:</b> {{ $course->coordinator->fullName() }}.</p>
+<p><b>Level:</b> {{ $course->level->name }}.</p>
+<p><b>Start:</b> {{ $course->date_init }}.</p>
+
 <p><b>Signed up:</b></p>
 <ul>
 	@foreach($course->users as $u)

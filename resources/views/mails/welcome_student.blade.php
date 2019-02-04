@@ -5,7 +5,7 @@
 <p>Haz click en este link: {{ url('/') }} para que puedas ingresar a tus datos. </p>
 
 <p>
-	Usuario: {{ $user->email }}
+	<b>Usuario:</b> <u>{{ $user->email }}</u>
 	<br>
-	Contraseña: {{ $user->password_ }}
+	<b>Contraseña:</b> <u>{{ $user->password_ }}</u>
 </p>

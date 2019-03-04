@@ -25,10 +25,17 @@
             <button type="button"
             class="btn btn-danger btn-raised btn-xs"
             data-tooltip="tooltip"
-            title="Borrar Usuario"
+            title="Inactivar Usuario"
             @click="deleted('/admin/users/'+id, $children[1].get, 'fullName')"
-            v-show="id && show == 1"
+            v-show="id && show == 1 && !data.state"
             v-if="can('user.destroy')"><span class="glyphicon glyphicon-trash"></span></button>
+            <button type="button"
+            class="btn btn-primary btn-raised btn-xs"
+            data-tooltip="tooltip"
+            title="Activar Usuario"
+            @click="restore(id)"
+            v-show="id && show == 1 && data.state"
+            v-if="can('user.restore')"><span class="glyphicon glyphicon-saved"></span></button>
             <a :href="'/pdf-course-inscription/' + id"
             class="btn btn-default btn-raised btn-xs"
             data-tooltip="tooltip"
@@ -44,8 +51,8 @@
             <a :href="'/logging/'+id"
             v-show="id && show == 1"
             type="button"
-            class="btn btn-danger btn-raised btn-xs"
-            style="z-index: 100">logging</a>
+            class="btn btn-raised bg-maroon btn-xs"
+            style="z-index: 100">login</a>
         </div>
         <div class="box-body">
             <rs-form :formData="formData"
@@ -55,6 +62,7 @@
             <rs-table :columns="tabla.columns"
             uri="/admin/users"
             @output="id = arguments[0]"
+            @outputData="data = arguments[0]"
             v-show="show == 1"></rs-table>
         </div>
     </div>
@@ -74,6 +82,7 @@
             return {
                 show: 1,
                 id: null,
+                data: {},
                 formData: {
                     ready: true,
                     title: '',
@@ -88,6 +97,7 @@
                     { title: 'RUT / Pasaporte', field: 'num_id', sortable: true },
                     { title: 'Correo', field: 'email', sortable: true },
                     { title: 'Perfil', field: 'rol' },
+                    { title: 'Estado', field: 'state_text', sortable: true },
                     ]
                 }
             };
@@ -142,6 +152,10 @@
                 }
                 this.show = 2;
                 this.formData.cond = cond;
+            },
+            restore: function (id) {
+                axios.post('/admin/users/' + id + '/restore')
+                .then(response => {this.$children[1].get();});
             }
         }
     }

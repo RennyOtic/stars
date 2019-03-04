@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth', 'onlyAjax']], function () {
 
         // Users Routes...
         Route::resource('users', 'UsersController')->except(['create', 'edit']);
+        Route::post('users/{id}/restore', 'UsersController@restore');
         Route::post('get-data-users', 'UsersController@dataForRegister');
 
         // Roles Routes...

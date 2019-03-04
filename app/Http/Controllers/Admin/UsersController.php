@@ -17,6 +17,7 @@ class UsersController extends Controller
         $this->middleware('can:user,index')->only(['index', 'dataForRegister']);
         $this->middleware('can:user,show')->only(['show']);
         $this->middleware('can:user,destroy')->only(['destroy']);
+        $this->middleware('can:user,restore')->only(['restore']);
     }
 
     /**
@@ -27,16 +28,24 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::dataForPaginate(['name','id','last_name','email','num_id'], function ($u) {
+        $select = ['id','name','last_name','email','num_id','deleted_at'];
+        $data = User::withTrashed()
+        ->orderBy($request->order?:$select[0], $request->dir?:'id')
+        ->search($request->search)
+        ->select($select)
+        ->paginate($request->num?:10);
+        $data->each(function ($d) {
             $rol = '';
-            foreach ($u->roles as $r) {
+            foreach ($d->roles as $r) {
                 $rol .= '<span class="badge">' . $r->name . '</span>';
             }
-            $u->rol = $rol;
-            unset($u->roles);
-            $u->fullName = $u->fullName();
+            $d->rol = $rol;
+            unset($d->roles);
+            $d->fullName = $d->fullName();
+            $d->state = ($d->deleted_at) ? true : false;
+            $d->state_text = ($d->deleted_at) ? '<span class="bg-danger ">Inactivo</span>' : '<span class=" bg-success">Activo</span>';
         });
-        return $this->dataWithPagination($users);
+        return $this->dataWithPagination($data);
     }
 
     /**
@@ -127,6 +136,18 @@ class UsersController extends Controller
             $c->update(['teacher_id' => null]);
         });
         return response()->json($user->delete());
+    }
+
+    /**
+     * Restaura el recurso especificado del almacenamiento.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        return response()->json($user->restore());
     }
 
     /**

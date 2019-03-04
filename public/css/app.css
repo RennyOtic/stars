@@ -61,7 +61,7 @@ body, html {
 .dashboard-sideBar {
 	left: 0;
 	z-index: 2;
-	background-image: url(/images/sideBar-font.jpg?81a75a25bf025f7b38c275baaefe995f);
+	background-image: url(/images/sideBar-font.jpg?21ea1ea297ffaedb77e933710a320b51);
 	border-right: 1px solid rgba(255, 255, 255, .4);
 	overflow: hidden;
 }

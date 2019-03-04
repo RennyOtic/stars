@@ -43,10 +43,17 @@ class PermissionsSeeder extends Seeder
         ]);
 
         App\Models\Permisologia\Permission::create([
-        	'name' => 'Borrar Usuarios',
+            'name' => 'Borrar Usuarios',
+            'module' => 'user',
+            'action' => 'destroy',
+            'description' => 'Permiso para borrar usuarios'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+        	'name' => 'Restaurar Usuarios',
         	'module' => 'user',
-        	'action' => 'destroy',
-        	'description' => 'Permiso para borrar usuarios'
+        	'action' => 'restore',
+        	'description' => 'Permiso para Restaurar usuarios'
         ]);
 
         /**

@@ -86,6 +86,7 @@ th span, tbody tr {
 		methods: {
 			selectRow: function (row) {
 				this.$emit('output', row.id);
+				this.$emit('outputData', row);
 			},
 			textColum: function (data, column) {
 				let searchPoint = column.field.split('.');

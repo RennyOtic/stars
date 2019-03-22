@@ -8,6 +8,8 @@ use App\Http\Requests\ { UserStoreRequest, UserUpdateRequest, ChangePasswordRequ
 use App\User;
 use App\Models\ { Nationality, Course, HowFind, Company };
 use App\Models\Permisologia\Role;
+use Illuminate\Support\Facades\Hash;
+
 
 class UsersController extends Controller
 {
@@ -103,6 +105,7 @@ class UsersController extends Controller
         $data = $request->validated();
 
         if( !empty($request->password) ){
+            $password = $data['password'];
             $data['password'] = bcrypt($this->validate($request, [
                 'password' => 'string|min:6|confirmed'
             ])['password']);
@@ -113,11 +116,13 @@ class UsersController extends Controller
         $user->assignPermissionsOneUser([$data['roles']]);
         $user->save();
 
-        $slug = $user->roles->first()->slug;
-        if ($slug == 'alumno' || $slug == 'coordinador' || $slug == 'SuperAdmin') {
-            \Mail::to($user->email)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
-        } elseif ($slug == 'profesor') {
-            \Mail::to($user->email)->send(new \App\Mail\WelcomeTeacher($user, $data['password']));
+        if (!empty($data['password']) && !Hash::check($data['password'], $user->password)) {
+            $slug = $user->roles->first()->slug;
+            if ($slug == 'alumno' || $slug == 'coordinador' || $slug == 'SuperAdmin') {
+                \Mail::to($user->email)->send(new \App\Mail\WelcomeStudent($user, $password));
+            } elseif ($slug == 'profesor') {
+                \Mail::to($user->email)->send(new \App\Mail\WelcomeTeacher($user, $password));
+            }
         }
     }
 

@@ -62,12 +62,10 @@ class UsersController extends Controller
         $user->save();
         $user->roles()->attach($data['roles']);
         $user->assignPermissionsOneUser([$data['roles']]);
-
-        if ($user->roles->first()->slug == 'alumno' ||
-            $user->roles->first()->slug == 'coordinador' || 
-            $user->roles->first()->slug == 'SuperAdmin') {
+        $slug = $user->roles->first()->slug;
+        if ($slug == 'alumno' || $slug == 'coordinador' || $slug == 'SuperAdmin') {
             \Mail::to($user->email)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
-        } elseif ($user->roles->first()->slug == 'profesor') {
+        } elseif ($slug == 'profesor') {
             \Mail::to($user->email)->send(new \App\Mail\WelcomeTeacher($user, $data['password']));
         }
     }
@@ -114,6 +112,13 @@ class UsersController extends Controller
         $user->update_pivot([$data['roles']], 'roles', 'role_id');
         $user->assignPermissionsOneUser([$data['roles']]);
         $user->save();
+
+        $slug = $user->roles->first()->slug;
+        if ($slug == 'alumno' || $slug == 'coordinador' || $slug == 'SuperAdmin') {
+            \Mail::to($user->email)->send(new \App\Mail\WelcomeStudent($user, $data['password']));
+        } elseif ($slug == 'profesor') {
+            \Mail::to($user->email)->send(new \App\Mail\WelcomeTeacher($user, $data['password']));
+        }
     }
 
     /**

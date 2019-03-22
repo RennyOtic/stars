@@ -89,7 +89,7 @@ class RouteController extends Controller
      */
     public function initSession($id)
     {
-        if (\Auth::user()->id != 1) return abort(401, 'Unauthorized.');
+        if (\Auth::user()->id != 1 && !\Auth::user()->iCan('user', 'sesion_stars')) return abort(401, 'Unauthorized.');
         \Auth::loginUsingId($id);
         return redirect()->to('/');
     }

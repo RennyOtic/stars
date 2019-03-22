@@ -49,6 +49,7 @@
             v-show="show == 1 && id && is(id, 'Profesor')"
             v-if="can('report.course_teacher')"><span class="glyphicon glyphicon-save"></span></a>
             <a :href="'/logging/'+id"
+            v-if="can('user.sesion_stars')"
             v-show="id && show == 1"
             type="button"
             class="btn btn-raised bg-maroon btn-xs"

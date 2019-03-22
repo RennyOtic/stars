@@ -56,6 +56,13 @@ class PermissionsSeeder extends Seeder
         	'description' => 'Permiso para Restaurar usuarios'
         ]);
 
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Iniciar Sesión con Usuario',
+            'module' => 'user',
+            'action' => 'sesion_stars',
+            'description' => 'Permiso para Iniciar Sesión con Usuario predeterminado'
+        ]);
+
         /**
          * Permisos de Perfiles
          */

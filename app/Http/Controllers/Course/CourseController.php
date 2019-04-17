@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ { Course, Idioma, Level, ClassType, Material, TypeStudents, Day, Company, CourseDay, CourseState };
 use App\Models\Permisologia\Role;
 use App\Http\Requests\ { CourseStoreRequest, CourseUpdateRequest };
+use App\User;
 
 class CourseController extends Controller
 {
@@ -27,7 +28,7 @@ class CourseController extends Controller
     {
         $select = ['id', 'code', 'teacher_id', 'idioma_id', 'level_id', 'coursestate_id'];
         $courses = Course::dataForPaginate($select, function ($c) {
-            $c->teacher_id = $c->teacher->fullName();
+            $c->teacher_id = ($c->teacher) ? $c->teacher->fullName() : optional(User::withTrashed()->find($c->teacher_id))->fullName();
             $c->idioma_id = $c->idioma->name;
             $c->students = '<ul style="margin: 0">';
             foreach ($c->users as $u) $c->students .= '<li>' . $u->fullName() . '</li>';

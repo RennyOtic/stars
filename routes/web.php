@@ -28,6 +28,7 @@ Route::group(['namespace' => 'Auth'], function () {
             Route::post('register', 'RegisterController@register');
         }
     });
+
     // Password Reset Routes...
     Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
@@ -49,7 +50,11 @@ Route::group(['middleware' => ['auth', 'onlyAjax']], function () {
      * Admin, Acceso para usuarios con privilegios.
      * "/admin/*"
      */
-    Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin::'], function () {
+    Route::group([
+        'prefix' => 'admin',
+        'namespace' => 'Admin',
+        'as' => 'admin::'
+    ], function () {
 
         // Users Routes...
         Route::resource('users', 'UsersController')->except(['create', 'edit']);
@@ -99,9 +104,9 @@ Route::group(['middleware' => ['auth', 'onlyAjax']], function () {
 
 });
 
-/*
-* Reports
-*/
+/**
+ * Reports
+ */
 Route::get('pdf-inscription/{course_id}/{user_id}', 'ReportsController@pdf_inscription');
 Route::get('pdf-course-inscription/{user_id}', 'ReportsController@pdf_course_inscription');
 Route::get('pdf-assistance/{course_id}/{user_id}', 'ReportsController@assistance');

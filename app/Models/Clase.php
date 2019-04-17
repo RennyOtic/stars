@@ -15,9 +15,7 @@ class Clase extends Model
      *
      * @var array
      */
-    protected $fillable = [
-    	'course_id', 'coordinator_id'
-    ];
+    protected $fillable = ['course_id', 'coordinator_id'];
 
     /**
      * Los atributos que deberían estar ocultos para las matrices.

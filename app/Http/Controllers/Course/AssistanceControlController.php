@@ -60,7 +60,8 @@ class AssistanceControlController extends Controller
         if ($request->event_id == 1) {
             $data = $this->validate($request, [
                 'course_id' => 'required|numeric',
-                'event_id' => 'required|numeric'
+                'event_id' => 'required|numeric',
+                'time' => 'required|numeric'
             ],[],['course_id' => 'curso', 'event_id' => 'evento']);
 
             $rol = \Auth::user()->roles->first()->slug;
@@ -98,12 +99,14 @@ class AssistanceControlController extends Controller
                 ->first();
                 if ($notification) return response()->json(['message' => 'El profesor ha suspendido la clase.'], 401);
             }
+
             $assistance = Assistance::create([
                 'course_id' => $data['course_id'],
                 'event_id' => $data['event_id'],
                 'user_id' => \Auth::user()->id,
+                'time' => $data['time']
             ]);
-            return response()->json($assistance->id);
+            return response()->json($assistance);
         } elseif ($request->event_id == 2) {
             $data = $this->validate($request, ['assistance_id' => 'required|numeric', ]);
             $assistance = AssistancesControl::create([
@@ -159,38 +162,35 @@ class AssistanceControlController extends Controller
     {
         $course = Course::findOrFail($request->id);
         if (\Auth::user()->iCan('assistanceControl', 'mStudent')) { // alumno
-            if ($course->users()->where('id', '=', \Auth::user()->id)->count() == 0) return;
+            if ($course->users()->where('id', \Auth::user()->id)->count() == 0) return;
         } elseif (\Auth::user()->iCan('assistanceControl', 'mTeacher')) { // profesor
             if ($course->teacher_id !== \Auth::user()->id) return;
         }
-        $now = date('w') + 1;
+
         $teacher = $course->teacher->fullName() . ' - ' . $course->teacher->num_id;
         $idioma = $course->idioma->name;
-        unset($course->teacher, $course->idioma, $course->days);
+        unset($course->teacher, $course->idioma);
         $course->teacher = $teacher;
         $course->idioma = $idioma;
 
-        $coordinators = Role::where('slug', '=', 'Coordinador')->first()->users()->orderBy('name', 'ASC')
-        ->get(['id', 'name', 'last_name', 'num_id']);
-        $coordinators->each(function ($u) {
-            $u->fullName = $u->fullName() . ' - ' . $u->num_id;
-            unset($u->pivot, $u->name, $u->last_name, $u->num_id);
-        });
+        $coordinators = Role::where('slug', 'Coordinador')
+        ->first()->users()->orderBy('name', 'ASC')
+        ->get(['id', \DB::raw('concat(name, " ", last_name, " - ", num_id) as fullName')]);
 
         if (\Auth::user()->iCan('assistanceControl', 'showTeacher')) { // profesor
-            $eventassistance = EventAssistance::where('id', '>', 3)->get();
+            $event = 3;
         } elseif (\Auth::user()->iCan('assistanceControl', 'showStudent')) { // alumno
-            $eventassistance = EventAssistance::where('id', '>', 5)->get();
+            $event = 5;
         }
+        $eventassistance = EventAssistance::where('id', '>', $event)->get();
 
-        if ($request->assistance_id) {
-            $state = Assistance::findOrFail($request->assistance_id)
-            ->where('course_id', $request->id)
-            ->where('user_id', \Auth::user()->id)
-            ->where('finish_at', null)
-            ->first();
-        }
+        $state = Assistance::where('course_id', $course->id)
+        ->where('event_id', 1)
+        ->where('user_id', \Auth::user()->id)
+        ->where('finish_at', null)
+        ->first();
+        if ($state) {$state->start = $state->created_at->format('U');}
 
-        return response()->json(compact('course', 'state', 'coordinators', 'eventassistance'));
+        return response()->json(compact('course', 'coordinators', 'eventassistance', 'state'));
     }
 }

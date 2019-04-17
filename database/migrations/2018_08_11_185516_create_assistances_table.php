@@ -26,6 +26,7 @@ class CreateAssistancesTable extends Migration
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('event_id');
+            $table->string('time')->nullable();
             $table->timestamp('finish_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

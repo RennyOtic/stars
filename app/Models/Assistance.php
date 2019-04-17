@@ -16,7 +16,11 @@ class Assistance extends Model
      * @var array
      */
     protected $fillable = [
-    	'course_id', 'user_id', 'event_id', 'finish_at'
+    	'course_id',
+        'user_id',
+        'event_id',
+        'finish_at',
+        'time'
     ];
 
     /**

@@ -17,11 +17,11 @@
               <div class="col-xs-3"><p><b>Idioma:</b> {{ formData.data.idioma }}</p></div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="formData.data.coursestate_id == 2">
               <div class="col-md-6 col-md-offset-3">
                 <div class="form-group label-floating">
                   <label for="event" class="control-label">
-                    <span class="fa fa-laptop"></span> Evento:
+                    <span class="fa fa-laptop"></span> Acción:
                   </label>
                   <select class="form-control no_ajax" :disabled="cron.start" v-model="event">
                     <option value="1">Comenzar clase</option>
@@ -116,12 +116,12 @@
 </template>
 
 <style>
-.reloj{
-  float: left;
-  font-size: 60px;
-  font-family: Courier,sans-serif;
-  color: #363431;
-}
+  .reloj {
+    float: left;
+    font-size: 60px;
+    font-family: Courier, "sans-serif";
+    color: #363431;
+  }
 </style>
 
 <script>
@@ -147,7 +147,34 @@
       };
     },
     mounted() {
-      this.get();
+      this.formData.ready = false;
+      axios.post('/get-data-assistance', {
+        id: this.$route.params.id
+      })
+      .then(response => {
+        if (response.data == '') {
+          return this.$router.push({
+            name: 'assistanceControl.index'
+          });
+        }
+
+        this.formData.data = response.data.course;
+        this.formData.data.motivo = '';
+        this.formData.data.observation = '';
+        this.coordinators = response.data.coordinators;
+        this.event_ = response.data.eventassistance;
+        this.formData.ready = true;
+
+        if (response.data.state) {
+          console.log(response.data.state)
+          this.cron.start = true;
+          this.cron.inicio = response.data.state.time;
+          this.assistance = response.data.state.id;
+          this.start_cronometro();
+          this.hide_show_sidebar();
+          toastr.success('La clase aún sigue activa');
+        }
+      });
     },
     methods: {
       notify() {
@@ -157,30 +184,71 @@
           this.$router.push({name: 'notify_s.index'});
         });
       },
-      get() {
-        this.formData.ready = false;
-        axios.post('/get-data-assistance', {
-          id: this.$route.params.id,
-          assistance_id: localStorage.getItem('assistance')
-        })
-        .then(response => {
-          if (response.data == '') {
-            return this.$router.push({name: 'assistanceControl.index'});
-          }
-          this.formData.data = response.data.course;
-          this.formData.data.motivo = '';
-          this.formData.data.observation = '';
-
-          this.coordinators = response.data.coordinators;
-          this.event_ = response.data.eventassistance;
-
-          this.formData.ready = true;
-          this.test_cron();
-        });
+      start_stop() {
+        if(this.cron.timeout == 0 && !this.cron.start) {
+          axios.post('/assistance', {
+            course_id: this.$route.params.id,
+            event_id: 1,
+            time: new Date().getTime()
+          })
+          .then(response => {
+            this.assistance = response.data.id;
+            this.cron.inicio = new Date(response.data.time).getTime();
+            this.start_cronometro();
+            this.hide_show_sidebar();
+            toastr.success('Haz Iniciado tu Clase');
+            this.cron.start = true;
+            setTimeout(() => {$('select').attr('disabled', 'disabled');}, 500);
+          });
+        } else if(this.cron.timeout != 0 && this.cron.start) {
+          axios.put('/assistance/' + this.assistance, {
+            course_id: this.$route.params.id,
+            event_id: 3,
+          })
+          .then(response => {
+            clearTimeout(this.cron.timeout);
+            this.hide_show_sidebar();
+            this.cron.timeout = 0;
+            $('select, input').removeAttr('disabled');
+            toastr.success('Haz Finalizado tu Clase');
+            this.cron.start = false;
+          });
+        }
       },
-      hide_show() {
-        var body=$('.dashboard-contentPage');
-        var sidebar=$('.dashboard-sideBar');
+      start_cronometro() {
+        let interval  = 10;
+        // obteneos la fecha actual
+        let actual = new Date().getTime();
+        // obtenemos la diferencia entre la fecha actual y la de inicio
+        let diff = new Date(actual - this.cron.inicio);
+        // mostramos la diferencia entre la fecha actual y la inicial
+        let result = this.LeadingZero(diff.getUTCHours()) + ':' + this.LeadingZero(diff.getUTCMinutes()) + ':' + this.LeadingZero(diff.getUTCSeconds()) + ':' + this.LeadingZero(diff.getMilliseconds());
+        if (diff.getUTCSeconds()%10 == 0 && diff.getMilliseconds() >= 0 && diff.getMilliseconds() <= interval) {
+          fetch('/assistance', {
+            method: "POST",
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRF-Token': Laravel.csrfToken,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              assistance_id: this.assistance,
+              event_id: 2
+            })
+          });
+          console.clear();
+        }
+        if (document.getElementById('crono') !== null) {
+          document.getElementById('crono').innerHTML = result.substr(0, 11);
+        }
+        // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
+        this.cron.timeout = setTimeout(() => { this.start_cronometro(); }, interval);
+      },
+      /* Funcion que pone un 0 delante de un valor si es necesario */
+      LeadingZero(Time) { return (Time < 10) ? "0" + Time : + Time; },
+      hide_show_sidebar() {
+        let body = $('.dashboard-contentPage');
+        let sidebar = $('.dashboard-sideBar');
         if(sidebar.css('pointer-events') == 'none'){
           $('.btn-menu-dashboard').show();
           body.removeClass('no-paddin-left');
@@ -191,79 +259,6 @@
           sidebar.addClass('hide-sidebar').removeClass('show-sidebar');
         }
       },
-      test_cron() {
-        if(localStorage.getItem("inicio") != null) {
-          // Si al iniciar el navegador, la variable inicio que se guarda
-          // en la base de datos del navegador tiene valor, cargamos el valor
-          // y iniciamos el proceso.
-          this.cron.inicio = localStorage.getItem("inicio");
-          this.assistance = localStorage.getItem('assistance');
-          this.funcionando();
-          this.cron.start = true;
-          toastr.success('La clase aún sigue activa');
-          this.hide_show();
-        }
-      },
-      start_stop() {
-        if(this.cron.timeout == 0 && !this.cron.start) {
-          axios.post('/assistance', {
-            course_id: this.formData.data.id,
-            event_id: 1,
-          })
-          .then(response => {
-            localStorage.setItem('assistance', response.data);
-            this.assistance = response.data;
-            // empezar el cronometro
-            // Obtenemos el valor actual
-            this.cron.inicio = new Date().getTime();
-            // Guardamos el valor inicial en la base de datos del navegador
-            localStorage.setItem("inicio", this.cron.inicio);
-            // iniciamos el proceso
-            this.funcionando();
-            this.hide_show();
-            toastr.success('Haz Iniciado tu Clase');
-            this.cron.start = true;
-            setTimeout(() => {$('select').attr('disabled', 'disabled');},500);
-          });
-        } else if(this.cron.timeout != 0 && this.cron.start) {
-          axios.put('/assistance/' + this.assistance, {
-            course_id: this.formData.data.id,
-            event_id: 3,
-          })
-          .then(response => {
-            // detemer el cronometro
-            clearTimeout(this.cron.timeout);
-            // Eliminamos el valor inicial guardado
-            localStorage.removeItem("inicio");
-            localStorage.removeItem("assistance");
-            this.hide_show();
-            this.cron.timeout = 0;
-            $('select, input').removeAttr('disabled');
-            toastr.success('Haz Finalizado tu Clase');
-            this.cron.start = false;
-          });
-        }
-      },
-      funcionando() {
-        let interval  = 10;
-        // obteneos la fecha actual
-        let actual = new Date().getTime();
-        // obtenemos la diferencia entre la fecha actual y la de inicio
-        let diff = new Date(actual - this.cron.inicio);
-        // mostramos la diferencia entre la fecha actual y la inicial
-        let result = this.LeadingZero(diff.getUTCHours()) + ':' + this.LeadingZero(diff.getUTCMinutes()) + ':' + this.LeadingZero(diff.getUTCSeconds()) + ':' + this.LeadingZero(diff.getMilliseconds());
-        if (diff.getUTCSeconds()%10 == 0 && diff.getMilliseconds() >= 0 && diff.getMilliseconds() <= interval) {
-          axios.post('/assistance', {assistance_id: this.assistance, event_id: 2});
-          console.clear();
-        }
-        if (document.getElementById('crono') !== null) {
-          document.getElementById('crono').innerHTML = result.substr(0,11);
-        }
-        // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
-        this.cron.timeout = setTimeout(() => { this.funcionando(); }, interval);
-      },
-      /* Funcion que pone un 0 delante de un valor si es necesario */
-      LeadingZero(Time) { return (Time < 10) ? "0" + Time : + Time; }
     }
   }
 </script>

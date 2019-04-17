@@ -38,7 +38,7 @@ class NotifyController extends Controller
 
                 $n->coordinator_id = $n->coordinator->fullName();
                 $n->course = $n->assistance->course->code;
-                $n->date = $n->created_at->format('Y/m/d h:i a');
+                $n->date = $n->created_at->format('Y/m/d');
                 $n->teacher = $n->assistance->course->teacher->fullName();
                 $student = $n->student->fullName();
                 $n->motivo = $n->assistance->event->name;
@@ -62,7 +62,7 @@ class NotifyController extends Controller
 
                 $n->coordinator_id = $n->coordinator->fullName();
                 $n->course = $n->assistance->course->code;
-                $n->date = $n->created_at->format('Y/m/d h:i a');
+                $n->date = $n->created_at->format('Y/m/d');
                 $n->teacher = $n->assistance->course->teacher->fullName();
                 $student = $n->student->fullName();
                 $n->motivo = $n->assistance->event->name;

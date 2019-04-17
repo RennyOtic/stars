@@ -239,6 +239,20 @@ class PermissionsSeeder extends Seeder
             'description' => 'Permiso Ver La tabla de Asistencia llena con los cursos en el que el profesor enseña'
         ]);
 
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Es Profesor?',
+            'module' => 'assistanceControl',
+            'action' => 'mTeacher',
+            'description' => 'Permiso para desempezarse como profesor'
+        ]);
+
+        App\Models\Permisologia\Permission::create([
+            'name' => 'Es Estudiante?',
+            'module' => 'assistanceControl',
+            'action' => 'mStudent',
+            'description' => 'Permiso para desempezarse como estudiante'
+        ]);
+
         /**
          * Permisos de Empresas
          */

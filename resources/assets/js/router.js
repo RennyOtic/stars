@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 import App from './components/App.vue';
 import Dashboard from './components/views/DashboardComponent.vue';
-import Profile from './components/views/profileComponent.vue';
+import Profile from './components/views/ProfileComponent.vue';
 import Users from './components/views/UsersComponent.vue';
 import Roles from './components/views/RolesComponent.vue';
 import Permission from './components/views/PermissionsComponent.vue';
@@ -111,12 +111,19 @@ router.beforeEach((to, from, next) => {
 	if (to.path.split('/')[1] == 'js' || to.path.split('/')[1] == 'css') {next('/'); return;}
 
 	setTimeout(() => {
-		if (to.path == '/') {
-			if (this.a.app.can('courseManagement.index')) {
-				next('/gestion-de-cursos');
-			} else {
+		if (to.path == '/' || permission == 'dashboard') {
+			if (this.a.app.can('assistanceControl.index')) {
 				next('/control-de-asistencias');
+			} else {
+				next('/gestion-de-cursos');
 			}
+			setTimeout(() => {
+				if (this.a.app.can('assistanceControl.index')) {
+					next('/control-de-asistencias');
+				} else {
+					next('/gestion-de-cursos');
+				}
+			}, 500);
 			return;
 		}
 		if (this.a.app.can(permission)) {

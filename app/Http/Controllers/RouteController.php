@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Permisologia\Permission;
 use App\User;
+use App\Models\Assistance;
 
 class RouteController extends Controller
 {
@@ -17,9 +18,16 @@ class RouteController extends Controller
      * Vista principal que renderizara vuejs
      * @return view
      */
-    function index()
+    function index(Request $request)
     {
-    	return view('index');
+        if ($request->path() == '/') {
+            $assistance = Assistance::where('event_id', 1)
+            ->where('user_id', \Auth::user()->id)
+            ->where('finish_at', null)
+            ->first();
+            if ($assistance) return redirect('/control-de-asistencias/' . $assistance->course_id);
+        }
+        return view('index');
     }
 
     /**

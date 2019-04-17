@@ -15,9 +15,7 @@ class AssistancesControl extends Model
      *
      * @var array
      */
-    protected $fillable = [
-    	'assistance_id', 'user_id'
-    ];
+    protected $fillable = ['assistance_id', 'user_id'];
 
     /**
      * Los atributos que deberían estar ocultos para las matrices.
